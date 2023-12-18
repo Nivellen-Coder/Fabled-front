@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@media (prefers-color-scheme: dark) {
+  @import 'tailwindcss/base';
+  @import 'tailwindcss/components';
+  @import 'tailwindcss/utilities';
+}
+
+body.dark {
+  // Add your dark mode styles here
+  background-color: #111827;
+  color: white;
+  background-image: url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg');
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  background-image: url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg');
+}
