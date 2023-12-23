@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "src/app/services/user/user.service";
-import { UserCreateModel } from "src/app/models/user/userCreateModel";
+import { Country, UserCreateModel } from "src/app/models/user/userCreateModel";
 import { ToastrService } from 'ngx-toastr';
-import { finalize } from "rxjs";
+import { finalize, tap } from "rxjs";
+import { CountryService } from "../../services/country/country.service";
 
 
 @Component({
@@ -13,6 +14,7 @@ import { finalize } from "rxjs";
 })
 export class UserRegisterComponent implements OnInit{
   submitted = false;
+  countries: Country[] = [];
 
   registerForm: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -116,6 +118,15 @@ export class UserRegisterComponent implements OnInit{
       },
     );
 
+    this.countryService.countryList().pipe(
+      tap((data: Country[]) => {
+        this.countries = data;
+      }),
+      finalize(() => {
+        // Code à exécuter lorsque l'observable est complet
+      })
+    ).subscribe();
+
     this.registerForm.get('hasAddress')?.valueChanges.subscribe(
       (hasAddress: boolean) => {
         const addressFields = ['street', 'houseNumber', 'city', 'postalCode', 'region'];
@@ -133,13 +144,15 @@ export class UserRegisterComponent implements OnInit{
         });
       }
     );
+
+
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.registerForm.controls;
   }
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastr: ToastrService) {}
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastr: ToastrService, private countryService: CountryService) {}
 
 
   public onSubmit(): void {
@@ -174,7 +187,10 @@ export class UserRegisterComponent implements OnInit{
         })
       ).subscribe({
         next: (v) => console.log(v),
-        error: (e) => this.toastr.error(e),
+        error: (e) => {
+          const errorMessage = e?.error?.message || 'Une erreur inconnue s\'est produite';
+          this.toastr.error(errorMessage);
+        },
         complete: () => this.toastr.success('Inscription réussie!', 'Succès')
       });
     }
