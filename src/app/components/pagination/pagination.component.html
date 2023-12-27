@@ -1,1 +1,13 @@
-<p>pagination works!</p>
+<nav class="bg-gray-100 dark:bg-gray-600 p-4">
+  <ul class="flex items-center justify-between">
+    <li>
+      <a (click)="onPreviousClick()" class="text-gray-700 dark:text-gray-300 py-2 px-3 border-b-2 border-transparent hover:border-blue-500 transition duration-300 cursor-pointer" [ngClass]="{ 'hover:border-blue-500' : currentPage > 1, 'cursor-pointer' : currentPage > 1 }">Previous</a>
+    </li>
+    <li>
+      <span class="mx-3 text-gray-700 dark:text-gray-300">Page {{ currentPage }} out of {{ pagesCount }}</span>
+    </li>
+    <li>
+      <a (click)="onNextClick()" class="text-gray-700 dark:text-gray-300 py-2 px-3 border-b-2 border-transparent hover:border-blue-500 transition duration-300 cursor-pointer" [ngClass]="{ 'hover:border-blue-500' : currentPage < pagesCount , 'cursor-pointer' : currentPage < pagesCount }">Next</a>
+    </li>
+  </ul>
+</nav>
