@@ -11,12 +11,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastrModule } from 'ngx-toastr';
 import { NgOptimizedImage } from "@angular/common";
+import { CardListComponent } from './components/card-list/card-list.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserRegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    CardListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
