@@ -27,6 +27,7 @@ export class CardListComponent implements OnInit {
 
   constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
     this.searchForCards(1);
+    this.isLoading = true;
   }
 
   ngOnInit(){
@@ -76,8 +77,9 @@ export class CardListComponent implements OnInit {
           this.isLoading = true;
         }
         this.cards = cards.data;
+        this.total = cards.meta.total;
+        this.nbPage = cards.meta.last_page;
         this.isLoading = false;
-        this.isSearching = false;
       });
     } else {
       this.loadCards();
