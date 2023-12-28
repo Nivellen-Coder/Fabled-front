@@ -3,6 +3,7 @@ import {Card, cardListModel} from "../../models/card/cardListModel";
 import { FormControl, FormGroup } from "@angular/forms";
 import {CardService} from "../../services/card/card.service";
 import {Router} from "@angular/router";
+import { ViewportScroller } from '@angular/common';
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 
 @Component({
@@ -23,7 +24,7 @@ export class CardListComponent {
   //   search:new FormControl('')
   // })
 
-  constructor(private cardService: CardService, private router: Router) {
+  constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
     // this.searchForm.get('search')?.valueChanges.pipe(
     //   debounceTime(1000),
     //   distinctUntilChanged(),
@@ -43,9 +44,9 @@ export class CardListComponent {
     this.isLoading = true;
   }
 
-  // cardDetail(id: string) {
-  //   this.router.navigate(['card-detail', id]);
-  // }
+  cardDetail(id: string) {
+    this.router.navigate(['card-detail', id]);
+  }
 
   public loadCards(): void {
     this.cardService.getAllCards(this.currentPage, this.pageSize).subscribe((cards: cardListModel) => {
@@ -62,5 +63,6 @@ export class CardListComponent {
   changePage(page: number): void {
     this.currentPage = page;
     this.loadCards();
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 }
