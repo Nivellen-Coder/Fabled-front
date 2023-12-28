@@ -13,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgOptimizedImage } from "@angular/common";
 import { CardListComponent } from './components/card-list/card-list.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { CardDetailComponent } from './components/card-detail/card-detail.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     UserRegisterComponent,
     NavbarComponent,
     CardListComponent,
-    PaginationComponent
+    PaginationComponent,
+    CardDetailComponent
   ],
   imports: [
     BrowserModule,
