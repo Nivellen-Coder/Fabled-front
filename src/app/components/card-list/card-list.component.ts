@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import {Card, cardListModel} from "../../models/card/cardListModel";
+import { Component, OnInit } from '@angular/core';
+import { Card, cardListModel } from "../../models/card/cardListModel";
 import { FormControl, FormGroup } from "@angular/forms";
-import {CardService} from "../../services/card/card.service";
-import {Router} from "@angular/router";
+import { CardService } from "../../services/card/card.service";
+import { Router } from "@angular/router";
 import { ViewportScroller } from '@angular/common';
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-card-list',
   templateUrl: './card-list.component.html',
   styleUrls: ['./card-list.component.scss']
 })
-export class CardListComponent {
+export class CardListComponent implements OnInit {
   cards: Card[] = [];
   currentPage: number = 1;
   nbPage: number = 1;
@@ -20,23 +20,23 @@ export class CardListComponent {
   total: number = 2000;
   isLoading: boolean = true;
 
-  // searchForm:FormGroup = new FormGroup({
-  //   search:new FormControl('')
-  // })
+  searchForm:FormGroup = new FormGroup({
+    search:new FormControl('')
+  })
 
   constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
-    // this.searchForm.get('search')?.valueChanges.pipe(
-    //   debounceTime(1000),
-    //   distinctUntilChanged(),
-    //   switchMap((v) => this.cardService.getCardsByName(v, this.pageSize))
-    // ).subscribe(
-    //   (result) => {
-    //     this.cards = result?.data;
-    //     this.currentPage = 1; // Réinitialise la page à 1 lors de la recherche
-    //     this.nbPage = result?.meta?.last_page || 1; // Met à jour le nombre de pages
-    //     this.total = result?.meta?.total || 0; // Met à jour le nombre total d'éléments
-    //   }
-    // );
+    this.searchForm.get('search')?.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap((v) => this.cardService.getCardsByName(v, this.pageSize))
+    ).subscribe(
+      (result) => {
+        this.cards = result?.data;
+        this.currentPage = 1; // Réinitialise la page à 1 lors de la recherche
+        this.nbPage = result?.meta?.last_page || 1; // Met à jour le nombre de pages
+        this.total = result?.meta?.total || 0; // Met à jour le nombre total d'éléments
+      }
+    );
   }
 
   ngOnInit(){
