@@ -24,4 +24,8 @@ export class CardService {
   public getCardById(id: string): Observable<CardDetailModel>{
     return this.httpClient.get<CardDetailModel>(environment.API_BASE_URL + 'cards/' + id + "?time=" + Date.now() + "&hash=" + environment.API_HASH, this.httpOptions)
   }
+
+  public getCardsByName(name: string, pageSize: number): Observable<cardListModel>{
+    return this.httpClient.get<cardListModel>(environment.API_BASE_URL + "cards?time=" + Date.now() + "&hash=" + environment.API_HASH + '&keywords=' + name + "&per_page=" + pageSize, this.httpOptions)
+  }
 }
