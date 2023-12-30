@@ -16,6 +16,155 @@
       </div>
     </form>
 
+    <div class="mt-4 space-y-4">
+      <!-- Accordéon pour la recherche avancée -->
+      <div class="p-3">
+        <button (click)="toggleAccordion()" class="flex items-center justify-between w-full p-4 text-left bg-gray-200 dark:bg-gray-800 rounded-lg cursor-pointer focus:outline-none focus:ring focus:border-blue-300">
+          <span class="text-sm font-medium text-gray-700 dark:text-white">Advanced Search</span>
+          <svg *ngIf="!isAccordionOpen" class="w-4 h-4 text-gray-700 dark:text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+          <svg *ngIf="isAccordionOpen" class="w-4 h-4 text-gray-700 dark:text-white transition-transform duration-300 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+
+        <div *ngIf="isAccordionOpen" class="mt-2">
+          <!-- Contenu de l'accordéon (champs de recherche avancée) -->
+          <form [formGroup]="searchByCriteriasForm" (ngSubmit)="searchByCriterias()">
+            <div class="mt-4">
+              <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Class</h3>
+              <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="none-checkbox" type="checkbox" value="none" formControlName="none" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="none-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not Classed</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="generic-checkbox" type="checkbox" value="generic" formControlName="generic" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="generic-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Generic</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="assassin-checkbox" type="checkbox" value="assassin" formControlName="assassin" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="assassin-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Assassin</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="bard-checkbox" type="checkbox" value="bard" formControlName="bard" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="bard-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bard</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="brute-checkbox" type="checkbox" value="brute" formControlName="brute" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="brute-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Brute</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="guardian-checkbox" type="checkbox" value="guardian" formControlName="guardian" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="guardian-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Guardian</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="illusionist-checkbox" type="checkbox" value="illusionist" formControlName="illusionist" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="illusionist-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Illusionist</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="mechanologist-checkbox" type="checkbox" value="mechanologist" formControlName="mechanologist" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="mechanologist-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mechanologist</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="merchant-checkbox" type="checkbox" value="merchant" formControlName="merchant" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="merchant-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Merchant</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="ninja-checkbox" type="checkbox" value="ninja" formControlName="ninja" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="ninja-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ninja</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="ranger-checkbox" type="checkbox" value="ranger" formControlName="ranger" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="ranger-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ranger</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="runeblade-checkbox" type="checkbox" value="runeblade" formControlName="runeblade" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="runeblade-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Runeblade</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="shapeshifter-checkbox" type="checkbox" value="shapeshifter" formControlName="shapeshifter" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="shapeshifter-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">ShapeShifter</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="warrior-checkbox" type="checkbox" value="warrior" formControlName="warrior" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="warrior-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Warrior</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input id="wizard-checkbox" type="checkbox" value="wizard" formControlName="wizard" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                    <label for="wizard-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Wizard</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+<!--            <div class="mt-4">-->
+<!--              <label for="talent" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Talent</label>-->
+<!--              <select formControlName="talent" id="talent" class="block w-full p-2 dark:text-white-200 border-white-100 rounded-lg bg-gray-100 dark:bg-gray-800 focus:ring-blue-500 focus:border-white-100">-->
+<!--                <option value="none">Not Talented</option>-->
+<!--                <option value="draconic">Draconic</option>-->
+<!--                <option value="earth">Earth</option>-->
+<!--                <option value="elemental">Elemental</option>-->
+<!--                <option value="ice">Ice</option>-->
+<!--                <option value="light">Light</option>-->
+<!--                <option value="lightning">Lightning</option>-->
+<!--                <option value="shadow">Shadow</option>-->
+<!--              </select>-->
+<!--            </div>-->
+
+<!--            <div class="mt-4">-->
+<!--              <label for="rarity" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Rarity</label>-->
+<!--              <select formControlName="rarity" id="rarity" class="block w-full p-2 dark:text-white-200 border-white-100 rounded-lg bg-gray-100 dark:bg-gray-800 focus:ring-blue-500 focus:border-white-100">-->
+<!--                <option value="">Any</option>-->
+<!--                <option value="C">Common</option>-->
+<!--                <option value="R">Rare</option>-->
+<!--                <option value="S">Super Rare</option>-->
+<!--                <option value="M">Majestic</option>-->
+<!--                <option value="MV">Marvel</option>-->
+<!--                <option value="L">Legendary</option>-->
+<!--                <option value="F">Fabled</option>-->
+<!--                <option value="T">Token</option>-->
+<!--                <option value="P">Promo</option>-->
+<!--              </select>-->
+<!--            </div>-->
+
+            <button type="submit" class="text-white mt-4 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
     <div class="grid grid-cols-4 gap-x-6">
       <div *ngFor="let i of divList; let index = index">
         <div role="status" class="flex items-center justify-center h-96 w-72 bg-white-300 rounded-lg animate-pulse my-4" *ngIf="isLoading">

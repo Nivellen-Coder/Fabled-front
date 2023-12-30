@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card, cardListModel } from "../../models/card/cardListModel";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { CardService } from "../../services/card/card.service";
 import { Router } from "@angular/router";
 import { ViewportScroller } from '@angular/common';
@@ -20,10 +20,31 @@ export class CardListComponent implements OnInit {
   total: number = 2000;
   isLoading: boolean = true;
   isSearching: boolean = false;
+  isSearchingWithCriterias: boolean = false;
+  isAccordionOpen: boolean = false;
+  classesSelected: string[] = [];
 
   searchForm:FormGroup = new FormGroup({
     search:new FormControl('')
   })
+
+  searchByCriteriasForm:FormGroup = new FormGroup({
+    none: new FormControl(''),
+    generic: new FormControl(''),
+    assassin: new FormControl(''),
+    bard: new FormControl(''),
+    brute: new FormControl(''),
+    guardian: new FormControl(''),
+    illusionist: new FormControl(''),
+    mechanologist: new FormControl(''),
+    merchant: new FormControl(''),
+    ninja: new FormControl(''),
+    ranger: new FormControl(''),
+    runeblade: new FormControl(''),
+    shapeshifter: new FormControl(''),
+    warrior: new FormControl(''),
+    wizard: new FormControl('')
+  });
 
   constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
     this.searchForCards(1);
@@ -69,22 +90,57 @@ export class CardListComponent implements OnInit {
   }
 
   changePage(page: number): void {
-    this.currentPage = page;
-
-    if(this.isSearching) {
-      this.cardService.getCardsByName(this.searchForm.get('search')?.value, this.pageSize, this.currentPage).subscribe((cards: cardListModel) => {
-        if(!this.cards){
+    if(this.isSearching && !this.isSearchingWithCriterias) {
+      this.cardService.getCardsByName(this.searchForm.get('search')?.value, this.pageSize, page).subscribe((cards: cardListModel) => {
+        if (!this.cards) {
           this.isLoading = true;
         }
         this.cards = cards.data;
         this.total = cards.meta.total;
         this.nbPage = cards.meta.last_page;
+        this.pageSize = 48;
         this.isLoading = false;
+        this.isSearching = true;
+      });
+    } else if(this.isSearchingWithCriterias && this.isSearching) {
+      this.cardService.getCardsByCriterias(this.searchForm.get('search')?.value, page, this.classesSelected.join(',')).subscribe((cards: cardListModel) => {
+        this.cards = cards.data;
+        this.total = cards.meta.total;
+        this.nbPage = cards.meta.last_page;
+        this.pageSize = 25;
+        this.isSearchingWithCriterias = true;
       });
     } else {
-      this.loadCards();
-    }
+      this.cardService.getAllCards(page, this.pageSize).subscribe((cards: cardListModel) => {
+        if(!this.cards){
+          this.isLoading = true;
+        }
+        this.cards = cards.data;
+        this.total = cards.meta?.total;
+        this.nbPage = cards.meta?.last_page;
+        this.pageSize = 48;
+        this.isLoading = false;
+      });
 
+    }
+    this.currentPage = page;
     this.viewportScroller.scrollToPosition([0, 0]);
+  }
+
+  toggleAccordion() {
+    this.isAccordionOpen = !this.isAccordionOpen;
+  }
+
+  searchByCriterias() {
+    const selectedValues = this.searchByCriteriasForm.getRawValue();
+    this.classesSelected = Object.keys(this.searchByCriteriasForm.value).filter(key => this.searchByCriteriasForm.value[key]);
+    this.cardService.getCardsByCriterias(this.searchForm.get('search')?.value, this.currentPage, this.classesSelected.join(',')).subscribe((cards: cardListModel) => {
+      this.cards = cards.data;
+      this.total = cards.meta.total;
+      this.nbPage = cards.meta.last_page;
+      this.pageSize = 25;
+      this.isSearchingWithCriterias = true;
+      console.log(this.total);
+    });
   }
 }
