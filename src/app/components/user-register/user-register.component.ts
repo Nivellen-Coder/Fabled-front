@@ -5,6 +5,7 @@ import { Country, UserCreateModel } from "src/app/models/user/userCreateModel";
 import { ToastrService } from 'ngx-toastr';
 import { finalize, tap } from "rxjs";
 import { CountryService } from "../../services/country/country.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -152,7 +153,7 @@ export class UserRegisterComponent implements OnInit{
     return this.registerForm.controls;
   }
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastr: ToastrService, private countryService: CountryService) {}
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private toastr: ToastrService, private countryService: CountryService, private router: Router) {}
 
 
   public onSubmit(): void {
@@ -186,12 +187,15 @@ export class UserRegisterComponent implements OnInit{
         finalize(() => {
         })
       ).subscribe({
-        next: (v) => console.log(v),
+        next: () => {
+          // Redirection vers la page de login après une inscription réussie
+          this.router.navigate(['/user-login']);
+        },
         error: (e) => {
-          const errorMessage = e?.error?.message || 'Une erreur inconnue s\'est produite';
+          const errorMessage = e?.error?.message || 'an unknown error has occured';
           this.toastr.error(errorMessage);
         },
-        complete: () => this.toastr.success('Inscription réussie!', 'Succès')
+        complete: () => this.toastr.success('Registration completed successfully', 'Succes')
       });
     }
   }
