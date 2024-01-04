@@ -14,6 +14,8 @@ import { NgOptimizedImage } from "@angular/common";
 import { CardListComponent } from './components/card-list/card-list.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CardDetailComponent } from './components/card-detail/card-detail.component';
+import { LoginComponent } from './components/login/login.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { CardDetailComponent } from './components/card-detail/card-detail.compon
     NavbarComponent,
     CardListComponent,
     PaginationComponent,
-    CardDetailComponent
+    CardDetailComponent,
+    LoginComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
