@@ -10,32 +10,48 @@ import {UserInfosModel} from "../../models/user/userInfosModel";
 })
 export class UserService {
 
-  // @ts-ignore
-  bearerToken = JSON.parse(localStorage.getItem('jwt'));
-
   private apiURL = 'http://127.0.0.1:8000/api/user';
 
-  constructor( private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.updateHttpOptions();
+  }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.bearerToken.token}`
-    })
+  // @ts-ignore
+  private bearerToken = JSON.parse(localStorage.getItem('jwt'));
+  private httpOptions: any;
+
+  private updateHttpOptions(): void {
+    // @ts-ignore
+    this.bearerToken = JSON.parse(localStorage.getItem('jwt'));
+    this.httpOptions = {
+      headers: this.bearerToken ? new HttpHeaders({
+        'Authorization': `Bearer ${this.bearerToken.token}`,
+        'Content-Type': 'application/json'
+      }) : new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
   }
 
 
 
   public userCreate(user : UserCreateModel): Observable<UserCreateModel> {
-    console.log(JSON.stringify(user));
-    return this.httpClient.post<UserCreateModel>(this.apiURL + '/create', JSON.stringify(user), this.httpOptions )
+    return this.httpClient.post<UserCreateModel>(this.apiURL + '/create', JSON.stringify(user))
       .pipe(
         catchError(this.handleError)
       );
   }
 
   public userProfile(username: string): Observable<UserInfosModel> {
+    // @ts-ignore
     return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/${username}`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public usernameById(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiURL}/profile/${id}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
