@@ -59,6 +59,9 @@
         <div class="px-2">
           <div class="rounded-lg p-3 bg-white dark:bg-transparent">
             <img class="w-220 object-cover" [ngSrc]="card.image" alt="Image pour la carte {{card.name}}" [width]="300" [height]="550">
+            <div class="flex flex-col my-5">
+              <button type="button" (click)="navigateToOfferForm()" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2.5 text-center me-2 mb-2">Sell this Card</button>
+            </div>
           </div>
           <!-- <div class="flex -mx-2 mb-4">
               <div class="w-1/2 px-2">
@@ -68,6 +71,7 @@
                   <button class="w-full bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">Add to Wishlist</button>
               </div>
           </div> -->
+
         </div>
         <div class="md:flex-1 px-3">
           <h2 class="text-2xl font-bold mb-2">{{ card.name }}</h2>
@@ -123,6 +127,63 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="mx-auto" >
+    <div class="overflow-x-auto sm:rounded-lg">
+      <table class="mx-auto text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" *ngIf="offers.length > 0">
+        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+              Seller
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Price
+            </th>
+            <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+              Edition language
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Card Condition
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Foil?
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Quantity
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Card Description
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-gray-200 dark:border-gray-700" *ngFor="let o of offers">
+            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+              {{ o.userOfferId }}
+            </td>
+            <td class="px-6 py-4">
+              {{ o.price }}
+            </td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+              {{ o.editionLang }}
+            </td>
+            <td class="px-6 py-4">
+              {{ o.cardCondition }}
+            </td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+              {{ o.isFoil ? 'Yes' : 'No' }}
+            </td>
+            <td class="px-6 py-4">
+              {{ o.quantity }}
+            </td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+              {{ o.description }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </div>
 
