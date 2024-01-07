@@ -16,6 +16,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { CardDetailComponent } from './components/card-detail/card-detail.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { CardOfferFormComponent } from './components/card-offer-form/card-offer-form.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     PaginationComponent,
     CardDetailComponent,
     LoginComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    CardOfferFormComponent
   ],
   imports: [
     BrowserModule,
