@@ -29,7 +29,7 @@
           </svg>
         </button>
 
-        <div *ngIf="isAccordionOpen" class="mt-2">
+        <div *ngIf="isAccordionOpen" class="mt-1 p-3 bg-gray-200 dark:bg-gray-800 rounded-lg">
           <!-- Contenu de l'accordéon (champs de recherche avancée) -->
           <form [formGroup]="searchByCriteriasForm" (ngSubmit)="searchByCriterias()">
             <div class="mt-4">
@@ -162,7 +162,9 @@
           </form>
         </div>
       </div>
-
+      <div class="my-16">
+        <app-pagination [currentPage]="currentPage" [limit]=pageSize [total]=total [pagesCount]=nbPage (changePage)="changePage($event)" ></app-pagination>
+      </div>
     </div>
 
     <div class="grid grid-cols-4 gap-x-6">

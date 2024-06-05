@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { CardService } from "../../services/card/card.service";
 import { Router } from "@angular/router";
 import { ViewportScroller } from '@angular/common';
-import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
+import {debounceTime, distinctUntilChanged, Subscription, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-card-list',
@@ -23,6 +23,8 @@ export class CardListComponent implements OnInit {
   isSearchingWithCriterias: boolean = false;
   isAccordionOpen: boolean = false;
   classesSelected: string[] = [];
+  searchValue: string = "";
+  searchSubscription: Subscription = new Subscription();
 
   searchForm:FormGroup = new FormGroup({
     search:new FormControl('')
@@ -74,56 +76,45 @@ export class CardListComponent implements OnInit {
   }
 
   public searchForCards(page: number): void {
-    this.searchForm.get('search')?.valueChanges.pipe(
-      debounceTime(1000),
-      distinctUntilChanged(),
-      switchMap((v) => this.cardService.getCardsByName(v, this.pageSize, page))
-    ).subscribe(
-      (result) => {
-        this.cards = result?.data;
-        this.nbPage = result?.meta?.last_page || 1; // Met à jour le nombre de pages
-        this.total = result?.meta?.total || 0; // Met à jour le nombre total d'éléments
-        this.isSearching = true;
-        this.currentPage = 1;
+    const searchControl = this.searchForm.get('search');
+
+    if (searchControl) {
+      // Désabonnez-vous des abonnements précédents pour éviter les abonnements multiples
+      if (this.searchSubscription) {
+        this.searchSubscription.unsubscribe();
       }
-    );
+
+      // Créez un nouvel abonnement
+      this.searchSubscription = searchControl.valueChanges.pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((searchValue) => {
+          this.searchValue = searchValue;
+          return this.cardService.getCardsByName(searchValue, this.pageSize, page);
+        })
+      ).subscribe(
+        (result) => {
+          this.cards = result?.data;
+          this.nbPage = result?.meta?.last_page || 1;
+          this.total = result?.meta?.total || 0;
+          this.isSearching = true;
+          this.currentPage = 1;
+        }
+      );
+    }
   }
 
   changePage(page: number): void {
-    if(this.isSearching && !this.isSearchingWithCriterias) {
-      this.cardService.getCardsByName(this.searchForm.get('search')?.value, this.pageSize, page).subscribe((cards: cardListModel) => {
-        if (!this.cards) {
-          this.isLoading = true;
-        }
-        this.cards = cards.data;
-        this.total = cards.meta.total;
-        this.nbPage = cards.meta.last_page;
-        this.pageSize = 48;
-        this.isLoading = false;
-        this.isSearching = true;
-      });
-    } else if(this.isSearchingWithCriterias && this.isSearching) {
-      this.cardService.getCardsByCriterias(this.searchForm.get('search')?.value, page, this.classesSelected.join(',')).subscribe((cards: cardListModel) => {
-        this.cards = cards.data;
-        this.total = cards.meta.total;
-        this.nbPage = cards.meta.last_page;
-        this.pageSize = 25;
-        this.isSearchingWithCriterias = true;
-      });
-    } else {
-      this.cardService.getAllCards(page, this.pageSize).subscribe((cards: cardListModel) => {
-        if(!this.cards){
-          this.isLoading = true;
-        }
-        this.cards = cards.data;
-        this.total = cards.meta?.total;
-        this.nbPage = cards.meta?.last_page;
-        this.pageSize = 48;
-        this.isLoading = false;
-      });
-
-    }
     this.currentPage = page;
+
+    if (this.isSearching && !this.isSearchingWithCriterias) {
+      this.fetchCardsByName(page);
+    } else if (this.isSearchingWithCriterias && this.isSearching) {
+      this.fetchCardsByCriterias(page);
+    } else {
+      this.fetchAllCards(page);
+    }
+
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 
@@ -132,15 +123,53 @@ export class CardListComponent implements OnInit {
   }
 
   searchByCriterias() {
-    const selectedValues = this.searchByCriteriasForm.getRawValue();
     this.classesSelected = Object.keys(this.searchByCriteriasForm.value).filter(key => this.searchByCriteriasForm.value[key]);
-    this.cardService.getCardsByCriterias(this.searchForm.get('search')?.value, this.currentPage, this.classesSelected.join(',')).subscribe((cards: cardListModel) => {
+
+    const criterias = this.classesSelected.join(',');
+
+    this.cardService.getCardsByCriterias(this.searchValue, 1, criterias).subscribe((cards: cardListModel) => {
+      if (!this.cards) {
+        this.isLoading = true;
+      }
       this.cards = cards.data;
-      this.total = cards.meta.total;
-      this.nbPage = cards.meta.last_page;
+      this.total = cards.meta?.total;
+      this.nbPage = cards.meta?.last_page;
       this.pageSize = 25;
       this.isSearchingWithCriterias = true;
-      console.log(this.total);
+      this.isSearching = true;
     });
+  }
+
+  private fetchCardsByName(page: number): void {
+    this.cardService.getCardsByName(this.searchValue, this.pageSize, page).subscribe((cards: cardListModel) => {
+      this.updateCardList(cards, 48);
+      this.isSearching = true;
+      this.isSearchingWithCriterias = false;
+    });
+  }
+
+  private fetchCardsByCriterias(page: number): void {
+    const criteria = this.classesSelected.join(',');
+    this.cardService.getCardsByCriterias(this.searchValue, page, criteria).subscribe((cards: cardListModel) => {
+      this.updateCardList(cards, 25);
+      this.isSearchingWithCriterias = true;
+    });
+  }
+
+  private fetchAllCards(page: number): void {
+    this.cardService.getAllCards(page, this.pageSize).subscribe((cards: cardListModel) => {
+      this.updateCardList(cards, 48);
+    });
+  }
+
+  private updateCardList(cards: cardListModel, pageSize: number): void {
+    if (!this.cards) {
+      this.isLoading = true;
+    }
+    this.cards = cards.data;
+    this.total = cards.meta?.total;
+    this.nbPage = cards.meta?.last_page;
+    this.pageSize = pageSize;
+    this.isLoading = false;
   }
 }
