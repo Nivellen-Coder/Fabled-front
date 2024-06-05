@@ -11,15 +11,25 @@ export class OfferService {
   // @ts-ignore
   bearerToken = JSON.parse(localStorage.getItem('jwt'));
   private apiURL = 'http://127.0.0.1:8000/api/offer';
-  constructor(private httpClient: HttpClient) { }
+  private httpOptions: any;
+  constructor(private httpClient: HttpClient) {
+    this.updateHttpOptions();
+  }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.bearerToken.token}`
-    })
+  private updateHttpOptions(): void {
+    // @ts-ignore
+    this.bearerToken = JSON.parse(localStorage.getItem('jwt'));
+    this.httpOptions = {
+      headers: this.bearerToken ? new HttpHeaders({
+        'Authorization': `Bearer ${this.bearerToken.token}`,
+        'Content-Type': 'application/json'
+      }) : new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
   }
   public offerCreate(offer : offerCreateModel, id: string, userId: number): Observable<offerCreateModel> {
+    // @ts-ignore
     return this.httpClient.post<offerCreateModel>(this.apiURL + '/create/' + id + '/' + userId, JSON.stringify(offer), this.httpOptions )
       .pipe(
         catchError(this.handleError)
