@@ -30,6 +30,6 @@ export class CardService {
   }
 
   public getCardsByCriterias(name: string, page: number, classes: string): Observable<cardListModel>{
-    return this.httpClient.get<cardListModel>(environment.API_BASE_URL + "cards?time=" + Date.now() + "&hash=" + environment.API_HASH + "/browse?keywords=" + name + "&class=" + classes + "&page=" + page, this.httpOptions)
+    return this.httpClient.get<cardListModel>(environment.API_BASE_URL + "cards?time=" + Date.now() + "&hash=" + environment.API_HASH + "&keywords=" + name + "&class=" + classes + "&page=" + page, this.httpOptions)
   }
 }
