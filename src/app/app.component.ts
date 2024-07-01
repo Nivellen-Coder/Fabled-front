@@ -1,11 +1,21 @@
-import { Component, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
+import { Component, NgModule, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
+import {
+  LucideAngularModule,
+  File,
+  Home,
+  Menu,
+  UserCheck, Moon, Sun
+} from 'lucide-angular';
 
+
+// @ts-ignore
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+
+export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.loadTheme();
   }

@@ -45,7 +45,9 @@ export class CardListComponent implements OnInit {
     runeblade: new FormControl(''),
     shapeshifter: new FormControl(''),
     warrior: new FormControl(''),
-    wizard: new FormControl('')
+    wizard: new FormControl(''),
+    talent: new FormControl(''),
+    rarity: new FormControl(''),
   });
 
   constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
@@ -123,18 +125,27 @@ export class CardListComponent implements OnInit {
   }
 
   searchByCriterias() {
-    this.classesSelected = Object.keys(this.searchByCriteriasForm.value).filter(key => this.searchByCriteriasForm.value[key]);
+    this.classesSelected = Object.keys(this.searchByCriteriasForm.value)
+      .filter(key => this.searchByCriteriasForm.value[key] && key !== 'talent' && key !== 'rarity');
+
+    const talent = this.searchByCriteriasForm.get('talent')?.value;
+    const rarity = this.searchByCriteriasForm.get('rarity')?.value;
 
     const criterias = this.classesSelected.join(',');
+    const filters = {
+      talent,
+      rarity,
+      classes: criterias
+    };
 
-    this.cardService.getCardsByCriterias(this.searchValue, 1, criterias).subscribe((cards: cardListModel) => {
+    this.cardService.getCardsByCriterias(this.searchValue, 1, filters).subscribe((cards: cardListModel) => {
       if (!this.cards) {
         this.isLoading = true;
       }
       this.cards = cards.data;
       this.total = cards.meta?.total;
       this.nbPage = cards.meta?.last_page;
-      this.pageSize = 25;
+      this.pageSize = 48;
       this.isSearchingWithCriterias = true;
       this.isSearching = true;
     });
@@ -149,9 +160,17 @@ export class CardListComponent implements OnInit {
   }
 
   private fetchCardsByCriterias(page: number): void {
-    const criteria = this.classesSelected.join(',');
-    this.cardService.getCardsByCriterias(this.searchValue, page, criteria).subscribe((cards: cardListModel) => {
-      this.updateCardList(cards, 25);
+    const talent = this.searchByCriteriasForm.get('talent')?.value;
+    const rarity = this.searchByCriteriasForm.get('rarity')?.value;
+
+    const criterias = this.classesSelected.join(',');
+    const filters = {
+      talent,
+      rarity,
+      classes: criterias
+    };
+    this.cardService.getCardsByCriterias(this.searchValue, page, filters).subscribe((cards: cardListModel) => {
+      this.updateCardList(cards, 48);
       this.isSearchingWithCriterias = true;
     });
   }

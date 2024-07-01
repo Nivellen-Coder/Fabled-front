@@ -17,6 +17,8 @@ import { CardDetailComponent } from './components/card-detail/card-detail.compon
 import { LoginComponent } from './components/login/login.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { CardOfferFormComponent } from './components/card-offer-form/card-offer-form.component';
+import {File, Home, Menu, Moon, Sun, UserCheck} from "lucide-angular";
+import { LucideAngularModule } from "lucide-angular";
 
 @NgModule({
   declarations: [
@@ -28,18 +30,19 @@ import { CardOfferFormComponent } from './components/card-offer-form/card-offer-
     CardDetailComponent,
     LoginComponent,
     UserProfileComponent,
-    CardOfferFormComponent
+    CardOfferFormComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    NgOptimizedImage,
-    FormsModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot()
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        NgOptimizedImage,
+        FormsModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        LucideAngularModule.pick({File, Home, Menu, UserCheck, Moon, Sun}),
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

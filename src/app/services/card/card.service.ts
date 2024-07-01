@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import { environment } from 'src/environments/environment.development';
 import { Observable } from "rxjs";
 import { cardListModel } from "../../models/card/cardListModel";
@@ -29,7 +29,19 @@ export class CardService {
     return this.httpClient.get<cardListModel>(environment.API_BASE_URL + "cards?time=" + Date.now() + "&hash=" + environment.API_HASH + "&per_page=" + pageSize  + "&keywords=" + name + "&page=" + page, this.httpOptions)
   }
 
-  public getCardsByCriterias(name: string, page: number, classes: string): Observable<cardListModel>{
-    return this.httpClient.get<cardListModel>(environment.API_BASE_URL + "cards?time=" + Date.now() + "&hash=" + environment.API_HASH + "&keywords=" + name + "&class=" + classes + "&page=" + page, this.httpOptions)
+  public getCardsByCriterias(name: string, page: number, filters: any): Observable<cardListModel>{
+    let params = new HttpParams()
+      .set('keywords', name)
+      .set('page', page)
+      .set('class', filters.classes)
+      .set('talent', filters.talent)
+      .set('rarity', filters.rarity);
+
+    const options = {
+      headers: this.httpOptions.headers,
+      params: params
+    };
+
+    return this.httpClient.get<cardListModel>(`${environment.API_BASE_URL}cards?time=${Date.now()}`, options);
   }
 }
