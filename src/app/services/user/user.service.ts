@@ -10,7 +10,7 @@ import {UserInfosModel} from "../../models/user/userInfosModel";
 })
 export class UserService {
 
-  private apiURL = 'http://127.0.0.1:8000/api/user';
+  private apiURL = 'http://localhost:8000/api/user';
 
   constructor(private httpClient: HttpClient) {
     this.updateHttpOptions();
@@ -21,11 +21,10 @@ export class UserService {
   private httpOptions: any;
 
   private updateHttpOptions(): void {
-    // @ts-ignore
-    this.bearerToken = JSON.parse(localStorage.getItem('jwt'));
+    this.bearerToken = localStorage.getItem('jwt');
     this.httpOptions = {
       headers: this.bearerToken ? new HttpHeaders({
-        'Authorization': `Bearer ${this.bearerToken.token}`,
+        'Authorization': `Bearer ${this.bearerToken}`,
         'Content-Type': 'application/json'
       }) : new HttpHeaders({
         'Content-Type': 'application/json'
@@ -36,7 +35,8 @@ export class UserService {
 
 
   public userCreate(user : UserCreateModel): Observable<UserCreateModel> {
-    return this.httpClient.post<UserCreateModel>(this.apiURL + '/create', JSON.stringify(user))
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<UserCreateModel>(`${this.apiURL}` + "/create", JSON.stringify(user), { headers })
       .pipe(
         catchError(this.handleError)
       );
@@ -44,14 +44,14 @@ export class UserService {
 
   public userProfile(username: string): Observable<UserInfosModel> {
     // @ts-ignore
-    return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/${username}`, this.httpOptions)
+    return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/` + username, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   public usernameById(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.apiURL}/profile/${id}`, this.httpOptions)
+    return this.httpClient.get<any>(`${this.apiURL}` + "/profile/" + id, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

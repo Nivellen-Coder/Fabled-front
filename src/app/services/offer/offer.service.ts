@@ -8,8 +8,7 @@ import { offerListByCardModel } from "../../models/offer/offerListByCardModel";
   providedIn: 'root'
 })
 export class OfferService {
-  // @ts-ignore
-  bearerToken = JSON.parse(localStorage.getItem('jwt'));
+  bearerToken = localStorage.getItem('jwt');
   private apiURL = 'http://127.0.0.1:8000/api/offer';
   private httpOptions: any;
   constructor(private httpClient: HttpClient) {
@@ -17,11 +16,10 @@ export class OfferService {
   }
 
   private updateHttpOptions(): void {
-    // @ts-ignore
-    this.bearerToken = JSON.parse(localStorage.getItem('jwt'));
+    this.bearerToken = localStorage.getItem('jwt');
     this.httpOptions = {
       headers: this.bearerToken ? new HttpHeaders({
-        'Authorization': `Bearer ${this.bearerToken.token}`,
+        'Authorization': `Bearer ${this.bearerToken}`,
         'Content-Type': 'application/json'
       }) : new HttpHeaders({
         'Content-Type': 'application/json'

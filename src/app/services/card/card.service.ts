@@ -35,7 +35,11 @@ export class CardService {
       .set('page', page)
       .set('class', filters.classes)
       .set('talent', filters.talent)
-      .set('rarity', filters.rarity);
+      .set('rarity', filters.rarity)
+      .set('set', filters.set)
+      .set('pitch', filters.pitch)
+      .set('cost', filters.cost)
+      .set('cardType', filters.cardType);
 
     const options = {
       headers: this.httpOptions.headers,

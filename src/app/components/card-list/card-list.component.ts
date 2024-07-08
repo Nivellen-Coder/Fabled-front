@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { Card, cardListModel } from "../../models/card/cardListModel";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { CardService } from "../../services/card/card.service";
 import { Router } from "@angular/router";
 import { ViewportScroller } from '@angular/common';
-import {debounceTime, distinctUntilChanged, Subscription, switchMap} from "rxjs";
+import { debounceTime, distinctUntilChanged, Subscription, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-card-list',
@@ -12,6 +12,7 @@ import {debounceTime, distinctUntilChanged, Subscription, switchMap} from "rxjs"
   styleUrls: ['./card-list.component.scss']
 })
 export class CardListComponent implements OnInit {
+  set: string = "";
   cards: Card[] = [];
   currentPage: number = 1;
   nbPage: number = 1;
@@ -48,6 +49,10 @@ export class CardListComponent implements OnInit {
     wizard: new FormControl(''),
     talent: new FormControl(''),
     rarity: new FormControl(''),
+    setType: new FormControl(''),
+    pitch: new FormControl(''),
+    cost: new FormControl(''),
+    cardType: new FormControl(''),
   });
 
   constructor(private cardService: CardService, private router: Router, private viewportScroller: ViewportScroller) {
@@ -98,6 +103,7 @@ export class CardListComponent implements OnInit {
         (result) => {
           this.cards = result?.data;
           this.nbPage = result?.meta?.last_page || 1;
+          this.pageSize = 48;
           this.total = result?.meta?.total || 0;
           this.isSearching = true;
           this.currentPage = 1;
@@ -126,15 +132,24 @@ export class CardListComponent implements OnInit {
 
   searchByCriterias() {
     this.classesSelected = Object.keys(this.searchByCriteriasForm.value)
-      .filter(key => this.searchByCriteriasForm.value[key] && key !== 'talent' && key !== 'rarity');
+      .filter(key => this.searchByCriteriasForm.value[key] && key !== 'talent' && key !== 'rarity' && key !== 'setType' && key !== 'pitch' && key !== 'cost' && key !== 'cardType');
 
     const talent = this.searchByCriteriasForm.get('talent')?.value;
     const rarity = this.searchByCriteriasForm.get('rarity')?.value;
+    const set = this.searchByCriteriasForm.get('setType')?.value;
+    const pitch = this.searchByCriteriasForm.get('pitch')?.value;
+    const cost = this.searchByCriteriasForm.get('cost')?.value;
+    const cardType = this.searchByCriteriasForm.get('cardType')?.value;
 
     const criterias = this.classesSelected.join(',');
+
     const filters = {
       talent,
       rarity,
+      set,
+      pitch,
+      cost,
+      cardType,
       classes: criterias
     };
 
@@ -162,11 +177,20 @@ export class CardListComponent implements OnInit {
   private fetchCardsByCriterias(page: number): void {
     const talent = this.searchByCriteriasForm.get('talent')?.value;
     const rarity = this.searchByCriteriasForm.get('rarity')?.value;
+    const set = this.searchByCriteriasForm.get('setType')?.value;
+    const pitch = this.searchByCriteriasForm.get('pitch')?.value;
+    const cost = this.searchByCriteriasForm.get('cost')?.value;
+    const cardType = this.searchByCriteriasForm.get('cardType')?.value;
 
     const criterias = this.classesSelected.join(',');
+
     const filters = {
       talent,
       rarity,
+      set,
+      pitch,
+      cost,
+      cardType,
       classes: criterias
     };
     this.cardService.getCardsByCriterias(this.searchValue, page, filters).subscribe((cards: cardListModel) => {

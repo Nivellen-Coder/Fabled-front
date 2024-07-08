@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -17,8 +17,29 @@ import { CardDetailComponent } from './components/card-detail/card-detail.compon
 import { LoginComponent } from './components/login/login.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { CardOfferFormComponent } from './components/card-offer-form/card-offer-form.component';
-import {File, Home, Menu, Moon, Sun, UserCheck} from "lucide-angular";
+import {
+  CircleUserRound,
+  File,
+  Home,
+  House,
+  LogOut,
+  Menu,
+  Moon,
+  Sun,
+  UserCheck,
+  UsersRound,
+  Gem,
+  ContactRound,
+  FilePen,
+  LogIn,
+  TextSearch,
+  SearchX,
+} from "lucide-angular";
+
 import { LucideAngularModule } from "lucide-angular";
+import { SellerGuideComponent } from './components/seller-guide/seller-guide.component';
+import {JwtInterceptor} from "./interceptors/jwt.interceptor";
+import { AutoFocus } from './directives/auto-focus.directive';
 
 @NgModule({
   declarations: [
@@ -31,6 +52,8 @@ import { LucideAngularModule } from "lucide-angular";
     LoginComponent,
     UserProfileComponent,
     CardOfferFormComponent,
+    SellerGuideComponent,
+    AutoFocus,
   ],
     imports: [
         BrowserModule,
@@ -41,9 +64,15 @@ import { LucideAngularModule } from "lucide-angular";
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        LucideAngularModule.pick({File, Home, Menu, UserCheck, Moon, Sun}),
+        LucideAngularModule.pick({ File, Home, Menu, UserCheck, Moon, Sun, CircleUserRound, LogOut, House, UsersRound, Gem, ContactRound, FilePen, LogIn, TextSearch, SearchX }),
     ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,9 +4,10 @@ import { UserRegisterComponent } from "./components/user-register/user-register.
 import { CardListComponent } from "./components/card-list/card-list.component";
 import { CardDetailComponent } from "./components/card-detail/card-detail.component";
 import { LoginComponent } from "./components/login/login.component";
-import {UserProfileComponent} from "./components/user-profile/user-profile.component";
-import {AuthGuard} from "./guards/auth.guard";
-import {CardOfferFormComponent} from "./components/card-offer-form/card-offer-form.component";
+import { UserProfileComponent } from "./components/user-profile/user-profile.component";
+import { AuthGuard } from "./guards/auth.guard";
+import { CardOfferFormComponent } from "./components/card-offer-form/card-offer-form.component";
+import { SellerGuideComponent } from "./components/seller-guide/seller-guide.component";
 
 const routes: Routes = [
   { path: 'user-register', component: UserRegisterComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'user-login', component: LoginComponent},
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'card-offer-form/:id', component: CardOfferFormComponent, canActivate: [AuthGuard] },
+  { path: 'seller-guide', component: SellerGuideComponent },
   { path: '**', redirectTo: 'card-list' },
 ];
 

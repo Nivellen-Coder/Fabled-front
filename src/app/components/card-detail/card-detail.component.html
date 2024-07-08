@@ -58,9 +58,9 @@
       <div class="flex flex-col md:flex-row -mx-4">
         <div class="px-2">
           <div class="rounded-lg p-3 bg-white dark:bg-transparent">
-            <img class="w-220 object-cover" [ngSrc]="card.image" alt="Image pour la carte {{card.name}}" [width]="300" [height]="550">
-            <div class="flex flex-col my-5">
-              <button type="button" (click)="navigateToOfferForm()" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2.5 text-center me-2 mb-2">Sell this Card</button>
+            <img class="flex flex-wrap mx-2 lg:w-[280px] md:w-[280px] xl:w-[280px] object-cover" [ngSrc]="card.image" alt="Image pour la carte {{card.name}}" [width]="300" [height]="550">
+            <div class="flex flex-col justify-items-center my-5 w-[300px]">
+              <button type="button" (click)="navigateToOfferForm()" class="bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2.5 text-center me-2 mb-2">Sell this Card</button>
             </div>
           </div>
           <!-- <div class="flex -mx-2 mb-4">
