@@ -17,6 +17,7 @@ export class CardDetailComponent implements OnInit {
   isLoading: boolean = true;
   offerAvailable: boolean = false;
   offers: offerListByCardModel[] = [];
+  totalItemsAvailable: number = 0;
 
   constructor(private cardService: CardService, private actRoute: ActivatedRoute, private router: Router, private offerService: OfferService, private userService: UserService) {
 
@@ -43,6 +44,9 @@ export class CardDetailComponent implements OnInit {
     this.offerService.offerListByCardId(this.cardId).subscribe((data: offerListByCardModel[]) => {
       if (data) {
         this.offers = data;
+        for (let o of this.offers) {
+          this.totalItemsAvailable += o.quantity;
+        }
         console.log(this.offers);
         this.offerAvailable = true;
       } else {

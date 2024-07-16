@@ -34,12 +34,15 @@ import {
   LogIn,
   TextSearch,
   SearchX,
+  CircleOff,
+  SquareMousePointer,
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
 import { SellerGuideComponent } from './components/seller-guide/seller-guide.component';
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import { AutoFocus } from './directives/auto-focus.directive';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,7 @@ import { AutoFocus } from './directives/auto-focus.directive';
     CardOfferFormComponent,
     SellerGuideComponent,
     AutoFocus,
+    HomeComponent,
   ],
     imports: [
         BrowserModule,
@@ -64,7 +68,7 @@ import { AutoFocus } from './directives/auto-focus.directive';
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        LucideAngularModule.pick({ File, Home, Menu, UserCheck, Moon, Sun, CircleUserRound, LogOut, House, UsersRound, Gem, ContactRound, FilePen, LogIn, TextSearch, SearchX }),
+        LucideAngularModule.pick({ File, Home, Menu, UserCheck, Moon, Sun, CircleUserRound, LogOut, House, UsersRound, Gem, ContactRound, FilePen, LogIn, TextSearch, SearchX, CircleOff, SquareMousePointer }),
     ],
   providers: [
     {

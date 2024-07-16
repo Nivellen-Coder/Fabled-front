@@ -4,6 +4,7 @@ export interface CardDetailModel {
   rarity: string;
   keywords: string[];
   image: string;
+  type: string;
   stats: {
     resource: string;
   };

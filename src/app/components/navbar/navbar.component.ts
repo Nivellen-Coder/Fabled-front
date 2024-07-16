@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth/auth.service";
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
