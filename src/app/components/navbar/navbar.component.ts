@@ -12,12 +12,20 @@ export class NavbarComponent implements OnInit{
   isLoggedIn: boolean = false;
   isLoggedInUsername: string|null = null;
   navigationSubscription: any;
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
   constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
         this.initialiseInvites();
       }
     });
+
+
   }
 
   ngOnInit(): void {

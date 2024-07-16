@@ -12,7 +12,8 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('tailwind-hamburgers'),
   ],
 }
 

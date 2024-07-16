@@ -1,4 +1,5 @@
 export interface offerListByCardModel {
+  id: number;
   userOfferId: number;
   quantity: number;
   price: number;

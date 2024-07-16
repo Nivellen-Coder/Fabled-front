@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { CardDetailModel } from "../../models/card/cardDetailModel";
 import { CardService } from "../../services/card/card.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -13,6 +13,7 @@ import {UserService} from "../../services/user/user.service";
 })
 export class CardDetailComponent implements OnInit {
   private cardId: string = "";
+  isSmallScreen: boolean = false;
   card: CardDetailModel = {} as CardDetailModel;
   isLoading: boolean = true;
   offerAvailable: boolean = false;
@@ -20,7 +21,7 @@ export class CardDetailComponent implements OnInit {
   totalItemsAvailable: number = 0;
 
   constructor(private cardService: CardService, private actRoute: ActivatedRoute, private router: Router, private offerService: OfferService, private userService: UserService) {
-
+    this.updateScreenSize();
   }
 
   ngOnInit(): void {
@@ -53,6 +54,16 @@ export class CardDetailComponent implements OnInit {
         this.offerAvailable = false;
       }
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.updateScreenSize();
+  }
+
+  private updateScreenSize(): void {
+    const width = window.innerWidth;
+    this.isSmallScreen = width < 768; // Exemple : seuil de 768px pour les petits écrans
   }
 
 }
