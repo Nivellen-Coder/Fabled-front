@@ -45,10 +45,12 @@ export class CardDetailComponent implements OnInit {
     this.offerService.offerListByCardId(this.cardId).subscribe((data: offerListByCardModel[]) => {
       if (data) {
         this.offers = data;
+        this.offers = data.sort((a, b) => a.price - b.price);
+
+        this.totalItemsAvailable = 0;
         for (let o of this.offers) {
           this.totalItemsAvailable += o.quantity;
         }
-        console.log(this.offers);
         this.offerAvailable = true;
       } else {
         this.offerAvailable = false;
