@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-fabled-front:build:production"
+              "buildTarget": "ng-fabled-front:build:production"
             },
             "development": {
-              "browserTarget": "ng-fabled-front:build:development"
+              "buildTarget": "ng-fabled-front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-fabled-front:build"
+            "buildTarget": "ng-fabled-front:build"
           }
         },
         "test": {
