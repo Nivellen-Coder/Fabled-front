@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -44,39 +44,33 @@ import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import { AutoFocus } from './directives/auto-focus.directive';
 import { HomeComponent } from './components/home/home.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    UserRegisterComponent,
-    NavbarComponent,
-    CardListComponent,
-    PaginationComponent,
-    CardDetailComponent,
-    LoginComponent,
-    UserProfileComponent,
-    CardOfferFormComponent,
-    SellerGuideComponent,
-    AutoFocus,
-    HomeComponent,
-  ],
-    imports: [
-        BrowserModule,
+@NgModule({ declarations: [
+        AppComponent,
+        UserRegisterComponent,
+        NavbarComponent,
+        CardListComponent,
+        PaginationComponent,
+        CardDetailComponent,
+        LoginComponent,
+        UserProfileComponent,
+        CardOfferFormComponent,
+        SellerGuideComponent,
+        AutoFocus,
+        HomeComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
         ReactiveFormsModule,
         NgOptimizedImage,
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        LucideAngularModule.pick({ File, Home, Menu, UserCheck, Moon, Sun, CircleUserRound, LogOut, House, UsersRound, Gem, ContactRound, FilePen, LogIn, TextSearch, SearchX, CircleOff, SquareMousePointer }),
-    ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true,
-    }
-  ],
-  bootstrap: [AppComponent]
-})
+        LucideAngularModule.pick({ File, Home, Menu, UserCheck, Moon, Sun, CircleUserRound, LogOut, House, UsersRound, Gem, ContactRound, FilePen, LogIn, TextSearch, SearchX, CircleOff, SquareMousePointer })], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
