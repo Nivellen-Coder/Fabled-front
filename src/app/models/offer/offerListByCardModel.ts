@@ -7,4 +7,5 @@ export interface offerListByCardModel {
   cardCondition: string;
   isFoil: boolean;
   description: string;
+  creation: string;
 }

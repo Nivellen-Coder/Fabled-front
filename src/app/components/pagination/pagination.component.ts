@@ -1,15 +1,20 @@
-import {Component, EventEmitter, Output, Input} from '@angular/core';
+import {Component, EventEmitter, Output, Input, OnInit} from '@angular/core';
+import { CommonModule } from "@angular/common";
 
 
 @Component({
+  imports: [
+    CommonModule,
+  ],
   selector: 'app-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+  standalone: true,
+  styleUrls: ['./pagination.component.scss'],
+  templateUrl: './pagination.component.html'
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnInit {
   @Input() currentPage: number = 1;
   @Input() total: number = 1;
-  @Input() limit: number = 25;
+  @Input() limit: number = 50;
   @Input() pagesCount: number = 1;
   @Input() name: string = "";
   @Output() changePage = new EventEmitter<number>();
@@ -49,6 +54,7 @@ export class PaginationComponent {
 
   getPagesCount() {
     this.pagesCount = Math.ceil(this.total / this.limit);
+    console.log(this.pagesCount);
     this.pages = this.range(1, this.pagesCount);
   }
 }

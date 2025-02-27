@@ -1,38 +1,39 @@
 <div class="flex items-center justify-center mt-6 mb-6">
-  <div class="bg-gray-100 dark:bg-gray-800 p-8 rounded border-double border-gray-500 dark:border-white border-2 shadow-md w-[964px] h-[334px]">
-    <h2 class="login-title text-2xl font-semibold mb-4 text-blue-500">Log In</h2>
+  <div class="bg-gray-100 dark:bg-gray-800 p-8 rounded border-double border-gray-500 dark:border-white border-2 shadow-md w-[650px] h-[334px]">
+    <h2 class="flex items-center justify-center login-title text-2xl font-semibold mb-4 text-blue-500 ">Log In</h2>
+    <div class="flex items-center justify-center">
+      <!-- Formulaire de connexion -->
+      <form>
+        <!-- Champ Username -->
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium">Username</label>
+          <input type="text"
+                 id="username"
+                 [(ngModel)]="username"
+                 name="username"
+                 class="mt-1 p-2 w-[384px] text-gray-900 border rounded-md"
+          >
+        </div>
 
-    <!-- Formulaire de connexion -->
-    <form>
-      <!-- Champ Username -->
-      <div class="mb-4">
-        <label for="username" class="block text-sm font-medium">Username</label>
-        <input type="text"
-               id="username"
-               [(ngModel)]="username"
-               name="username"
-               class="mt-1 p-2 w-[584px] border rounded-md"
-               style="background-color: #f5f5f5; border-color: #ccc;">
-      </div>
+        <!-- Champ Mot de passe -->
+        <div class="mb-6">
+          <label for="password" class="block text-sm font-medium">Password</label>
+          <input type="password"
+                 id="password"
+                 [(ngModel)]="password"
+                 name="password"
+                 class="mt-1 p-2 w-[384px] text-gray-900 border rounded-md"
+          >
+        </div>
 
-      <!-- Champ Mot de passe -->
-      <div class="mb-6">
-        <label for="password" class="block text-sm font-medium">Password</label>
-        <input type="password"
-               id="password"
-               [(ngModel)]="password"
-               name="password"
-               class="mt-1 p-2 w-[584px] border rounded-md"
-               style="background-color: #f5f5f5; border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;">
-      </div>
-
-      <!-- Bouton de Connexion -->
-      <button type="submit"
-              (click)="login()"
-              class="py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue"
-              style="background-color: #3498db; color: white; font-family: 'Roboto', sans-serif;">
-        Log In
-      </button>
-    </form>
+        <!-- Bouton de Connexion -->
+        <button type="submit"
+                (click)="login()"
+                class="py-2 px-4 rounded-md focus:outline-none focus:shadow-outline-blue bg-blue-500"
+        >
+          Log In
+        </button>
+      </form>
+    </div>
   </div>
 </div>

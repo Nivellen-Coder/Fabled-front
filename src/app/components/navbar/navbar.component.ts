@@ -1,12 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth/auth.service";
-import { NavigationEnd, Router } from "@angular/router";
+import {NavigationEnd, Router, RouterLink} from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import {NgClass, NgFor, NgIf, NgOptimizedImage} from "@angular/common";
+import {LucideAngularModule} from "lucide-angular";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    NgOptimizedImage,
+    LucideAngularModule,
+    RouterLink,
+    NgClass
+  ]
 })
 export class NavbarComponent implements OnInit{
   isLoggedIn: boolean = false;

@@ -42,7 +42,7 @@ export class UserService {
       );
   }
 
-  public userProfile(username: string): Observable<UserInfosModel> {
+  public userProfile(username: string|null): Observable<UserInfosModel> {
     // @ts-ignore
     return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/` + username, this.httpOptions)
       .pipe(

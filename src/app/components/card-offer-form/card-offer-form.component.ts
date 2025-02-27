@@ -16,8 +16,8 @@ import {UserInfosModel} from "../../models/user/userInfosModel";
 })
 export class CardOfferFormComponent implements OnInit {
   cardId: string = "";
-  private username: string|null = "";
-  private userId: number = 0;
+  username: string|null = "";
+  userId: number = 0;
 
   offerForm: FormGroup = new FormGroup({
     quantity: new FormControl(1),
@@ -80,6 +80,7 @@ export class CardOfferFormComponent implements OnInit {
 
       this.offerService.offerCreate(formData, this.cardId, this.userId).pipe(
         finalize(() => {
+          console.log(this.userId);
         })
       ).subscribe({
         next: () => {
@@ -96,11 +97,9 @@ export class CardOfferFormComponent implements OnInit {
   }
 
   public getUserIdByUsername() {
-    if (this.username != null) {
-      this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
-        this.userId = data.id;
-      });
-    }
+    this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
+      this.userId = data.id;
+    });
   }
 
   public onSubmit(): void {

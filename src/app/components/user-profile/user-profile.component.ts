@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth/auth.service";
 import { UserService } from "../../services/user/user.service";
-import { UserInfosModel } from 'src/app/models/user/userInfosModel';
-import {CardDetailModel} from "../../models/card/cardDetailModel";
+import {Address, UserInfosModel} from 'src/app/models/user/userInfosModel';
 
 @Component({
   selector: 'app-user-profile',
@@ -12,6 +11,7 @@ import {CardDetailModel} from "../../models/card/cardDetailModel";
 export class UserProfileComponent implements OnInit {
   username: string = 'User';
   userData : UserInfosModel = {} as UserInfosModel ;
+  userAddress : Address = {} as Address;
   constructor(private authService: AuthService, private userService: UserService) {
 
   }
@@ -22,6 +22,8 @@ export class UserProfileComponent implements OnInit {
 
     this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
       this.userData = data;
+      this.userAddress = data?.address;
+      console.log(this.userAddress);
     });
   }
 

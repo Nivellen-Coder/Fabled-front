@@ -9,7 +9,18 @@
       <li>Email: {{ userData.email }}</li>
       <li>Last Name: {{ userData.lastName }}</li>
       <li>First Name: {{ userData.firstName }}</li>
+    </ul>
+  </div>
 
+  <div *ngIf="userAddress">
+    <h3 class="text-lg font-semibold mb-2">Address</h3>
+    <ul class="list-disc pl-6">
+      <li>Street: {{ userAddress.street }}</li>
+      <li>House Number: {{ userAddress.houseNumber }}</li>
+      <li>City: {{ userAddress.city }}</li>
+      <li>Region: {{ userAddress.region }}</li>
+      <li>Post Code: {{ userAddress.postalCode }}</li>
+      <li>Country: {{ userAddress.country }}</li>
     </ul>
   </div>
 </div>

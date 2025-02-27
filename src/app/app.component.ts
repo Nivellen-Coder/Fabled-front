@@ -1,11 +1,4 @@
 import { Component, NgModule, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
-import {
-  LucideAngularModule,
-  File,
-  Home,
-  Menu,
-  UserCheck, Moon, Sun
-} from 'lucide-angular';
 
 
 // @ts-ignore

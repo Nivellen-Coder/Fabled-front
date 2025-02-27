@@ -30,6 +30,7 @@ export class UserRegisterComponent implements OnInit{
     city: new FormControl(''),
     postalCode: new FormControl(''),
     region: new FormControl(''),
+    country: new FormControl('Belgium'),
   });
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
@@ -168,7 +169,7 @@ export class UserRegisterComponent implements OnInit{
 
       if (this.registerForm.value.hasAddress) {
         // Si hasAddress est true, toutes les données du formulaire sont envoyées
-        formData = <UserCreateModel>this.registerForm.value;
+        formData = this.registerForm.value;
       } else {
         // Si hasAddress est false, envoie uniquement les informations de base
         formData = {
@@ -180,8 +181,6 @@ export class UserRegisterComponent implements OnInit{
           hasAddress: this.registerForm.value.hasAddress
         };
       }
-
-      console.log('Data to be sent:', formData);
 
       this.userService.userCreate(formData).pipe(
         finalize(() => {
