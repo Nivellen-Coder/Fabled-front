@@ -12,6 +12,6 @@ export class HomeComponent {
   }
 
   getStarted() {
-    this.router.navigate(['/user-register']).then(r => true);
+    this.router.navigate(['/card-list']).then(r => true);
   }
 }

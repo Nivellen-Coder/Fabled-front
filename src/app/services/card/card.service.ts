@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import { environment } from 'src/environments/environment.development';
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, EMPTY, Observable, of, throwError} from "rxjs";
 import { CardListModel } from "../../models/card/cardListModel";
 import { CardDetailModel } from "../../models/card/cardDetailModel";
 
@@ -9,11 +9,6 @@ import { CardDetailModel } from "../../models/card/cardDetailModel";
   providedIn: 'root'
 })
 export class CardService {
-  private httpOptions = {
-    // headers: new HttpHeaders({
-    //   'Authorization': `Bearer ${environment.BEARER_TOKEN}`
-    // })
-  };
 
   constructor(private httpClient: HttpClient) { }
 
@@ -25,37 +20,49 @@ export class CardService {
     return this.httpClient.get<CardDetailModel>(environment.API_BASE_URL + '/cards/' + id)
   }
 
-  public getCardsByName(name: string, pageSize: number, page: number): Observable<CardListModel>{
-    return this.httpClient.get<CardListModel>(environment.API_BASE_URL + "/cards/search?q=" + name + "&page=" + page + "&pageSize=" + pageSize)
-      .pipe(
-        catchError((error) => {
-          // Logique pour retourner une erreur plus descriptive
-          const message = error.status === 404
-            ? 'No cards found with the given name.'
-            : 'Failed to fetch cards.';
-          return throwError(() => new Error(message));
-        })
-      );
+  public getCardsByName(name: string, pageSize: number, page: number): Observable<CardListModel> {
+    let trimmedName = name?.trim();
+
+    if(trimmedName == null || trimmedName === "") {
+      return EMPTY;
+    }
+
+    return this.httpClient.get<CardListModel>(
+      `${environment.API_BASE_URL}/cards/search?order=edhrec&q=${trimmedName}&page=${page}&unique=prints&total_cards=${pageSize}`
+    ).pipe(
+      catchError((error) => {
+        const message = error.status === 404
+          ? 'No cards found with the given name.'
+          : 'Failed to fetch cards.';
+        return throwError(() => new Error(message));
+      })
+    );
   }
 
 
-  // public getCardsByCriterias(name: string, page: number, filters: any): Observable<cardListModel>{
-  //   let params = new HttpParams()
-  //     .set('keywords', name)
-  //     .set('page', page)
-  //     .set('class', filters.classes)
-  //     .set('talent', filters.talent)
-  //     .set('rarity', filters.rarity)
-  //     .set('set', filters.set)
-  //     .set('pitch', filters.pitch)
-  //     .set('cost', filters.cost)
-  //     .set('cardType', filters.cardType);
-  //
-  //   const options = {
-  //     headers: this.httpOptions.headers,
-  //     params: params
-  //   };
-  //
-  //   return this.httpClient.get<cardListModel>(`${environment.API_BASE_URL}cards?time=${Date.now()}`, options);
-  // }
+  public getCardsByCriterias(name: string, page: number, filters: any): Observable<CardListModel>{
+    let params = new HttpParams().set('page', page);
+    let trimmedName = name?.trim();
+
+    if (filters.color) params = params.set('q', (trimmedName ? trimmedName + " " : "") + filters.color);
+    if (filters.mana) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + filters.mana);
+    if (filters.rarity) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + filters.rarity);
+    if (filters.power) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + (filters.rarity ? filters.rarity + " " : "") + filters.power);
+    if (filters.toughness) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + (filters.rarity ? filters.rarity + " " : "") + (filters.power ? filters.power + " " : "") + filters.toughness);
+    // if (filters.cost) params = params.set('cost', filters.cost);
+    // if (filters.cardType) params = params.set('cardType', filters.cardType);
+
+    return this.httpClient.get<CardListModel>(
+      `${environment.API_BASE_URL}/cards/search`,
+      { params }
+    ).pipe(
+      catchError((error) => {
+        if (error.status === 404 || error.status === 400) {
+          console.warn('No cards found, returning an empty list.');
+          return of({data: [], total_cards: 0} as unknown as CardListModel);
+        }
+        return throwError(() => new Error('Failed to fetch cards.'));
+      })
+    );
+  }
 }
