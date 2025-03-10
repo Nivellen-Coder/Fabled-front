@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth/auth.service";
 import { UserService } from "../../services/user/user.service";
 import {Address, UserInfosModel} from 'src/app/models/user/userInfosModel';
+import {offerListByUserIdModel} from "../../models/offer/offerListByUserIdModel";
+import {CardService} from "../../services/card/card.service";
+import {CardDetailModel} from "../../models/card/cardDetailModel";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-profile',
@@ -9,22 +13,44 @@ import {Address, UserInfosModel} from 'src/app/models/user/userInfosModel';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  username: string = 'User';
+  username: string = '';
+  userId: string = '';
   userData : UserInfosModel = {} as UserInfosModel ;
+  userOffers: offerListByUserIdModel = {} as offerListByUserIdModel;
   userAddress : Address = {} as Address;
-  constructor(private authService: AuthService, private userService: UserService) {
+
+  constructor(private authService: AuthService, private userService: UserService, private cardService: CardService, private router: Router) {
 
   }
+
   ngOnInit() {
     if (this.authService.loggedInUsername) {
       this.username = this.authService.loggedInUsername;
     }
+    if (this.authService.loggedInUserId) {
+      this.userId = this.authService.loggedInUserId;
+    }
 
-    this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
+    this.userService.userProfile(this.userId).subscribe((data: UserInfosModel) => {
       this.userData = data;
       this.userAddress = data?.address;
-      console.log(this.userAddress);
     });
+
+    this.userService.userOffersById(this.userId).subscribe((data: offerListByUserIdModel) => {
+      if (data.offers) {
+        this.userOffers = data;
+        for (let o of this.userOffers.offers) {
+          this.cardService.getCardById(o.cardId).subscribe((data: CardDetailModel) => {
+            o.cardName = data.name;
+          });
+        }
+      }
+      console.log(data.offers);
+    });
+  }
+
+  cardDetail(id: string) {
+    this.router.navigate(['card-detail', id]);
   }
 
 }

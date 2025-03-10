@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import { NgIf } from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import { NgFor } from '@angular/common';
 import { LucideAngularModule } from "lucide-angular";
 import { NgOptimizedImage } from '@angular/common'
@@ -20,6 +20,7 @@ import {UserService} from "../../services/user/user.service";
     NgOptimizedImage,
     LucideAngularModule,
     RouterLink,
+    NgClass,
   ],
   standalone: true
 })

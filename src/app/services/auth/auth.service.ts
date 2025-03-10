@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
-import {map, Observable} from "rxjs";
+import { Observable, tap} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  private apiURL = 'http://localhost:8000/api/login_check';
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`http://127.0.0.1:8000/api/login_check`, { username, password })
-      .pipe(
-        map(response => {
-          // login successful if there's a jwt token in the response
-          if (response) {
-            localStorage.setItem('jwt', JSON.stringify(response));
-            localStorage.setItem('loggedInUsername', username);
-          }
-        })
-      );
+  login(username: string, password: string ): Observable<any> {
+    return this.http.post<any>(this.apiURL, { username, password }).pipe(
+      tap(response => {
+        localStorage.setItem('jwt', response.token);  // Stocke le token
+        localStorage.setItem('userId', response.userId);
+        localStorage.setItem('loggedInUsername', response.username);
+      })
+    );
   }
 
   get isLogged(): boolean {
@@ -30,7 +27,12 @@ export class AuthService {
     return localStorage.getItem('loggedInUsername');
   }
 
+  get loggedInUserId(): string|null {
+    return localStorage.getItem('userId');
+  }
+
   logout(): void {
+    localStorage.removeItem('userId');
     localStorage.removeItem('loggedInUsername');
     localStorage.removeItem('jwt');
   }

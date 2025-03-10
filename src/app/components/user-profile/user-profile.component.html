@@ -1,26 +1,104 @@
-<div class="container mx-auto my-8 p-8 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded shadow-md">
-  <h1 class="text-3xl font-semibold mb-4">{{ username }} Profile</h1>
+<div class="max-w-6xl mx-auto my-8 p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-lg">
+  <h1 class="text-4xl font-bold mb-6 text-center">{{ username }}'s Profile</h1>
 
-  <!-- User Details Section -->
-  <div>
-    <h3 class="text-lg font-semibold mb-2">Profile Information</h3>
-    <ul class="list-disc pl-6">
-      <li>Username: {{ userData.username }}</li>
-      <li>Email: {{ userData.email }}</li>
-      <li>Last Name: {{ userData.lastName }}</li>
-      <li>First Name: {{ userData.firstName }}</li>
-    </ul>
+  <!-- Profile Information -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- User Details -->
+    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold mb-4 flex items-center">
+        Profile Information
+      </h3>
+      <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+        <li><strong>Username:</strong> {{ userData.username }}</li>
+        <li><strong>Email:</strong> {{ userData.email }}</li>
+        <li><strong>Last Name:</strong> {{ userData.lastName }}</li>
+        <li><strong>First Name:</strong> {{ userData.firstName }}</li>
+      </ul>
+    </div>
+
+    <!-- Address Details (if available) -->
+    <div *ngIf="userAddress" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold mb-4 flex items-center">
+        Address
+      </h3>
+      <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+        <li><strong>Street:</strong> {{ userAddress.street }}</li>
+        <li><strong>House Number:</strong> {{ userAddress.houseNumber }}</li>
+        <li><strong>City:</strong> {{ userAddress.city }}</li>
+        <li><strong>Region:</strong> {{ userAddress.region }}</li>
+        <li><strong>Post Code:</strong> {{ userAddress.postalCode }}</li>
+        <li><strong>Country:</strong> {{ userAddress.country }}</li>
+      </ul>
+    </div>
   </div>
 
-  <div *ngIf="userAddress">
-    <h3 class="text-lg font-semibold mb-2">Address</h3>
-    <ul class="list-disc pl-6">
-      <li>Street: {{ userAddress.street }}</li>
-      <li>House Number: {{ userAddress.houseNumber }}</li>
-      <li>City: {{ userAddress.city }}</li>
-      <li>Region: {{ userAddress.region }}</li>
-      <li>Post Code: {{ userAddress.postalCode }}</li>
-      <li>Country: {{ userAddress.country }}</li>
-    </ul>
-  </div>
+  <!-- User Offers -->
+  <div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-center">Your Offers</h2>
+
+    <div *ngIf="userOffers.offers" class="overflow-x-auto sm:rounded-lg">
+      <table class="min-w-[80%] text-sm text-left text-gray-500 dark:text-gray-400 mx-auto">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">Card Name</th>
+          <th scope="col" class="px-8 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
+          <th scope="col" class="px-6 py-3">Edition Language</th>
+          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
+          <th scope="col" class="px-6 py-3">Foil?</th>
+          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
+          <th scope="col" class="px-6 py-3">Card Description</th>
+          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Created at</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200"
+          *ngFor="let u of userOffers.offers"
+        >
+          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
+            <a
+              (click)="cardDetail(u.cardId)"
+              class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200"
+            >
+              {{ u.cardName }}
+            </a>
+          </td>
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+            {{ u.price }} €
+          </td>
+          <td class="px-6 py-4 text-gray-900 dark:text-white">
+            {{ u.language }}
+          </td>
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+            {{ u.cardCondition }}
+          </td>
+          <td class="px-6 py-4 text-gray-900 dark:text-white">
+          <span
+            class="px-2 py-1 rounded-lg font-semibold"
+            [ngClass]="{'bg-green-500 text-white': u.foil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil}"
+          >
+            {{ u.foil ? 'Yes' : 'No' }}
+          </span>
+          </td>
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+            {{ u.quantity }}
+          </td>
+          <td class="px-6 py-4 text-gray-900 dark:text-white">
+            {{ u.description }}
+          </td>
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+            {{ u.created_at }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!userOffers.offers" class="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md mt-6">
+      <svg class="w-12 h-12 text-gray-500 dark:text-gray-400 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3 3V9m0 12a9 9 0 110-18 9 9 0 010 18z"></path>
+      </svg>
+      <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">No offers found.</p>
+      <p class="text-gray-600 dark:text-gray-400 text-sm">You haven't listed any offers yet. Start adding your offers now!</p>
+    </div>
 </div>

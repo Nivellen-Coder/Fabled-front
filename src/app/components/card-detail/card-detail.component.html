@@ -93,9 +93,9 @@
           </div>
 
           <div class="mb-4">
-            <span class="font-bold">Offers available: </span>
+            <span class="font-bold">Available Offers: </span>
             <span *ngIf="totalItemsAvailable">{{ totalItemsAvailable }}</span>
-            <span *ngIf="totalItemsAvailable <= 0">No Offer Available</span>
+            <span *ngIf="totalItemsAvailable <= 0">No Available Offer</span>
           </div>
 
           <div *ngIf="offerAvailable">
@@ -137,11 +137,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="border-b border-gray-200 dark:border-gray-700" *ngFor="let o of offers">
+        <tr
+          class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          *ngFor="let o of offers"
+        >
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
             {{ o.userOfferId }}
           </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right font-semibold">
             {{ o.price }} €
           </td>
           <td class="px-6 py-4 text-gray-900 dark:text-white">
@@ -151,9 +154,14 @@
             {{ o.cardCondition }}
           </td>
           <td class="px-6 py-4 text-gray-900 dark:text-white">
-            {{ o.isFoil ? 'Yes' : 'No' }}
+            <span
+              class="px-2 py-1 rounded-lg font-semibold text-sm"
+              [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}"
+            >
+              {{ o.isFoil ? 'Yes' : 'No' }}
+            </span>
           </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right font-semibold">
             {{ o.quantity }}
           </td>
           <td class="px-6 py-4 text-gray-900 dark:text-white">
@@ -169,7 +177,7 @@
               From: {{ o.userOfferId }}
             </td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              Price: {{ o.price }}
+              Price: {{ o.price }} €
             </td>
             <td class="px-6 py-4 text-gray-900 dark:text-white">
               Language: {{ o.editionLang }}
@@ -178,7 +186,13 @@
               Condition: {{ o.cardCondition }}
             </td>
             <td class="px-6 py-4 text-gray-900 dark:text-white">
-              Foil? {{ o.isFoil ? 'Yes' : 'No' }}
+              Foil?
+              <span
+                class="px-2 py-1 rounded-lg font-semibold text-sm"
+                [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}"
+              >
+                {{ o.isFoil ? 'Yes' : 'No' }}
+              </span>
             </td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
               Quantity: {{ o.quantity }}
@@ -197,7 +211,7 @@
   <div class="bg-transparent flex items-center justify-center p-4 my-4">
     <div class="max-w-md w-full bg-transparent rounded-lg shadow-md text-center p-6">
       <lucide-icon name="circle-off" class="mx-auto w-[36px] h-[36px]"></lucide-icon>
-      <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">No Offers Available</h2>
+      <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">No Available Offers</h2>
       <p class="mt-2 text-gray-600 dark:text-gray-400">There are currently no offers in stock for this card. Please check back later or explore other cards in our collection.</p>
         <button routerLink="/card-list" class="mt-6 px-4 py-2 bg-blue-600 text-white dark:text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           Explore Other Cards

@@ -13,26 +13,7 @@ export class UserService {
   private apiURL = 'http://localhost:8000/api/user';
 
   constructor(private httpClient: HttpClient) {
-    this.updateHttpOptions();
   }
-
-  // @ts-ignore
-  private bearerToken = JSON.parse(localStorage.getItem('jwt'));
-  private httpOptions: any;
-
-  private updateHttpOptions(): void {
-    this.bearerToken = localStorage.getItem('jwt');
-    this.httpOptions = {
-      headers: this.bearerToken ? new HttpHeaders({
-        'Authorization': `Bearer ${this.bearerToken}`,
-        'Content-Type': 'application/json'
-      }) : new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-  }
-
-
 
   public userCreate(user : UserCreateModel): Observable<UserCreateModel> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -42,16 +23,15 @@ export class UserService {
       );
   }
 
-  public userProfile(username: string|null): Observable<UserInfosModel> {
-    // @ts-ignore
-    return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/` + username, this.httpOptions)
+  public userProfile(id: string|null): Observable<UserInfosModel> {
+    return this.httpClient.get<UserInfosModel>(`${this.apiURL}/profile/` + id)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  public usernameById(id: number): Observable<any> {
-    return this.httpClient.get<any>(`${this.apiURL}` + "/profile/" + id, this.httpOptions)
+  public userOffersById(id: string): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiURL}/profile/offer/` + id)
       .pipe(
         catchError(this.handleError)
       );
