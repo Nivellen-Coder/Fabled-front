@@ -5,7 +5,7 @@ import {Address, UserInfosModel} from 'src/app/models/user/userInfosModel';
 import {offerListByUserIdModel} from "../../models/offer/offerListByUserIdModel";
 import {CardService} from "../../services/card/card.service";
 import {CardDetailModel} from "../../models/card/cardDetailModel";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-user-profile',

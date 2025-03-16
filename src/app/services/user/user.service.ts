@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { UserCreateModel } from "../../models/user/userCreateModel";
-import {UserInfosModel} from "../../models/user/userInfosModel";
+import { UserInfosModel } from "../../models/user/userInfosModel";
+import { UserUpdateModel } from "../../models/user/userUpdateModel";
 
 
 @Injectable({
@@ -15,9 +16,10 @@ export class UserService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public userCreate(user : UserCreateModel): Observable<UserCreateModel> {
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<UserCreateModel>(`${this.apiURL}` + "/create", JSON.stringify(user), { headers })
+  public userCreate(user: UserCreateModel): Observable<UserCreateModel> {
+    return this.httpClient.post<UserCreateModel>(`${this.apiURL}/create`, JSON.stringify(user), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    })
       .pipe(
         catchError(this.handleError)
       );
@@ -32,6 +34,13 @@ export class UserService {
 
   public userOffersById(id: string): Observable<any> {
     return this.httpClient.get<any>(`${this.apiURL}/profile/offer/` + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  updateProfile(id: string|null, data: any): Observable<any> {
+    return this.httpClient.put<UserUpdateModel>(`${this.apiURL}/profile/${id}/edit`, data)
       .pipe(
         catchError(this.handleError)
       );

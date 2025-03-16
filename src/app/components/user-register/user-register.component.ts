@@ -159,7 +159,7 @@ export class UserRegisterComponent implements OnInit{
 
   public onSubmit(): void {
     this.submitted = true;
-    // console.log(JSON.stringify(this.registerForm.value, null, 2));
+    console.log(JSON.stringify(this.registerForm.value, null, 2));
     this.createUser();
   }
 
@@ -194,7 +194,7 @@ export class UserRegisterComponent implements OnInit{
           const errorMessage = e?.error?.message || 'an unknown error has occured';
           this.toastr.error(errorMessage);
         },
-        complete: () => this.toastr.success('Registration completed successfully', 'Succes')
+        complete: () => this.toastr.success('Registration completed successfully', 'Success')
       });
     }
   }

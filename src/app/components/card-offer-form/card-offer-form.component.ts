@@ -7,7 +7,6 @@ import {offerCreateModel} from "../../models/offer/offerCreateModel";
 import {ToastrService} from "ngx-toastr";
 import {OfferService} from "../../services/offer/offer.service";
 import {UserService} from "../../services/user/user.service";
-import {UserInfosModel} from "../../models/user/userInfosModel";
 
 @Component({
   selector: 'app-card-offer-form',
@@ -17,7 +16,7 @@ import {UserInfosModel} from "../../models/user/userInfosModel";
 export class CardOfferFormComponent implements OnInit {
   cardId: string = "";
   username: string|null = "";
-  userId: number = 0;
+  userId: string|null = "";
 
   offerForm: FormGroup = new FormGroup({
     quantity: new FormControl(1),
@@ -37,7 +36,7 @@ export class CardOfferFormComponent implements OnInit {
 
     this.username = this.authService.loggedInUsername;
 
-    this.getUserIdByUsername();
+    this.userId = this.authService.loggedInUserId;
 
     this.offerForm = this.formBuilder.group(
       {
@@ -91,16 +90,16 @@ export class CardOfferFormComponent implements OnInit {
           const errorMessage = e?.error?.message || 'an unknown error has occured';
           this.toastr.error(errorMessage);
         },
-        complete: () => this.toastr.success('Offer placed successfully', 'Succes')
+        complete: () => this.toastr.success('Offer placed successfully', 'Success')
       });
     }
   }
 
-  public getUserIdByUsername() {
-    this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
-      this.userId = data.id;
-    });
-  }
+  // public getUserIdByUsername() {
+  //   this.userService.userProfile(this.username).subscribe((data: UserInfosModel) => {
+  //     this.userId = data.id;
+  //   });
+  // }
 
   public onSubmit(): void {
     this.createOffer();

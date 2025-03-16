@@ -13,3 +13,6 @@ export class AutoFocus implements AfterViewInit {
     this.elementRef.nativeElement.focus();
   }
 }
+
+export class AutoFocusDirective {
+}

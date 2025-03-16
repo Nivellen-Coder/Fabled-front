@@ -26,7 +26,7 @@ export class OfferService {
       })
     };
   }
-  public offerCreate(offer : offerCreateModel, id: string, userId: number): Observable<offerCreateModel> {
+  public offerCreate(offer : offerCreateModel, id: string, userId: string|null): Observable<offerCreateModel> {
     // @ts-ignore
     return this.httpClient.post<offerCreateModel>(this.apiURL + '/create/' + id + '/' + userId, JSON.stringify(offer), this.httpOptions )
       .pipe(

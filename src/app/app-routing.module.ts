@@ -5,10 +5,13 @@ import { CardListComponent } from "./components/card-list/card-list.component";
 import { CardDetailComponent } from "./components/card-detail/card-detail.component";
 import { LoginComponent } from "./components/login/login.component";
 import { UserProfileComponent } from "./components/user-profile/user-profile.component";
+import { ProfileEditComponent } from "./components/profile-edit/profile-edit.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { CardOfferFormComponent } from "./components/card-offer-form/card-offer-form.component";
 import { SellerGuideComponent } from "./components/seller-guide/seller-guide.component";
 import { HomeComponent } from "./components/home/home.component";
+import { AddressEditComponent } from "./components/address-edit/address-edit.component";
+import {AddressCreateComponent} from "./components/address-create/address-create.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +22,9 @@ const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'card-offer-form/:id', component: CardOfferFormComponent, canActivate: [AuthGuard] },
   { path: 'seller-guide', component: SellerGuideComponent },
+  { path: 'user-profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
+  { path: 'user-address-edit', component: AddressEditComponent, canActivate: [AuthGuard] },
+  { path: 'user-address-create', component: AddressCreateComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'home' },
 ];
 

@@ -33,6 +33,7 @@ import {
   SearchX,
   CircleOff,
   SquareMousePointer,
+  PenLine,
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
@@ -75,6 +76,7 @@ import {NavbarComponent} from "./components/navbar/navbar.component";
       Gem,
       ContactRound,
       FilePen,
+      PenLine,
       LogIn,
       TextSearch,
       SearchX,
