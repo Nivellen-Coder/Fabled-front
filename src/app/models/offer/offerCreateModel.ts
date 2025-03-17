@@ -6,3 +6,4 @@ export interface offerCreateModel {
   isFoil: boolean;
   description: string;
 }
+

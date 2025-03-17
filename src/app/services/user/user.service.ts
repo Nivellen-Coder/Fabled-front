@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from "rxjs";
 import { UserCreateModel } from "../../models/user/userCreateModel";
 import { UserInfosModel } from "../../models/user/userInfosModel";
 import { UserUpdateModel } from "../../models/user/userUpdateModel";
+import { offerCreateModel } from "../../models/offer/offerCreateModel";
 
 
 @Injectable({
@@ -33,7 +34,14 @@ export class UserService {
   }
 
   public userOffersById(id: string): Observable<any> {
-    return this.httpClient.get<any>(`${this.apiURL}/profile/offer/` + id)
+    return this.httpClient.get<any>(`${this.apiURL}/profile/offers/` + id)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public userOfferById(id: string, offerId: string): Observable<offerCreateModel> {
+    return this.httpClient.get<offerCreateModel>(`${this.apiURL}/profile/offer/${id}/${offerId}`)
       .pipe(
         catchError(this.handleError)
       );

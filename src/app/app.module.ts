@@ -34,6 +34,8 @@ import {
   CircleOff,
   SquareMousePointer,
   PenLine,
+  Pencil,
+  Trash2,
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
@@ -77,6 +79,8 @@ import {NavbarComponent} from "./components/navbar/navbar.component";
       ContactRound,
       FilePen,
       PenLine,
+      Pencil,
+      Trash2,
       LogIn,
       TextSearch,
       SearchX,

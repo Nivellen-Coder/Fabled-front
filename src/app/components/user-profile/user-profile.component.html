@@ -1,4 +1,4 @@
-<div class="max-w-6xl mx-auto my-8 p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-lg">
+<div class="max-w-7xl mx-auto my-8 p-6 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-lg">
 
   <h1 class="text-4xl font-bold mb-6 text-center">{{ username }}'s Profile</h1>
 
@@ -69,13 +69,14 @@
           <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">Card Name</th>
-            <th scope="col" class="px-8 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
-            <th scope="col" class="px-6 py-3">Edition Language</th>
-            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
-            <th scope="col" class="px-6 py-3">Foil?</th>
-            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
+            <th scope="col" class="px-10 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
+            <th scope="col" class="px-4 py-3">Edition Language</th>
+            <th scope="col" class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
+            <th scope="col" class="px-4 py-3">Foil?</th>
+            <th scope="col" class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
             <th scope="col" class="px-6 py-3">Card Description</th>
-            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Created at</th>
+            <th scope="col" class="px-8 py-3 bg-gray-200 dark:bg-gray-600">Created at</th>
+            <th scope="col" class="px-3 py-3 text-center">Actions</th>
           </tr>
           </thead>
           <tbody>
@@ -91,16 +92,16 @@
                 {{ u.cardName }}
               </a>
             </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+            <td class="px-8 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
               {{ u.price }} €
             </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
+            <td class="px-4 py-4 text-gray-900 dark:text-white">
               {{ u.language }}
             </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+            <td class="px-4 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
               {{ u.cardCondition }}
             </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
+            <td class="px-4 py-4 text-gray-900 dark:text-white">
             <span
               class="px-2 py-1 rounded-lg font-semibold"
               [ngClass]="{'bg-green-500 text-white': u.foil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil}"
@@ -108,7 +109,7 @@
               {{ u.foil ? 'Yes' : 'No' }}
             </span>
             </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+            <td class="px-4 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
               {{ u.quantity }}
             </td>
             <td class="px-6 py-4 text-gray-900 dark:text-white">
@@ -116,6 +117,14 @@
             </td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
               {{ u.created_at }}
+            </td>
+            <td class="px-6 py-4 text-gray-900 dark:text-white flex items-center justify-center">
+              <a (click)="navigateToOfferForm(u.id)" class="cursor-pointer mx-2">
+                <lucide-icon name="pencil"></lucide-icon>
+              </a>
+              <a (click)="deleteUserOffer(u.id)" class="cursor-pointer mx-2">
+                <lucide-icon name="trash-2" class="text-red-500"></lucide-icon>
+              </a>
             </td>
           </tr>
           </tbody>

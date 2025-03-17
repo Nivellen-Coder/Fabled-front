@@ -12,6 +12,7 @@ import { SellerGuideComponent } from "./components/seller-guide/seller-guide.com
 import { HomeComponent } from "./components/home/home.component";
 import { AddressEditComponent } from "./components/address-edit/address-edit.component";
 import {AddressCreateComponent} from "./components/address-create/address-create.component";
+import {UserOfferEditComponent} from "./components/user-offer-edit/user-offer-edit.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'user-profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'user-address-edit', component: AddressEditComponent, canActivate: [AuthGuard] },
   { path: 'user-address-create', component: AddressCreateComponent, canActivate: [AuthGuard] },
+  { path: 'user-offer-edit/:id' , component: UserOfferEditComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'home' },
 ];
 

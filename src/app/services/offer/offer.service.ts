@@ -41,6 +41,20 @@ export class OfferService {
       );
   }
 
+  public updateUserOffer(offerId: string, userId: string|null, data: offerCreateModel): Observable<any> {
+    return this.httpClient.put<offerCreateModel>(`${this.apiURL}/profile/${offerId}/${userId}/edit`, JSON.stringify(data))
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public deleteUserOffer(offerId: number, userId: string): Observable<any> {
+    return this.httpClient.delete(`${this.apiURL}/profile/${offerId}/${userId}/delete`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Erreur côté client
