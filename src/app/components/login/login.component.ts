@@ -23,7 +23,6 @@ export class LoginComponent {
 
           if (response?.token) {
             localStorage.setItem('jwt', response.token); // Stocke le token
-            localStorage.setItem('loggedInUsername', response.username);
             this.toastr.success('Authentication completed successfully', 'Success');
             this.router.navigate(['/card-list']); // Redirection après stockage du token
           } else {

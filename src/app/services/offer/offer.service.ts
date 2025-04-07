@@ -22,7 +22,10 @@ export class OfferService {
         'Authorization': `Bearer ${this.bearerToken}`,
         'Content-Type': 'application/json'
       }) : new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:4200',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
       })
     };
   }

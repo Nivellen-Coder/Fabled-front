@@ -7,14 +7,15 @@ import { HttpClient } from "@angular/common/http";
 })
 export class AuthService {
   private apiURL = 'http://localhost:8000/api/login_check';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   login(username: string, password: string ): Observable<any> {
     return this.http.post<any>(this.apiURL, { username, password }).pipe(
       tap(response => {
-        localStorage.setItem('jwt', response.token);  // Stocke le token
-        localStorage.setItem('userId', response.userId);
-        localStorage.setItem('loggedInUsername', response.username);
+          localStorage.setItem('jwt', response.token);  // Stocke le token
+          localStorage.setItem('userId', response.id);
+          localStorage.setItem('loggedInUsername', response.username);
       })
     );
   }
