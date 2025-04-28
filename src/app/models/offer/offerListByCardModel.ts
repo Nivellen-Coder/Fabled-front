@@ -9,4 +9,5 @@ export interface offerListByCardModel {
   isFoil: boolean;
   description: string;
   creation: string;
+  quantityToAdd: number;
 }

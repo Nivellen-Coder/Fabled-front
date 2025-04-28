@@ -36,6 +36,7 @@ import {
   PenLine,
   Pencil,
   Trash2,
+  ShoppingCart,
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
@@ -85,7 +86,8 @@ import {NavbarComponent} from "./components/navbar/navbar.component";
       TextSearch,
       SearchX,
       CircleOff,
-      SquareMousePointer
+      SquareMousePointer,
+      ShoppingCart
     }),
     NavbarComponent,
   ], providers: [

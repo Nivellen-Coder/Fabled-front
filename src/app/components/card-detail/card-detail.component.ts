@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {NgClass, NgIf} from '@angular/common';
 import { NgFor } from '@angular/common';
 import { LucideAngularModule } from "lucide-angular";
@@ -9,6 +9,9 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {offerListByCardModel} from "../../models/offer/offerListByCardModel";
 import {OfferService} from "../../services/offer/offer.service";
 import {UserService} from "../../services/user/user.service";
+import {CartService} from "../../services/cart/cart.service";
+import {ToastrService} from "ngx-toastr";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-card-detail',
@@ -21,6 +24,7 @@ import {UserService} from "../../services/user/user.service";
     LucideAngularModule,
     RouterLink,
     NgClass,
+    FormsModule,
   ],
   standalone: true
 })
@@ -38,7 +42,7 @@ export class CardDetailComponent implements OnInit {
   // lastTenDays: [string] = [""];
   // minPrices: [number] = [0];
 
-  constructor(private cardService: CardService, private actRoute: ActivatedRoute, private router: Router, private offerService: OfferService, private userService: UserService) {
+  constructor(private cardService: CardService, private actRoute: ActivatedRoute, private router: Router, private offerService: OfferService, private userService: UserService, private cartService: CartService, private toastr: ToastrService) {
     this.updateScreenSize();
   }
 
@@ -51,8 +55,6 @@ export class CardDetailComponent implements OnInit {
       this.card = data;
       this.isLoading = false;
     });
-    // this.fillLastTenDays();
-    // this.sortDates();
     this.loadOffers();
   }
 
@@ -64,7 +66,7 @@ export class CardDetailComponent implements OnInit {
     // @ts-ignore
     this.offerService.offerListByCardId(this.cardId).subscribe((data: offerListByCardModel[]) => {
       if (data) {
-        this.offers = data;
+        this.offers = data.filter(a => a.quantity > 0);
         this.offers = data.sort((a, b) => a.price - b.price);
         this.totalItemsAvailable = 0;
         // const minPrice = this.offers[0].price;
@@ -75,6 +77,10 @@ export class CardDetailComponent implements OnInit {
           // if(o.price <= minPrice){
           //   this.minPriceToday = o.price;
           // }
+          this.offers = this.offers.map(o => ({
+            ...o,
+            quantityToAdd: 1 // 👈 initialise ici
+          }));
         }
         this.avgPrice = total / this.offers.length;
         this.avgPrice = parseFloat(this.avgPrice.toFixed(2));
@@ -83,6 +89,30 @@ export class CardDetailComponent implements OnInit {
         this.offerAvailable = false;
       }
     });
+
+  }
+
+  addToCart(offer: any) {
+    const quantity = offer.quantityToAdd || 1;
+    const maxStock = offer.quantity;
+
+    if (quantity > maxStock) {
+      // Message ou blocage visuel
+      this.toastr.warning('Quantity exceeded!');
+      return;
+    }
+
+    if (offer) {
+      this.cartService.addToCart({
+        id: offer.id,
+        name: this.card.name,
+        price: offer.price,
+        quantity: quantity,
+      }, maxStock, quantity);
+      this.toastr.success("Added to cart successfully.");
+    } else {
+      this.toastr.error("Something went wrong.");
+    }
 
   }
 

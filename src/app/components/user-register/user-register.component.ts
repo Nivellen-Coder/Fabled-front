@@ -23,6 +23,7 @@ export class UserRegisterComponent implements OnInit{
     password: new FormControl(''),
     lastName: new FormControl(''),
     firstName: new FormControl(''),
+    hp: new FormControl(''),
     hasAddress: new FormControl(false),
     street: new FormControl(''),
     streetSecond: new FormControl(''),
@@ -166,6 +167,11 @@ export class UserRegisterComponent implements OnInit{
   public createUser() {
     if (this.registerForm.valid) {
       let formData: UserCreateModel;
+
+      if (this.registerForm.get('hp')?.value) {
+        console.warn('Bot détecté via le honeypot');
+        return;
+      }
 
       if (this.registerForm.value.hasAddress) {
         // Si hasAddress est true, toutes les données du formulaire sont envoyées
