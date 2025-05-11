@@ -14,9 +14,14 @@ import { AddressEditComponent } from "./components/address-edit/address-edit.com
 import {AddressCreateComponent} from "./components/address-create/address-create.component";
 import {UserOfferEditComponent} from "./components/user-offer-edit/user-offer-edit.component";
 import {CartComponent} from "./components/cart/cart.component";
+import {UsersComponent} from "./admin/users/users.component";
+import {CheckoutComponent} from "./components/checkout/checkout.component";
+import {cartItemsGuard} from "./guards/cart-items.guard";
+import {ContactComponent} from "./components/contact/contact.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'card-list', component: CardListComponent },
   { path: 'card-detail/:id', component: CardDetailComponent, pathMatch: 'full'},
@@ -29,6 +34,8 @@ const routes: Routes = [
   { path: 'user-address-create', component: AddressCreateComponent, canActivate: [AuthGuard] },
   { path: 'user-offer-edit/:id' , component: UserOfferEditComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard, cartItemsGuard] },
   { path: '**', redirectTo: 'home' },
 ];
 

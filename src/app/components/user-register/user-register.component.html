@@ -1,191 +1,165 @@
-<div class="container mx-auto pt-8 dark:bg-gray-800 bg-gray-200 shadow-md mt-8 mb-8 p-6 rounded border-double border-gray-500 dark:border-white border-2">
+<div class="container mt-6 mb-4 mx-auto pt-8 bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-300 dark:border-gray-700 shadow-lg">
   <h1 class="register-title mb-4 text-center text-4xl font-extrabold text-gray-900 drop-shadow-lg">
-    <span style="color: #3498db;">Sign Up</span>
+    <span class="text-blue-600">Sign Up</span>
   </h1>
 
-  <form (ngSubmit)="onSubmit()" class="pb-36" [formGroup]="registerForm">
+  <form (ngSubmit)="onSubmit()" class="pb-16" [formGroup]="registerForm">
     <div class="grid gap-6 mb-6 md:grid-cols-2 p-4 mx-12">
       <div class="mb-6">
-        <label for="username" class="block mb-2 text-sm font-medium">Username</label>
+        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
         <input type="text"
                id="username"
                formControlName="username"
-               class="form-control bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-               style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                required>
-        <div *ngIf="submitted && f['username']?.errors" class="invalid-feedback">
-          <div *ngIf="f['username'].errors?.['required']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">Username is required</div>
-          <div *ngIf="f['username'].errors?.['minlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Username must be at least 5 characters
-          </div>
-          <div *ngIf="f['username'].errors?.['maxlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Username must not exceed 64 characters
-          </div>
-        </div>
-      </div>
-      <div class="mb-6">
-        <label for="email" class="block mb-2 text-sm font-medium">Email address</label>
-        <input type="email"
-               id="email"
-               class="form-control bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-               style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;"
-               placeholder="john.doe@company.com"
-               formControlName="email"
-               required>
-        <div *ngIf="submitted && f['email']?.errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors?.['required']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">An Email address is required</div>
-          <div *ngIf="f['email'].errors?.['email']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Email is invalid
-          </div>
-        </div>
-      </div>
-      <div class="mb-6">
-        <label for="password" class="block mb-2 text-sm font-medium">Password</label>
-        <input type="password"
-               id="password"
-               formControlName="password"
-               class="form-control bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-               style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;"
-               placeholder="•••••••••"
-               required>
-        <div *ngIf="submitted && f['password']?.errors" class="invalid-feedback">
-          <div *ngIf="f['password'].errors?.['required']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">A Password is required</div>
-          <div *ngIf="f['password'].errors?.['minlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Password must be at least 8 characters
-          </div>
-          <div *ngIf="f['password'].errors?.['maxlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Password must not exceed 254 characters
-          </div>
-        </div>
-      </div>
-      <div>
-        <label for="first_name" class="block mb-2 text-sm font-medium">First name</label>
-        <input type="text"
-               id="first_name"
-               formControlName="firstName"
-               class="form-control bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-               style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;"
-               placeholder="John"
-               required>
-        <div *ngIf="submitted && f['firstName']?.errors" class="invalid-feedback">
-          <div *ngIf="f['firstName'].errors?.['required']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">Your First Name is required</div>
-          <div *ngIf="f['firstName'].errors?.['minlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            First name must be at least 2 characters
-          </div>
-          <div *ngIf="f['firstName'].errors?.['maxlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            First name must not exceed 64 characters
-          </div>
-        </div>
-      </div>
-      <div>
-        <label for="last_name" class="block mb-2 text-sm font-medium">Last name</label>
-        <input type="text"
-               id="last_name"
-               formControlName="lastName"
-               class="form-control bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-               style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;"
-               placeholder="Doe"
-               required>
-        <div *ngIf="submitted && f['lastName']?.errors" class="invalid-feedback">
-          <div *ngIf="f['lastName'].errors?.['required']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">Your Last Name is required</div>
-          <div *ngIf="f['lastName'].errors?.['minlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Last name must be at least 2 characters
-          </div>
-          <div *ngIf="f['lastName'].errors?.['maxlength']" class="block mb-2 m-1 text-sm font-medium" style="color: #e74c3c;">
-            Last name must not exceed 64 characters
-          </div>
-        </div>
-        <div>
-          <input type="text" formControlName="hp" style="display:none;" tabindex="-1" autocomplete="off">
+        <div *ngIf="submitted && f['username']?.errors" class="text-sm text-red-500">
+          <div *ngIf="f['username'].errors?.['required']" class="block">Username is required</div>
+          <div *ngIf="f['username'].errors?.['minlength']" class="block">Username must be at least 5 characters</div>
+          <div *ngIf="f['username'].errors?.['maxlength']" class="block">Username must not exceed 64 characters</div>
         </div>
       </div>
 
-      <div class="col-span-2">
-        <input
-          type="checkbox"
-          id="hasAddress"
-          name="hasAddress"
-          formControlName="hasAddress"
-          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-          style="border-color: #ccc;">
-        <label for="hasAddress" class="ml-2 text-sm font-medium">Add my Delivery Address now</label>
+      <div class="mb-6">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+        <input type="email"
+               id="email"
+               formControlName="email"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+               placeholder="john.doe@company.com"
+               required>
+        <div *ngIf="submitted && f['email']?.errors" class="text-sm text-red-500">
+          <div *ngIf="f['email'].errors?.['required']" class="block">An Email address is required</div>
+          <div *ngIf="f['email'].errors?.['email']" class="block">Email is invalid</div>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+        <input type="password"
+               id="password"
+               formControlName="password"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+               placeholder="•••••••••"
+               required>
+        <div *ngIf="submitted && f['password']?.errors" class="text-sm text-red-500">
+          <div *ngIf="f['password'].errors?.['required']" class="block">A Password is required</div>
+          <div *ngIf="f['password'].errors?.['minlength']" class="block">Password must be at least 8 characters</div>
+          <div *ngIf="f['password'].errors?.['maxlength']" class="block">Password must not exceed 254 characters</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+        <input type="text"
+               id="first_name"
+               formControlName="firstName"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+               placeholder="John"
+               required>
+        <div *ngIf="submitted && f['firstName']?.errors" class="text-sm text-red-500">
+          <div *ngIf="f['firstName'].errors?.['required']" class="block">Your First Name is required</div>
+          <div *ngIf="f['firstName'].errors?.['minlength']" class="block">First name must be at least 2 characters</div>
+          <div *ngIf="f['firstName'].errors?.['maxlength']" class="block">First name must not exceed 64 characters</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+        <input type="text"
+               id="last_name"
+               formControlName="lastName"
+               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+               placeholder="Doe"
+               required>
+        <div *ngIf="submitted && f['lastName']?.errors" class="text-sm text-red-500">
+          <div *ngIf="f['lastName'].errors?.['required']" class="block">Your Last Name is required</div>
+          <div *ngIf="f['lastName'].errors?.['minlength']" class="block">Last name must be at least 2 characters</div>
+          <div *ngIf="f['lastName'].errors?.['maxlength']" class="block">Last name must not exceed 64 characters</div>
+        </div>
+      </div>
+
+      <div>
+        <input type="text" formControlName="hp" class="hidden" tabindex="-1">
+      </div>
+
+      <div class="col-span-2 flex items-center">
+        <input type="checkbox"
+               id="hasAddress"
+               name="hasAddress"
+               formControlName="hasAddress"
+               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+        <label for="hasAddress" class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Add my Delivery Address now</label>
       </div>
 
       <div *ngIf="registerForm.get('hasAddress')?.value" class="col-span-2">
         <div class="mb-6">
-          <label for="street" class="block mb-2 text-sm font-medium">Street</label>
+          <label for="street" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street</label>
           <input type="text"
                  id="street"
                  name="street"
                  formControlName="street"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="streetSecond" class="block mb-2 text-sm font-medium">Street Second Line (Optional)</label>
+          <label for="streetSecond" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Street Second Line (Optional)</label>
           <input type="text"
                  id="streetSecond"
                  name="streetSecond"
                  formControlName="streetSecond"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="houseNumber" class="block mb-2 text-sm font-medium">House Number</label>
+          <label for="houseNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">House Number</label>
           <input type="text"
                  id="houseNumber"
                  name="houseNumber"
                  formControlName="houseNumber"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="city" class="block mb-2 text-sm font-medium">City</label>
+          <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
           <input type="text"
                  id="city"
                  name="city"
                  formControlName="city"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="postalCode" class="block mb-2 text-sm font-medium">Postal Code</label>
+          <label for="postalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
           <input type="text"
                  id="postalCode"
                  name="postalCode"
                  formControlName="postalCode"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="region" class="block mb-2 text-sm font-medium">Region</label>
+          <label for="region" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Region</label>
           <input type="text"
                  id="region"
                  name="region"
                  formControlName="region"
-                 class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                 style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;" />
+                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         </div>
 
         <div class="mb-6">
-          <label for="country" class="block mb-2 text-sm font-medium">Country</label>
+          <label for="country" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
           <select id="country"
                   name="country"
                   formControlName="country"
-                  class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5"
-                  style="border-color: #ccc; color: #333; font-family: 'Roboto', sans-serif;">
+                  class="bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             <option *ngFor="let country of countries" [ngValue]="country.name">{{ country.name }}</option>
           </select>
         </div>
       </div>
     </div>
+
     <div class="grid mb-6 md:grid-cols-1 p-4 mx-32">
-      <button type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center" style="background-color: #3498db;">Register</button>
+      <button type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500">Register</button>
     </div>
   </form>
 </div>

@@ -1,0 +1,47 @@
+<div class="flex h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white dark:bg-gray-800 shadow-md">
+    <div class="p-6">
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Admin</h1>
+    </div>
+    <nav class="mt-6">
+      <ul class="space-y-2">
+        <li>
+          <a routerLink="home" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="users" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+            Users
+          </a>
+        </li>
+        <li>
+          <a routerLink="offers" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+            Offers
+          </a>
+        </li>
+        <li>
+          <a routerLink="contacts" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+            Contacts
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Dashboard</h2>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+        <div class="flex-1 p-6">
+          <router-outlet></router-outlet>
+        </div>
+    </main>
+  </div>
+</div>

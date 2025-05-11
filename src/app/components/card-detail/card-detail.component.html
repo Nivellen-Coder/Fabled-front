@@ -1,24 +1,26 @@
-
 <div class="py-5 text-gray-800 dark:text-white">
-  <div class="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row max-w-8xl mx-auto px-8 sm:px-8 lg:px-9">
-      <div role="status" class="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700 w-200 h-350" *ngIf="isLoading">
-        <div class="flex items-center justify-center mb-4 bg-white dark:bg-gray-200 max-w-sm p-2 border border-gray-200 rounded shadow animate-pulse md:p-4 dark:border-gray-700 w-80 h-80">
+
+      <!-- Loading Spinner -->
+      <div role="status" class="max-w-sm p-4 border border-gray-200 rounded-lg shadow animate-pulse md:p-6 dark:border-gray-700 w-200 h-350" *ngIf="isLoading">
+        <div class="flex items-center justify-center mb-4 bg-white dark:bg-gray-200 max-w-sm p-2 border border-gray-200 rounded-lg shadow animate-pulse md:p-4 dark:border-gray-700 w-80 h-80">
           <div class="rounded-lg p-6 bg-white dark:bg-slate-600 h-90">
-            <svg class="w-10 h-10 w-220" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 20">
+            <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 20">
               <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
               <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
             </svg>
           </div>
         </div>
-        <div class="h-2.5 bg-white rounded-full dark:bg-gray-100 w-48 mb-4"></div>
-        <div class="h-2 bg-white rounded-full dark:bg-gray-100 mb-2.5"></div>
-        <div class="h-2 bg-white rounded-full dark:bg-gray-100 mb-2.5"></div>
-        <div class="h-2 bg-white rounded-full dark:bg-gray-100"></div>
-
+        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-100 w-48 mb-4"></div>
+        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-100 mb-2.5"></div>
+        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-100 mb-2.5"></div>
+        <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-100"></div>
         <span class="sr-only">Loading...</span>
       </div>
-      <div role="status" class="space-y-2.5 animate-pulse max-w-lg mx-10 w-400" *ngIf="isLoading">
+
+      <!-- Card Details -->
+      <div role="status" class="space-y-2.5 animate-pulse max-w-lg mx-auto w-400" *ngIf="isLoading">
         <div class="flex items-center w-full space-x-2">
           <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-200 w-48"></div>
           <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-100 w-32"></div>
@@ -51,210 +53,121 @@
         </div>
         <span class="sr-only">Loading...</span>
       </div>
+
     </div>
-  </div>
-  <div class="py-8" *ngIf="!isLoading">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row -mx-4">
-        <div class="px-2 mx-auto">
-          <div class="rounded-lg p-3 bg-white dark:bg-transparent">
-            <img priority class="flex flex-wrap mx-2 lg:w-[280px] md:w-[280px] xl:w-[280px] object-cover" ngSrc="{{card.image_uris.border_crop}}" alt="Illustration for {{card.name}}" [width]="300" [height]="550">
-            <div class="flex flex-col justify-items-center my-5 w-[300px] mx-auto">
-              <button type="button" (click)="navigateToOfferForm()" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2.5 text-center mb-2">Sell this Card</button>
-            </div>
-          </div>
-          <!-- <div class="flex -mx-2 mb-4">
-              <div class="w-1/2 px-2">
-                  <button class="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">Add to Cart</button>
+
+    <!-- Card Details Content -->
+    <div class="py-8" *ngIf="!isLoading">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row -mx-4">
+          <div class="px-2 mx-auto">
+            <div class="rounded-lg p-3 bg-white dark:bg-transparent">
+              <img priority class="flex flex-wrap mx-2 lg:w-[280px] md:w-[280px] xl:w-[280px] object-cover" ngSrc="{{card.image_uris.border_crop}}" alt="Illustration for {{card.name}}" [width]="300" [height]="550">
+              <div class="flex flex-col justify-items-center my-5 w-[300px] mx-auto">
+                <button type="button" (click)="navigateToOfferForm()" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-16 py-2.5 text-center mb-2">Sell this Card</button>
               </div>
-              <div class="w-1/2 px-2">
-                  <button class="w-full bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">Add to Wishlist</button>
-              </div>
-          </div> -->
-
-        </div>
-        <div class="md:flex-1 px-3 mx-auto">
-          <h2 class="text-2xl font-bold mb-2">{{ card.name }}</h2>
-          <p class="text-sm mb-4">
-            {{ card.oracle_text }}
-          </p>
-
-          <div class="flex mb-4 mr-4">
-            <span class="font-bold ">Rarity: </span>
-            <span class="mx-1">{{ card.rarity }}</span>
-          </div>
-
-          <div class="flex mb-4">
-            <div>
-              <span class="font-bold">Availability: </span>
-              <span *ngIf="offers.length">In Stock</span>
-              <span *ngIf="offers.length <= 0">Out of Stock</span>
             </div>
           </div>
 
-          <div class="mb-4">
-            <span class="font-bold">Available Items: </span>
-            <span *ngIf="totalItemsAvailable">{{ totalItemsAvailable }}</span>
-            <span *ngIf="totalItemsAvailable <= 0">No Available Item</span>
-          </div>
+          <div class="md:flex-1 px-3 mx-auto">
+            <h2 class="text-2xl font-bold mb-2">{{ card.name }}</h2>
+            <p class="text-sm mb-4">
+              {{ card.oracle_text }}
+            </p>
 
-          <div *ngIf="offerAvailable">
-            <span class="font-bold">Average price: </span>
-            <span>{{ avgPrice }} €</span>
+            <div class="flex mb-4 mr-4">
+              <span class="font-bold">Rarity: </span>
+              <span class="mx-1">{{ card.rarity }}</span>
+            </div>
+
+            <div class="flex mb-4">
+              <div>
+                <span class="font-bold">Availability: </span>
+                <span *ngIf="offers.length">In Stock</span>
+                <span *ngIf="offers.length <= 0">Out of Stock</span>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <span class="font-bold">Available Items: </span>
+              <span *ngIf="totalItemsAvailable">{{ totalItemsAvailable }}</span>
+              <span *ngIf="totalItemsAvailable <= 0">No Available Item</span>
+            </div>
+
+            <div *ngIf="offerAvailable">
+              <span class="font-bold">Average price: </span>
+              <span>{{ avgPrice }} €</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-  </div>
-
-  <div class="mx-auto p-4" *ngIf="offerAvailable">
-    <div class="overflow-x-auto sm:rounded-lg">
-      <table class="min-w-[80%] text-sm text-left text-gray-500 dark:text-gray-400 mx-auto" *ngIf="!isSmallScreen">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="px-6 py-3">
-            Seller
-          </th>
-          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">
-            Price
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Edition Language
-          </th>
-          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">
-            Card Condition
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Foil?
-          </th>
-          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">
-            Quantity
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Card Description
-          </th>
-          <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">
-            Actions
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-          *ngFor="let o of offers"
-        >
-          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
-            {{ o.userOfferId }}
-          </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right font-semibold">
-            {{ o.price }} €
-          </td>
-          <td class="px-6 py-4 text-gray-900 dark:text-white">
-            {{ o.editionLang }}
-          </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-            {{ o.cardCondition }}
-          </td>
-          <td class="px-6 py-4 text-gray-900 dark:text-white">
-            <span
-              class="px-2 py-1 rounded-lg font-semibold text-sm"
-              [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}"
-            >
-              {{ o.isFoil ? 'Yes' : 'No' }}
-            </span>
-          </td>
-          <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right font-semibold">
-            {{ o.quantity }}
-          </td>
-          <td class="px-6 py-4 text-gray-900 dark:text-white">
-            {{ o.description }}
-          </td>
-          <td *ngIf="o.quantity > 0" class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white flex flex-wrap">
-            <input
-              step="1"
-              type="number"
-              min="1"
-              value="1"
-              [max]="o.quantity"
-              [(ngModel)]="o.quantityToAdd"
-              class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-            />
-            <button type="button" (click)="addToCart(o)" class="px-2">
-              <lucide-icon name="shopping-cart"></lucide-icon>
-            </button>
-          </td>
-          <td *ngIf="o.quantity <= 0" class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-            Out of stock
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <table class="mx-auto" *ngIf="isSmallScreen">
-        <tbody>
-          <tr class="flex flex-col border-b border-gray-200 dark:border-gray-700 my-5" *ngFor="let o of offers">
-            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
-              From: {{ o.userOfferId }}
+    <!-- Offers Table -->
+    <div class="mx-auto p-4" *ngIf="offerAvailable">
+      <div class="overflow-x-auto sm:rounded-lg">
+        <table class="min-w-[80%] text-sm text-left text-gray-500 dark:text-gray-400 mx-auto" *ngIf="!isSmallScreen">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Seller</th>
+            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
+            <th scope="col" class="px-6 py-3">Edition Language</th>
+            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
+            <th scope="col" class="px-6 py-3">Foil?</th>
+            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
+            <th scope="col" class="px-6 py-3">Card Description</th>
+            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let o of offers" class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+            <td class="px-6 py-4">{{ o.userOfferId }}</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-right font-semibold">{{ o.price }} €</td>
+            <td class="px-6 py-4">{{ o.editionLang }}</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">{{ o.cardCondition }}</td>
+            <td class="px-6 py-4 text-center">
+                <span class="px-2 py-1 rounded-lg font-semibold text-sm" [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}">
+                  {{ o.isFoil ? 'Yes' : 'No' }}
+                </span>
             </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              Price: {{ o.price }} €
-            </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
-              Language: {{ o.editionLang }}
-            </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              Condition: {{ o.cardCondition }}
-            </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
-              Foil?
-              <span
-                class="px-2 py-1 rounded-lg font-semibold text-sm"
-                [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}"
-              >
-                {{ o.isFoil ? 'Yes' : 'No' }}
-              </span>
-            </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              Quantity: {{ o.quantity }}
-            </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
-              Description: {{ o.description }}
-            </td>
-            <td *ngIf="o.quantity > 0" class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white flex flex-wrap">
-              <input
-                step="1"
-                type="number"
-                min="1"
-                value="1"
-                [max]="o.quantity"
-                [(ngModel)]="o.quantityToAdd"
-                class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-              />
-              <button (click)="addToCart(o)" type="button" class="px-3 pt-3 pb-3" >
+            <td class="px-6 py-4 text-right font-semibold">{{ o.quantity }}</td>
+            <td class="px-6 py-4">{{ o.description }}</td>
+            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center">
+              <input type="number" min="1" value="1" [max]="o.quantity" [(ngModel)]="o.quantityToAdd" class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+              <button (click)="addToCart(o)" class="px-2">
                 <lucide-icon name="shopping-cart"></lucide-icon>
               </button>
             </td>
-            <td *ngIf="o.quantity <= 0" class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              Out of stock
-            </td>
-
+            <td *ngIf="o.quantity <= 0" class="px-6 py-4 text-center">Out of stock</td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <table *ngIf="isSmallScreen" class="mx-auto">
+          <tbody>
+          <tr *ngFor="let o of offers" class="flex flex-col border-b border-gray-200 dark:border-gray-700 my-5">
+            <td class="px-6 py-4">From: {{ o.userOfferId }}</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Price: {{ o.price }} €</td>
+            <td class="px-6 py-4">Language: {{ o.editionLang }}</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Condition: {{ o.cardCondition }}</td>
+            <td class="px-6 py-4">
+              Foil?
+              <span class="px-2 py-1 rounded-lg font-semibold text-sm" [ngClass]="{'bg-green-500 text-white': o.isFoil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !o.isFoil}">
+                  {{ o.isFoil ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td class="px-6 py-4">Quantity: {{ o.quantity }}</td>
+            <td class="px-6 py-4">Description: {{ o.description }}</td>
+            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center">
+              <input type="number" min="1" value="1" [max]="o.quantity" [(ngModel)]="o.quantityToAdd" class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
+              <button (click)="addToCart(o)" class="px-2">
+                <lucide-icon name="shopping-cart"></lucide-icon>
+              </button>
+            </td>
+            <td *ngIf="o.quantity <= 0" class="px-6 py-4 text-center">Out of stock</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
-
-<div class="mx-auto" *ngIf="!offerAvailable">
-  <div class="bg-transparent flex items-center justify-center p-4 my-4">
-    <div class="max-w-md w-full bg-transparent rounded-lg shadow-md text-center p-6">
-      <lucide-icon name="circle-off" class="mx-auto w-[36px] h-[36px]"></lucide-icon>
-      <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">No Available Offers</h2>
-      <p class="mt-2 text-gray-600 dark:text-gray-400">There are currently no offers in stock for this card. Please check back later or explore other cards in our collection.</p>
-        <button routerLink="/card-list" class="mt-6 px-4 py-2 bg-blue-600 text-white dark:text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-          Explore Other Cards
-        </button>
-    </div>
-  </div>
-</div>
-

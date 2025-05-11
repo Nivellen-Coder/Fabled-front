@@ -1,0 +1,176 @@
+<div class="container mx-auto px-6 py-8">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Users List</h2>
+
+  <!-- Search Bar -->
+  <div class="mb-4 flex items-center">
+    <input
+      type="text"
+      placeholder="Search by username or email..."
+      class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white"
+      [(ngModel)]="searchTerm"
+      (input)="filterUsers()"
+    />
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-2xl">
+    <table class="min-w-full text-sm text-left text-gray-700 dark:text-gray-200">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-xs uppercase font-semibold">
+      <tr>
+        <th class="px-6 py-4">ID</th>
+        <th class="px-6 py-4">Username</th>
+        <th class="px-6 py-4">Email</th>
+        <th class="px-6 py-4">Roles</th>
+        <th class="px-6 py-4">Created At</th>
+        <th class="px-6 py-4">Last Login</th>
+        <th class="px-6 py-4">Active?</th>
+        <th class="px-6 py-4">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+      <tr *ngFor="let user of paginatedUsers()" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+        <td class="px-6 py-4">{{ user.id }}</td>
+        <td class="px-6 py-4 font-medium">{{ user.username }}</td>
+        <td class="px-6 py-4">{{ user.email }}</td>
+        <td class="px-6 py-4">
+          <ng-container *ngFor="let role of user.roles">
+              <span *ngIf="role === 'ROLE_ADMIN'" class="inline-block bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100 text-xs font-semibold px-2 py-1 rounded-full mr-1">
+                Admin
+              </span>
+            <span *ngIf="role === 'ROLE_USER'" class="inline-block bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 text-xs font-semibold px-2 py-1 rounded-full mr-1">
+                User
+              </span>
+          </ng-container>
+        </td>
+        <td class="px-6 py-4">
+          {{ user.creation | date:'medium' }}
+        </td>
+        <td class="px-6 py-4">
+          {{ user.lastLogin | date:'medium' }}
+        </td>
+        <td class="px-6 py-4">
+            <span
+              class="inline-block px-3 py-1 text-xs font-semibold rounded-full"
+              [ngClass]="{
+                'bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-200': user.isActive,
+                'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-300': !user.isActive
+              }"
+            >
+              {{ user.isActive ? 'Yes' : 'No' }}
+            </span>
+        </td>
+        <td class="px-6 py-4 flex gap-2 items-center">
+          <!-- Modifier -->
+          <button
+            class="p-2 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-400"
+            (click)="openEditModal(user)"
+            *ngIf="!user.roles.includes('ROLE_ADMIN')"
+            title="Edit"
+          >
+            <lucide-icon name="pen-line"></lucide-icon>
+          </button>
+
+          <!-- Supprimer -->
+          <button
+            class="p-2 rounded-full hover:bg-red-200 dark:hover:bg-red-800 text-red-600 dark:text-red-400"
+            (click)="deleteUser(user.id)"
+            *ngIf="!user.roles.includes('ROLE_ADMIN') && user.isActive"
+            title="Deactivate"
+          >
+            <lucide-icon name="x"></lucide-icon>
+          </button>
+
+          <!-- Réactiver -->
+          <button
+            class="p-2 rounded-full hover:bg-green-200 dark:hover:bg-green-800 text-green-600 dark:text-green-400"
+            (click)="reactivateUser(user.id)"
+            *ngIf="!user.roles.includes('ROLE_ADMIN') && !user.isActive"
+            title="Reactivate"
+          >
+            <lucide-icon name="check"></lucide-icon>
+          </button>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <div class="flex justify-between items-center mt-4 text-sm text-gray-600 dark:text-gray-300">
+    <div>Page {{ currentPage }} of {{ totalPages }}</div>
+    <div class="space-x-2">
+      <button
+        (click)="prevPage()"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded disabled:opacity-50"
+      >
+        Prev
+      </button>
+      <button
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="isModalOpen"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50"
+>
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md dark:bg-gray-600 dark:text-white">
+    <h2 class="text-xl font-semibold mb-4">Modify this User</h2>
+
+    <form (ngSubmit)="saveUser(selectedUser?.id)">
+      <label class="block mb-2 font-medium ">Username</label>
+      <input
+        [(ngModel)]="selectedUser!.username"
+        name="username"
+        class="w-full border rounded px-3 py-2 mb-4 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+
+      <label class="block mb-2 font-medium">Email</label>
+      <input
+        [(ngModel)]="selectedUser!.email"
+        name="email"
+        type="email"
+        class="w-full border rounded px-3 py-2 mb-4 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+
+      <label class="block mb-2 font-medium">Firstname</label>
+      <input
+        [(ngModel)]="selectedUser!.firstName"
+        name="firstname"
+        type="text"
+        class="w-full border rounded px-3 py-2 mb-4 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+
+      <label class="block mb-2 font-medium">Lastname</label>
+      <input
+        [(ngModel)]="selectedUser!.lastName"
+        name="lastname"
+        type="text"
+        class="w-full border rounded px-3 py-2 mb-4 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+
+<!--      <label class="block mb-2 font-medium">Active ?</label>-->
+<!--      <select [(ngModel)]="selectedUser!.isActive" name="isActive" class="w-full border rounded px-3 py-2 mb-4">-->
+<!--        <option [value]="true">Yes</option>-->
+<!--        <option [value]="false">No</option>-->
+<!--      </select>-->
+
+      <div class="flex justify-end gap-2">
+        <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+

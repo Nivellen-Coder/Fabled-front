@@ -74,6 +74,7 @@ export class UserRegisterComponent implements OnInit{
             Validators.maxLength(64)
           ]
         ],
+        hp: new FormControl(''),
         hasAddress: [
           false
         ],

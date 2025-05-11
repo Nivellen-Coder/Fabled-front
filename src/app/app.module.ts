@@ -36,7 +36,7 @@ import {
   PenLine,
   Pencil,
   Trash2,
-  ShoppingCart,
+  ShoppingCart, X, Check, Users, Layers, ShoppingBag, DollarSign,
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
@@ -45,6 +45,7 @@ import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 import { AutoFocus } from './directives/auto-focus.directive';
 import { HomeComponent } from './components/home/home.component';
 import {NavbarComponent} from "./components/navbar/navbar.component";
+import {FooterComponent} from "./components/footer/footer.component";
 
 
 @NgModule({ declarations: [
@@ -87,9 +88,16 @@ import {NavbarComponent} from "./components/navbar/navbar.component";
       SearchX,
       CircleOff,
       SquareMousePointer,
-      ShoppingCart
+      ShoppingCart,
+      X,
+      Check,
+      Users,
+      Layers,
+      ShoppingBag,
+      DollarSign
     }),
     NavbarComponent,
+    FooterComponent,
   ], providers: [
         {
             provide: HTTP_INTERCEPTORS,

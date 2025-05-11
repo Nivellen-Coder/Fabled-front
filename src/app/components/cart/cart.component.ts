@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {CartItem} from "../../models/cart/cartItemModel";
 import {CartService} from "../../services/cart/cart.service";
 import {NgForOf, NgIf} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +18,7 @@ export class CartComponent {
   items: CartItem[] = [];
   total = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(data => {
@@ -32,5 +33,9 @@ export class CartComponent {
 
   clear() {
     this.cartService.clearCart();
+  }
+
+  goToCheckout() {
+    this.router.navigate(['checkout']);
   }
 }

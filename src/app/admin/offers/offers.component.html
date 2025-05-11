@@ -1,0 +1,141 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Offers List</h2>
+  <div class="flex items-center mb-4">
+    <input
+      type="text"
+      [(ngModel)]="searchUsername"
+      (input)="filterOffers()"
+      placeholder="Search by username..."
+      class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-800 dark:text-white"
+    />
+  </div>
+  <div class="overflow-x-auto rounded-xl shadow bg-white dark:bg-gray-800">
+
+    <table class="min-w-full">
+      <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm">
+      <tr>
+        <th class="text-left px-4 py-3">ID</th>
+        <th class="text-left px-4 py-3">Card Name</th>
+        <th class="text-left px-4 py-3">Price (€)</th>
+        <th class="text-left px-4 py-3">Qty</th>
+        <th class="text-left px-4 py-3">Edition</th>
+        <th class="text-left px-4 py-3">Condition</th>
+        <th class="text-left px-4 py-3">Foil</th>
+        <th class="text-left px-4 py-3">Active</th>
+        <th class="text-left px-4 py-3">From</th>
+        <th class="text-left px-4 py-3">Created At</th>
+        <th class="text-left px-4 py-3">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let offer of updatePaginatedOffers()"
+        class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-sm text-gray-800 dark:text-gray-100"
+      >
+        <td class="px-4 py-2">{{ offer.id }}</td>
+        <td class="px-4 py-2 truncate max-w-[180px]">
+          <a
+            (click)="cardDetail(offer.cardIdentifier)"
+            class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200"
+          >
+            {{ offer.cardName }}
+          </a>
+        </td>
+        <td class="px-4 py-2">{{ offer.price }}</td>
+        <td class="px-4 py-2">{{ offer.quantity }}</td>
+        <td class="px-4 py-2">{{ offer.editionLang }}</td>
+        <td class="px-4 py-2">{{ offer.cardCondition }}</td>
+        <td class="px-4 py-2">
+            <span [ngClass]="offer.isFoil ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'">
+              {{ offer.isFoil ? 'Yes' : 'No' }}
+            </span>
+        </td>
+        <td class="px-4 py-2">
+            <span [ngClass]="offer.isActive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+              {{ offer.isActive ? 'Yes' : 'No' }}
+            </span>
+        </td>
+        <td class="px-4 py-2">{{ offer.userOfferId.username }}</td>
+        <td class="px-6 py-2">{{ offer.creation | date:'medium' }}</td>
+        <td class="px-4 py-2 whitespace-nowrap flex items-center gap-3">
+          <ng-container *ngIf="offer.isActive; else inactiveActions">
+            <button (click)="editOffer(offer)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <lucide-icon name="pen-line" class="w-4 h-4"></lucide-icon>
+            </button>
+            <button (click)="toggleOfferStatus(offer)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
+              <lucide-icon name="x"></lucide-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #inactiveActions>
+            <button (click)="toggleOfferStatus(offer)" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
+              <lucide-icon name="check"></lucide-icon>
+            </button>
+          </ng-template>
+        </td>
+<!--          <button class="bg-blue-500 text-white px-3 py-2 rounded-lg" (click)="editOffer(offer)">-->
+<!--            <lucide-icon name="pen-line" class="w-4 h-4"></lucide-icon>-->
+<!--          </button>-->
+<!--          <button (click)="deleteOffer(offer.id)" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg" *ngIf="offer.isActive">-->
+<!--            <lucide-icon name="trash-2" class="w-4 h-4"></lucide-icon>-->
+<!--          </button>-->
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <div class="flex justify-between items-center mt-4 text-sm text-gray-600 dark:text-gray-300">
+    <div>Page {{ currentPage }} of {{ totalPages }}</div>
+    <div class="space-x-2">
+      <button
+        (click)="prevPage()"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded disabled:opacity-50"
+      >
+        Prev
+      </button>
+      <button
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+        class="px-3 py-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE DE MODIFICATION -->
+<div
+  *ngIf="selectedOffer"
+  class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+>
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-xl relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">Update Offer</h2>
+
+    <form (ngSubmit)="updateOffer()">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm mb-1 text-gray-600 dark:text-gray-300">Price (€)</label>
+          <input type="number" min="0.01" step="0.01" [(ngModel)]="selectedOffer.price" name="price" class="w-full rounded-lg p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+        </div>
+
+        <div>
+          <label class="block text-sm mb-1 text-gray-600 dark:text-gray-300">Quantity</label>
+          <input type="number" min="0" [(ngModel)]="selectedOffer.quantity" name="quantity" class="w-full rounded-lg p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white" required />
+        </div>
+
+        <div class="col-span-2">
+          <label class="block text-sm mb-1 text-gray-600 dark:text-gray-300">Description</label>
+          <textarea [(ngModel)]="selectedOffer.description" name="description" class="w-full rounded-lg p-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white"></textarea>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end space-x-3">
+        <button type="button" (click)="selectedOffer = null" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-lg">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
