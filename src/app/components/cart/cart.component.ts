@@ -16,14 +16,14 @@ import {Router} from "@angular/router";
 })
 export class CartComponent {
   items: CartItem[] = [];
-  total = 0;
+  total: string = '';
 
   constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
     this.cartService.cart$.subscribe(data => {
       this.items = data;
-      this.total = this.cartService.getTotal();
+      this.total = this.cartService.getTotal().toFixed(2);
     });
   }
 

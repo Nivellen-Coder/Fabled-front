@@ -1,5 +1,5 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
-import {NgClass, NgIf} from '@angular/common';
+import {CurrencyPipe, NgClass, NgIf} from '@angular/common';
 import { NgFor } from '@angular/common';
 import { LucideAngularModule } from "lucide-angular";
 import { NgOptimizedImage } from '@angular/common'
@@ -22,9 +22,9 @@ import {FormsModule} from "@angular/forms";
     NgFor,
     NgOptimizedImage,
     LucideAngularModule,
-    RouterLink,
     NgClass,
     FormsModule,
+    CurrencyPipe,
   ],
   standalone: true
 })
@@ -37,10 +37,6 @@ export class CardDetailComponent implements OnInit {
   offers: offerListByCardModel[] = [];
   totalItemsAvailable: number = 0;
   avgPrice: number = 0;
-  // minPriceToday: number = 0;
-  // dateOfToday: string = "";
-  // lastTenDays: [string] = [""];
-  // minPrices: [number] = [0];
 
   constructor(private cardService: CardService, private actRoute: ActivatedRoute, private router: Router, private offerService: OfferService, private userService: UserService, private cartService: CartService, private toastr: ToastrService) {
     this.updateScreenSize();
@@ -74,12 +70,9 @@ export class CardDetailComponent implements OnInit {
         for (let o of this.offers) {
           this.totalItemsAvailable += o.quantity;
           total += o.price;
-          // if(o.price <= minPrice){
-          //   this.minPriceToday = o.price;
-          // }
           this.offers = this.offers.map(o => ({
             ...o,
-            quantityToAdd: 1 // 👈 initialise ici
+            quantityToAdd: 1
           }));
         }
         this.avgPrice = total / this.offers.length;
@@ -97,7 +90,6 @@ export class CardDetailComponent implements OnInit {
     const maxStock = offer.quantity;
 
     if (quantity > maxStock) {
-      // Message ou blocage visuel
       this.toastr.warning('Quantity exceeded!');
       return;
     }
@@ -123,7 +115,7 @@ export class CardDetailComponent implements OnInit {
 
   private updateScreenSize(): void {
     const width = window.innerWidth;
-    this.isSmallScreen = width < 768;
+    this.isSmallScreen = width < 600;
   }
 
 }

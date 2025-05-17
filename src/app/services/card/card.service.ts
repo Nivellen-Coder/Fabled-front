@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import { environment } from 'src/environments/environment.development';
 import {catchError, EMPTY, Observable, of, throwError} from "rxjs";
-import { CardListModel } from "../../models/card/cardListModel";
+import {Card, CardListModel} from "../../models/card/cardListModel";
 import { CardDetailModel } from "../../models/card/cardDetailModel";
 
 @Injectable({
@@ -10,25 +10,26 @@ import { CardDetailModel } from "../../models/card/cardDetailModel";
 })
 export class CardService {
 
-  constructor(private httpClient: HttpClient) { }
-
-  public getAllCards(page: number, pageSize: number): Observable<CardListModel>{
-    return this.httpClient.get<CardListModel>(environment.API_BASE_URL + "/cards/search?as=grid&order=name&q=%28game%3Apaper%29" + "&total_cards=" + pageSize + "&page=" + page);
+  constructor(private httpClient: HttpClient) {
   }
 
-  public getCardById(id: string): Observable<CardDetailModel>{
+  public getAllCards(page: number, pageSize: number): Observable<CardListModel> {
+    return this.httpClient.get<CardListModel>(environment.API_BASE_URL + "/cards/search?as=grid&order=name&q=(game:paper) unique:art" + "&total_cards=" + pageSize + "&page=" + page);
+  }
+
+  public getCardById(id: string): Observable<CardDetailModel> {
     return this.httpClient.get<CardDetailModel>(environment.API_BASE_URL + '/cards/' + id)
   }
 
   public getCardsByName(name: string, pageSize: number, page: number): Observable<CardListModel> {
     let trimmedName = name?.trim();
 
-    if(trimmedName == null || trimmedName === "") {
+    if (trimmedName == null || trimmedName === "") {
       return EMPTY;
     }
 
     return this.httpClient.get<CardListModel>(
-      `${environment.API_BASE_URL}/cards/search?order=edhrec&q=${trimmedName}&page=${page}&unique=prints&total_cards=${pageSize}`
+      `${environment.API_BASE_URL}/cards/search?order=name&q=${trimmedName}&page=${page}&unique=art&total_cards=${pageSize}`
     ).pipe(
       catchError((error) => {
         const message = error.status === 404
@@ -40,21 +41,33 @@ export class CardService {
   }
 
 
-  public getCardsByCriterias(name: string, page: number, filters: any): Observable<CardListModel>{
+  public getCardsByCriterias(name: string, page: number, filters: any, inStock: boolean): Observable<CardListModel> {
     let params = new HttpParams().set('page', page);
     let trimmedName = name?.trim();
+    let queryParts: string[] = [];
 
-    if (filters.color) params = params.set('q', (trimmedName ? trimmedName + " " : "") + filters.color);
-    if (filters.mana) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + filters.mana);
-    if (filters.rarity) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + filters.rarity);
-    if (filters.power) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + (filters.rarity ? filters.rarity + " " : "") + filters.power);
-    if (filters.toughness) params = params.set('q', (trimmedName ? trimmedName + " " : "") + (filters.color ? filters.color + " " : "") + (filters.mana ? filters.mana + " " : "") + (filters.rarity ? filters.rarity + " " : "") + (filters.power ? filters.power + " " : "") + filters.toughness);
-    // if (filters.cost) params = params.set('cost', filters.cost);
-    // if (filters.cardType) params = params.set('cardType', filters.cardType);
+    if (trimmedName) queryParts.push(trimmedName);
+    if (filters.color) queryParts.push(filters.color);
+    if (filters.mana) queryParts.push(filters.mana);
+    if (filters.rarity) queryParts.push(filters.rarity);
+    if (filters.power) queryParts.push(filters.power);
+    if (filters.toughness) queryParts.push(filters.toughness);
+
+    // Si l'utilisateur veut uniquement les cartes en stock
+    if (inStock) {
+      queryParts.push("game:paper");
+      queryParts.push("unique:art");
+      queryParts.push("order:name");
+    }
+
+    if (queryParts.length > 0) {
+      const fullQuery = queryParts.join(" ");
+      params = params.set('q', fullQuery);
+    }
 
     return this.httpClient.get<CardListModel>(
       `${environment.API_BASE_URL}/cards/search`,
-      { params }
+      {params}
     ).pipe(
       catchError((error) => {
         if (error.status === 404 || error.status === 400) {

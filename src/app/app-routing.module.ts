@@ -18,6 +18,9 @@ import {UsersComponent} from "./admin/users/users.component";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {cartItemsGuard} from "./guards/cart-items.guard";
 import {ContactComponent} from "./components/contact/contact.component";
+import {TermsOfUseComponent} from "./components/terms-of-use/terms-of-use.component";
+import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
+import {AboutUsComponent} from "./components/about-us/about-us.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -34,6 +37,9 @@ const routes: Routes = [
   { path: 'user-address-create', component: AddressCreateComponent, canActivate: [AuthGuard] },
   { path: 'user-offer-edit/:id' , component: UserOfferEditComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
+  { path: 'terms-of-use', component: TermsOfUseComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'about-us', component: AboutUsComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard, cartItemsGuard] },
   { path: '**', redirectTo: 'home' },

@@ -59,9 +59,6 @@
         <td class="px-6 py-2">{{ offer.creation | date:'medium' }}</td>
         <td class="px-4 py-2 whitespace-nowrap flex items-center gap-3">
           <ng-container *ngIf="offer.isActive; else inactiveActions">
-            <button (click)="editOffer(offer)" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
-              <lucide-icon name="pen-line" class="w-4 h-4"></lucide-icon>
-            </button>
             <button (click)="toggleOfferStatus(offer)" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
               <lucide-icon name="x"></lucide-icon>
             </button>

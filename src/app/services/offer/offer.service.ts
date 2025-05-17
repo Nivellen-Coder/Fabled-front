@@ -3,6 +3,7 @@ import { offerCreateModel } from '../../models/offer/offerCreateModel';
 import { catchError, Observable, throwError } from "rxjs";
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { offerListByCardModel } from "../../models/offer/offerListByCardModel";
+import {offerListInStock} from "../../models/offer/offerListInStock";
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,13 @@ export class OfferService {
 
   public deleteUserOffer(offerId: number, userId: string): Observable<any> {
     return this.httpClient.delete(`${this.apiURL}/profile/${offerId}/${userId}/delete`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public getAvailableCardIds(): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${this.apiURL}/available-cards`)
       .pipe(
         catchError(this.handleError)
       );

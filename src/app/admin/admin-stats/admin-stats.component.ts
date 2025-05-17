@@ -16,10 +16,10 @@ import {Router} from "@angular/router";
 })
 export class AdminStatsComponent implements OnInit {
   stats = {
-    totalUsers: 1345,
-    totalOffers: 3280,
-    sales: 487,
-    revenue: 12987.50
+    totalUsers: 0,
+    totalOffers: 0,
+    sales: 0,
+    revenue: 0
   };
   constructor(private httpClient: HttpClient, private router: Router) { }
 
@@ -29,7 +29,7 @@ export class AdminStatsComponent implements OnInit {
         this.stats = data;
       },
       error: (err) => {
-        console.error('Erreur récupération stats admin', err);
+        console.error('Error: unable to retrieve stats', err);
       }
     });
   }

@@ -1,85 +1,128 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CartService} from "../../services/cart/cart.service";
 import {UserService} from "../../services/user/user.service";
-import {finalize, Observable, tap} from "rxjs";
 import {CartItem} from "../../models/cart/cartItemModel";
-import {Address, UserInfosModel} from "../../models/user/userInfosModel";
 import {AuthService} from "../../services/auth/auth.service";
-import {data} from "autoprefixer";
 import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {StripeCardComponent, StripeService} from "ngx-stripe";
+import {PaymentMethodCreateParams, StripeCardElementOptions, StripeElementsOptions} from "@stripe/stripe-js";
+import {HttpClient} from "@angular/common/http";
+import {ToastrService} from "ngx-toastr";
+import {Router, RouterLink} from "@angular/router";
 import {AddressService} from "../../services/address/address.service";
-import {Country} from "../../models/user/userCreateModel";
-import {CountryService} from "../../services/country/country.service";
+import {Address} from "../../models/user/userInfosModel";
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
+    StripeCardComponent,
     CurrencyPipe,
-    NgIf,
     NgForOf,
-    ReactiveFormsModule
+    NgIf,
+    RouterLink
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent implements OnInit {
+  @ViewChild(StripeCardComponent)
+  card!: StripeCardComponent;
+  userFirstName: string = "";
+  userLastName: string = "";
+  userId: string | null = "";
+  addressId: string | null = "";
+  address: Address | null = null;
   cartItems: CartItem[] = [];
-  countries: Country[] = [];
-  address: Address | undefined;
-  addressFormGroup!: FormGroup;
-  subtotal = 0;
-  tax = 0;
-  total = 0;
-  userId: string | null = this.authService.loggedInUserId;
-  showAddressModal = false;
 
-  constructor(private fb: FormBuilder, private countryService: CountryService, private addressService: AddressService, private cartService: CartService, private userService: UserService, private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.addressFormGroup = this.fb.group({
-      street: ['', [Validators.required, Validators.minLength(3)]],
-      houseNumber: ['', [Validators.required, Validators.minLength(2)]],
-      city: ['', [Validators.required, Validators.minLength(2)]],
-      region: ['', [Validators.required, Validators.minLength(2)]],
-      postalCode: ['', [Validators.required, Validators.minLength(2)]],
-      country: [[], [Validators.required]],
+  ngOnInit() {
+    this.cartService.cart$.subscribe(items => {
+      this.cartItems = items;
     });
-
-    this.cartService.cart$.subscribe((data) => {
-        this.cartItems = data;
-    });
-    this.userService.userProfile(this.userId).subscribe((data: UserInfosModel) => {
-        this.address = data.address;
-    });
-    this.countryService.countryList().pipe(
-      tap((data: Country[]) => {
-        this.countries = data;
-      }),
-      finalize(() => {
-      })
-    ).subscribe();
-    this.calculateTotal();
+    this.userId = this.authService.loggedInUserId;
+    this.userService.userProfile(this.userId).subscribe( async (user) => {
+      this.addressId = user.address.id;
+      this.userFirstName = user.firstName;
+      this.userLastName = user.lastName;
+      this.address = user.address;
+    })
   }
 
-  calculateTotal() {
-    this.subtotal = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    this.tax = +(this.subtotal * 0.21).toFixed(2);
-    this.total = +(this.subtotal + this.tax).toFixed(2);
-  }
+  cardOptions: StripeCardElementOptions = {
+    style: {
+      base: {
+        iconColor: '#666EE8',
+        color: '#aab7c4',
+        fontWeight: '400',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      }
+    },
+  };
 
-  saveAddress(): void {
-    if (this.addressFormGroup.valid) {
-      const newAddress = this.addressFormGroup.value;
-      this.addressService.createAddress(this.userId, newAddress).subscribe(response => {
-        this.address = newAddress;
-        location.reload();
+  elementsOptions: StripeElementsOptions = {
+    locale: 'en'
+  };
+
+  totalAmountCents: number = Math.round(this.cartService.getTotal() * 100);
+
+  constructor(private stripeService: StripeService,
+              private http: HttpClient,
+              private cartService: CartService,
+              private authService: AuthService,
+              private userService: UserService,
+              private addressService: AddressService,
+              private toastr: ToastrService,
+              private router: Router,
+  ) {}
+
+  pay(event: Event) {
+    event.preventDefault();
+
+    const totalAmountCents = this.totalAmountCents;
+    const payload = {
+      cart: this.cartItems.map(item => ({
+        offer_id: item.id,
+        quantity: item.quantity,
+        unit_price: Math.round(item.price * 100),
+      })),
+      amount: totalAmountCents,
+      user_id: this.userId,
+      address_id: this.addressId
+    };
+
+    this.http.post<any>('http://localhost:8000/api/payment', {
+      cart: payload.cart,
+      amount: payload.amount,
+      user_id: payload.user_id,
+      address_id: payload.address_id,
+    }).subscribe((paymentIntent: { clientSecret: any; }) => {
+      const clientSecret = paymentIntent.clientSecret;
+
+      this.stripeService.confirmCardPayment(clientSecret, {
+        payment_method: { card: this.card.element }
+      }).subscribe((result) => {
+        if (result.error) {
+          this.toastr.error(result.error.message);
+        } else if (result.paymentIntent?.status === 'succeeded') {
+          this.http.post('http://localhost:8000/api/orders/create', {
+            payment_intent_id: result.paymentIntent.id,
+            cart: payload.cart,
+            user_id: payload.user_id,
+            address_id: payload.address_id,
+            total_amount: payload.amount,
+          }).subscribe(() => {
+            this.toastr.success('Payment Accepted', 'success');
+            this.cartService.clearCart();
+            this.router.navigate(['home']);
+          });
+        }
       });
-    }
-  }
-
-  proceedToPayment() {
-    console.log('Paiement en cours...');
+    });
   }
 }

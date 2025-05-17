@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CardListModel, Card } from "../../models/card/cardListModel";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CardService } from "../../services/card/card.service";
-import { Router, RouterLink } from "@angular/router";
-import { NgFor, NgIf, NgOptimizedImage, ViewportScroller } from '@angular/common';
-import { debounceTime, distinctUntilChanged, Subscription, switchMap } from "rxjs";
+import { Router } from "@angular/router";
+import { NgFor, NgIf, ViewportScroller } from '@angular/common';
+import {debounceTime, distinctUntilChanged, forkJoin, Subscription, switchMap} from "rxjs";
 import { LucideAngularModule } from "lucide-angular";
 import { PaginationComponent } from "../pagination/pagination.component";
 import { ToastrService } from "ngx-toastr";
+import {OfferService} from "../../services/offer/offer.service";
 
 @Component({
   selector: 'app-card-list',
@@ -16,9 +17,7 @@ import { ToastrService } from "ngx-toastr";
   imports: [
     NgIf,
     NgFor,
-    NgOptimizedImage,
     LucideAngularModule,
-    RouterLink,
     FormsModule,
     ReactiveFormsModule,
     PaginationComponent,
@@ -28,6 +27,7 @@ import { ToastrService } from "ngx-toastr";
 export class CardListComponent implements OnInit {
   set: string = "";
   cards: Card[] = [];
+  availableCardIds: string[] = [];
   currentPage: number = 1;
   nbPage: number = 1;
   pageSize: number = 175;
@@ -54,11 +54,12 @@ export class CardListComponent implements OnInit {
     toughness: new FormControl(''),
     cost: new FormControl(''),
     cardType: new FormControl(''),
+    inStockOnly: new FormControl(false),
   });
 
-  constructor(private cardService: CardService, private router: Router, private toastr: ToastrService, private viewportScroller: ViewportScroller) {
-    this.searchForCards(1);
+  constructor(private cardService: CardService, private router: Router, private toastr: ToastrService, private viewportScroller: ViewportScroller, private offerService: OfferService) {
     this.isLoading = true;
+    this.searchForCards(1);
   }
 
   ngOnInit(){
@@ -74,10 +75,10 @@ export class CardListComponent implements OnInit {
     this.cardService.getAllCards(this.currentPage, this.pageSize).subscribe((cards: CardListModel) => {
       this.isLoading = true;
       this.cards = cards.data;
+      console.log(this.cards);
       this.total = cards.total_cards;
       this.nbPage = Math.ceil(this.total / this.pageSize);
       this.pageSize = 175;
-      console.log(this.cards);
       this.divList = new Array(175);
       this.isLoading = false;
       this.isSearching = false;
@@ -86,39 +87,48 @@ export class CardListComponent implements OnInit {
 
   public searchForCards(page: number): void {
     const searchControl = this.searchForm.get('search');
+    const inStockOnly = this.searchByCriteriasForm.get('inStockOnly')?.value;
 
-    if (searchControl) {
-      // Abonnement à la recherche réactive
-      this.searchSubscription = searchControl.valueChanges.pipe(
-        debounceTime(1000), // Réduit les appels multiples
-        distinctUntilChanged(), // Se déclenche seulement si la valeur change
-        switchMap((searchValue) => {
-          // Réinitialiser les résultats actuels avant chaque recherche
-          this.currentPage = 1;
-          this.cards = [];
-          this.searchValue = searchValue;
-          this.isSearching = true;
-          this.total = 0;
-          this.nbPage = 0;
+    if (!searchControl) return;
+
+    this.searchSubscription.unsubscribe(); // Nettoyage de l'ancien abonnement
+
+    this.searchSubscription = searchControl.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap((searchValue) => {
+        this.cards = [];
+        this.searchValue = searchValue;
+        this.currentPage = 1;
+        this.isSearching = true;
+        this.total = 0;
+        this.nbPage = 0;
+
+        if (inStockOnly) {
+          // Recherche locale dans les cartes en stock
+          this.searchInStockByName(searchValue, page);
+          return [];
+        } else {
           return this.cardService.getCardsByName(searchValue, this.pageSize, page);
-        })
-      ).subscribe({
-        next: (result) => {
-          // Si des résultats sont trouvés
-          if (result?.data && result.data.length > 0) {
-            this.cards = result.data;
-            this.total = result.total_cards;
-            this.nbPage = Math.ceil(this.total / this.pageSize);
-          } else {
-            // Aucun résultat trouvé
-            this.cards = [];
-            this.toastr.info('No cards found matching your search criteria. Try again.');
-          }
-        },
-      });
-      this.isSearching = false;
-    }
+        }
+      })
+    ).subscribe({
+      next: (result: any) => {
+        if (!result?.data) return;
+
+        this.cards = result.data;
+        this.total = result.total_cards;
+        this.nbPage = Math.ceil(this.total / this.pageSize);
+        this.isSearching = true;
+      },
+      error: () => {
+        this.toastr.error('Erreur lors de la recherche.');
+        this.cards = [];
+        this.isSearching = false;
+      }
+    });
   }
+
 
   changePage(page: number): void {
     this.currentPage = page;
@@ -139,11 +149,15 @@ export class CardListComponent implements OnInit {
   }
 
   searchByCriterias(page: number) {
+    // Récupérer les classes sélectionnées (hors champs spécifiques)
     this.classesSelected = Object.keys(this.searchByCriteriasForm.value || {})
-      .filter(key => this.searchByCriteriasForm.value[key]
-        && !['mana', 'rarity', 'power', 'toughness', 'cost', 'cardType'].includes(key)
+      .filter(
+        key =>
+          this.searchByCriteriasForm.value[key] &&
+          !['mana', 'rarity', 'power', 'toughness', 'cost', 'cardType', 'inStockOnly'].includes(key)
       );
 
+    // Extraction des valeurs du formulaire
     const mana = this.searchByCriteriasForm.get('mana')?.value;
     const rarity = this.searchByCriteriasForm.get('rarity')?.value;
     const power = this.searchByCriteriasForm.get('power')?.value;
@@ -151,33 +165,21 @@ export class CardListComponent implements OnInit {
     const cost = this.searchByCriteriasForm.get('cost')?.value;
     const cardType = this.searchByCriteriasForm.get('cardType')?.value;
     const criterias = this.searchByCriteriasForm.get('color')?.value;
+    const inStock = this.searchByCriteriasForm.get('inStockOnly')?.value;
 
-    if (criterias === "white") {
-      this.color = 'c:"{W}"';
-    }
-
-    if (criterias === "blue") {
-      this.color = 'c:"{U}"';
-    }
-
-    if (criterias === "black") {
-      this.color = 'c:"{B}"';
-    }
-
-    if (criterias === "red") {
-      this.color = 'c:"{R}"';
-    }
-
-    if (criterias === "green") {
-      this.color = 'c:"{G}"';
-    }
-
-    if (criterias === "colorless") {
-      this.color = 'c:colorless';
+    // Définition de la couleur pour l'API
+    switch (criterias) {
+      case 'white': this.color = 'c:"{W}"'; break;
+      case 'blue': this.color = 'c:"{U}"'; break;
+      case 'black': this.color = 'c:"{B}"'; break;
+      case 'red': this.color = 'c:"{R}"'; break;
+      case 'green': this.color = 'c:"{G}"'; break;
+      case 'colorless': this.color = 'c:colorless'; break;
     }
 
     console.log("Criterias: ", criterias);
 
+    // Construction des filtres
     const filters: any = {};
     if (mana) filters.mana = 'mv=' + mana;
     if (rarity) filters.rarity = 'r:' + rarity;
@@ -187,96 +189,141 @@ export class CardListComponent implements OnInit {
     if (cardType) filters.cardType = cardType;
     if (this.color) filters.color = this.color;
 
-    this.isLoading = true;
+    const cardRequest$ = this.cardService.getCardsByCriterias(this.searchValue, page, filters, inStock);
 
-    this.cardService.getCardsByCriterias(this.searchValue, page, filters).subscribe((cards: CardListModel) => {
-      this.cards = cards.data || [];
-      this.total = cards.total_cards;
-      this.pageSize = 175;
-      this.nbPage =  Math.ceil(this.total / this.pageSize);
-      this.isSearchingWithCriterias = true;
-      this.isSearching = true;
-      this.isLoading = false;
-      this.currentPage = page;
-      console.log(this.cards);
+    // Si on filtre uniquement les cartes en stock
+    if (inStock) {
+      this.cards = [];
+      const offerRequest$ = this.offerService.getAvailableCardIds();
+
+      forkJoin([cardRequest$, offerRequest$]).subscribe({
+        next: ([cardData, availableIds]) => {
+          this.cards = (cardData.data || []).filter(card => availableIds.includes(card.id));
+          this.total = this.cards.length;
+          this.pageSize = 175;
+          this.nbPage = Math.ceil(this.total / this.pageSize);
+          this.isSearching = true;
+          this.isSearchingWithCriterias = true;
+          this.isLoading = false;
+          console.log(this.cards);
+        },
+        error: (err) => {
+          console.error("Erreur lors du chargement des cartes avec filtres et offres :", err);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      // Recherche normale sans contrainte d'inventaire
+      cardRequest$.subscribe({
+        next: (cards) => {
+          this.cards = cards.data || [];
+          this.total = cards.total_cards;
+          this.pageSize = 175;
+          this.nbPage = Math.ceil(this.total / this.pageSize);
+          this.isSearching = true;
+          this.isSearchingWithCriterias = true;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error("Erreur lors du chargement des cartes avec filtres :", err);
+          this.isLoading = false;
+        }
+      });
+    }
+
+    // Cas spécial : recherche vide mais stock activé (affichage de toutes les cartes dispo)
+    if (
+      inStock &&
+      !criterias &&
+      !mana &&
+      !rarity &&
+      !power &&
+      !toughness &&
+      !cost &&
+      !cardType
+    ) {
+      this.offerService.getAvailableCardIds().subscribe({
+        next: (ids) => {
+          this.availableCardIds = ids;
+
+          const requests = ids.map(id => this.cardService.getCardById(id));
+
+          forkJoin(requests).subscribe({
+            next: (allCards) => {
+              const filtered = allCards.filter(card =>
+                card.name.toLowerCase().includes(this.searchValue.toLowerCase())
+              );
+
+              this.total = filtered.length;
+              this.nbPage = Math.ceil(this.total / this.pageSize);
+              this.cards = this.paginateArray(filtered, this.pageSize, page);
+              this.currentPage = page;
+              this.isSearching = true;
+              this.isSearchingWithCriterias = true;
+              this.isLoading = false;
+            },
+            error: (err) => {
+              console.error("Erreur lors de la récupération des cartes :", err);
+              this.toastr.error("Erreur de chargement des cartes en stock.");
+              this.isLoading = false;
+            }
+          });
+        },
+        error: (err) => {
+          console.error("Erreur lors de la récupération des IDs disponibles :", err);
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+
+  private searchInStockByName(searchValue: string, page: number) {
+    this.isLoading = true;
+    this.cards = [];
+
+    this.offerService.getAvailableCardIds().subscribe({
+      next: (ids) => {
+        this.availableCardIds = ids;
+
+        // Chargement de toutes les cartes disponibles
+        const requests = ids.map(id => this.cardService.getCardById(id));
+
+        forkJoin(requests).subscribe({
+          next: (allCards) => {
+            // Filtrage local par nom (insensible à la casse)
+            const filtered = allCards.filter(card =>
+              card.name.toLowerCase().includes(searchValue.toLowerCase())
+            );
+
+            this.total = filtered.length;
+            this.nbPage = Math.ceil(this.total / this.pageSize);
+
+            // Paginer les cartes filtrées
+            const cardsPage = this.paginateArray(filtered, this.pageSize, page);
+            this.cards = cardsPage;
+            this.currentPage = page;
+            this.isSearching = true;
+            this.isSearchingWithCriterias = true;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error("Erreur lors de la récupération des cartes :", err);
+            this.toastr.error("Erreur de chargement des cartes en stock.");
+            this.isLoading = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error("Erreur lors de la récupération des IDs :", err);
+        this.toastr.error("Erreur de récupération du stock.");
+        this.isLoading = false;
+      }
     });
   }
 
-  private fetchCardsByName(page: number): void {
-    let trimmedSearchValue = this.searchForm.get('search')?.value; // Supprime les espaces inutiles
-
-    console.log("Valeur de searchValue :", `"${trimmedSearchValue}"`);
-
-    if (!trimmedSearchValue) {
-      console.log("Aucune valeur de recherche -> On ne fait pas d'appel API.");
-      this.cards = []; // Réinitialise les résultats
-      this.total = 0;
-      this.nbPage = 0;
-      this.isSearching = false;
-      return; // Arrête la méthode pour éviter l'appel API
-    }
-
-    this.cardService.getCardsByName(trimmedSearchValue, this.pageSize, page)
-      .subscribe({
-        next: (cards: CardListModel) => {
-          this.updateCardList(cards, 175);
-          this.isSearching = true;
-          this.isSearchingWithCriterias = false;
-        },
-        error: (error) => {
-          console.error("Erreur API : ", error);
-          this.isSearching = false;
-        }
-      });
-  }
-
-  // private fetchCardsByCriterias(page: number): void {
-  //   this.classesSelected = Object.keys(this.searchByCriteriasForm.value || {})
-  //     .filter(key => this.searchByCriteriasForm.value[key]
-  //       && !['talent', 'rarity', 'setType', 'pitch', 'cost', 'cardType'].includes(key)
-  //     );
-  //
-  //   const talent = this.searchByCriteriasForm.get('talent')?.value;
-  //   const rarity = this.searchByCriteriasForm.get('rarity')?.value;
-  //   const set = this.searchByCriteriasForm.get('setType')?.value;
-  //   const pitch = this.searchByCriteriasForm.get('pitch')?.value;
-  //   const cost = this.searchByCriteriasForm.get('cost')?.value;
-  //   const cardType = this.searchByCriteriasForm.get('cardType')?.value;
-  //   const criterias = this.searchByCriteriasForm.get('color')?.value;
-  //
-  //   if (criterias === "white") {
-  //     this.color = 'o:"{W}"';
-  //   }
-  //
-  //   console.log("Criterias: ", criterias);
-  //
-  //   const filters: any = {};
-  //   if (talent) filters.talent = talent;
-  //   if (rarity) filters.rarity = rarity;
-  //   if (set) filters.set = set;
-  //   if (pitch) filters.pitch = pitch;
-  //   if (cost) filters.cost = cost;
-  //   if (cardType) filters.cardType = cardType;
-  //   if (this.color) filters.white = this.color;
-  //
-  //   this.cardService.getCardsByCriterias(this.searchValue, page, filters).subscribe((cards: CardListModel) => {
-  //     this.updateCardList(cards, 48);
-  //     this.isSearchingWithCriterias = true;
-  //   });
-  // }
-
-  // private fetchAllCards(page: number): void {
-  //   this.cardService.getAllCards(page, this.pageSize).subscribe((cards: CardListModel) => {
-  //     this.updateCardList(cards, 50);
-  //   });
-  // }
-
-  private updateCardList(cards: CardListModel, pageSize: number): void {
-    this.isLoading = true;
-    this.cards = cards.data;
-    this.total = cards.total_cards;
-    this.pageSize = pageSize;
-    this.nbPage = Math.ceil(this.total / this.pageSize); // Calcul du nombre de pages
-    this.isLoading = false;
+  private paginateArray<T>(array: T[], pageSize: number, pageNumber: number): T[] {
+    const startIndex = (pageNumber - 1) * pageSize;
+    return array.slice(startIndex, startIndex + pageSize);
   }
 }

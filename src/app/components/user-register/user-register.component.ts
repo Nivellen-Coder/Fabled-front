@@ -24,6 +24,7 @@ export class UserRegisterComponent implements OnInit{
     lastName: new FormControl(''),
     firstName: new FormControl(''),
     hp: new FormControl(''),
+    isAdult: new FormControl(false, [Validators.requiredTrue]),
     hasAddress: new FormControl(false),
     street: new FormControl(''),
     streetSecond: new FormControl(''),
@@ -74,7 +75,13 @@ export class UserRegisterComponent implements OnInit{
             Validators.maxLength(64)
           ]
         ],
-        hp: new FormControl(''),
+        hp: [
+          ''
+        ],
+        isAdult: [
+          false,
+          [Validators.requiredTrue]
+        ],
         hasAddress: [
           false
         ],

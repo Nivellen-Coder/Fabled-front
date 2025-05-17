@@ -20,7 +20,7 @@ export class CardOfferFormComponent implements OnInit {
 
   offerForm: FormGroup = new FormGroup({
     quantity: new FormControl(1),
-    price: new FormControl(0.01),
+    price: new FormControl(0.50),
     editionLang: new FormControl('English'),
     cardCondition: new FormControl('Near Mint'),
     isFoil: new FormControl(false),
@@ -47,9 +47,10 @@ export class CardOfferFormComponent implements OnInit {
           ]
         ],
         price: [
-          0.01,
+          0.50,
           [
             Validators.required,
+            Validators.min(0.50)
           ]
         ],
         editionLang: [
@@ -79,11 +80,9 @@ export class CardOfferFormComponent implements OnInit {
 
       this.offerService.offerCreate(formData, this.cardId, this.userId).pipe(
         finalize(() => {
-          console.log(this.userId);
         })
       ).subscribe({
         next: () => {
-          // Redirection vers la page de login après une inscription réussie
           this.router.navigate(['/card-detail/' + this.cardId]);
         },
         error: (e) => {

@@ -8,6 +8,7 @@ import {CardDetailModel} from "../../models/card/cardDetailModel";
 import {Router, RouterLink} from "@angular/router";
 import {OfferService} from "../../services/offer/offer.service";
 import {ToastrService} from "ngx-toastr";
+import {OrderService} from "../../services/order/order.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +21,9 @@ export class UserProfileComponent implements OnInit {
   userData : UserInfosModel = {} as UserInfosModel ;
   userOffers: offerListByUserIdModel = {} as offerListByUserIdModel;
   userAddress : Address = {} as Address;
+  orders: any[] = [];
 
-  constructor(private authService: AuthService, private offerService: OfferService,private userService: UserService, private cardService: CardService, private router: Router,  private toastr: ToastrService) {
+  constructor(private orderService: OrderService, private authService: AuthService, private offerService: OfferService,private userService: UserService, private cardService: CardService, private router: Router,  private toastr: ToastrService) {
 
   }
 
@@ -36,6 +38,21 @@ export class UserProfileComponent implements OnInit {
     this.userService.userProfile(this.userId).subscribe((data: UserInfosModel) => {
       this.userData = data;
       this.userAddress = data?.address;
+    });
+
+    this.orderService.getOrdersByCurrentUser().subscribe({
+      next: (orders) => {
+        this.orders = orders
+        console.log(orders);
+        for (let order of orders) {
+          order.items.forEach(item => {
+            this.cardService.getCardById(item.cardName).subscribe((data: CardDetailModel) => {
+              item.cardName = data.name;
+            });
+          })
+        }
+      },
+      error: (err) => console.error('Erreur de récupération des commandes', err)
     });
 
     this.userService.userOffersById(this.userId).subscribe((data: offerListByUserIdModel) => {

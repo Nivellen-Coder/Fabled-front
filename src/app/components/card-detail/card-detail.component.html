@@ -110,7 +110,7 @@
           <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">Seller</th>
-            <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
+            <th scope="col" class="px-8 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
             <th scope="col" class="px-6 py-3">Edition Language</th>
             <th scope="col" class="px-6 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
             <th scope="col" class="px-6 py-3">Foil?</th>
@@ -122,7 +122,7 @@
           <tbody>
           <tr *ngFor="let o of offers" class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
             <td class="px-6 py-4">{{ o.userOfferId }}</td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-right font-semibold">{{ o.price }} €</td>
+            <td class="px-8 py-4 bg-gray-50 dark:bg-gray-700 text-right font-semibold">{{ o.price | currency: 'EUR' }}</td>
             <td class="px-6 py-4">{{ o.editionLang }}</td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">{{ o.cardCondition }}</td>
             <td class="px-6 py-4 text-center">
@@ -142,11 +142,11 @@
           </tr>
           </tbody>
         </table>
-        <table *ngIf="isSmallScreen" class="mx-auto">
+        <table *ngIf="isSmallScreen" class="w-full">
           <tbody>
           <tr *ngFor="let o of offers" class="flex flex-col border-b border-gray-200 dark:border-gray-700 my-5">
             <td class="px-6 py-4">From: {{ o.userOfferId }}</td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Price: {{ o.price }} €</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Price: {{ o.price | currency: 'EUR'}}</td>
             <td class="px-6 py-4">Language: {{ o.editionLang }}</td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Condition: {{ o.cardCondition }}</td>
             <td class="px-6 py-4">
@@ -155,9 +155,9 @@
                   {{ o.isFoil ? 'Yes' : 'No' }}
                 </span>
             </td>
-            <td class="px-6 py-4">Quantity: {{ o.quantity }}</td>
+            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Quantity: {{ o.quantity }}</td>
             <td class="px-6 py-4">Description: {{ o.description }}</td>
-            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center">
+            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center bg-gray-50 dark:bg-gray-700">
               <input type="number" min="1" value="1" [max]="o.quantity" [(ngModel)]="o.quantityToAdd" class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
               <button (click)="addToCart(o)" class="px-2">
                 <lucide-icon name="shopping-cart"></lucide-icon>

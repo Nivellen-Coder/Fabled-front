@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="mb-6">
         <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
         <input type="text"
                id="last_name"
@@ -75,6 +75,19 @@
           <div *ngIf="f['lastName'].errors?.['required']" class="block">Your Last Name is required</div>
           <div *ngIf="f['lastName'].errors?.['minlength']" class="block">Last name must be at least 2 characters</div>
           <div *ngIf="f['lastName'].errors?.['maxlength']" class="block">Last name must not exceed 64 characters</div>
+        </div>
+
+        <div class="mt-6">
+          <input type="checkbox"
+                 id="isAdult"
+                 formControlName="isAdult"
+                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+          <label for="isAdult" class="ml-2 text-sm font-medium text-gray-900 dark:text-white">
+            I confirm that I am over 18 years old
+          </label>
+          <div *ngIf="submitted && f['isAdult']?.errors?.['required']" class="text-sm text-red-500 ml-6">
+            You must confirm that you are over 18 years old
+          </div>
         </div>
       </div>
 
@@ -129,7 +142,7 @@
         </div>
 
         <div class="mb-6">
-          <label for="postalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
+          <label for="postalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip Code</label>
           <input type="text"
                  id="postalCode"
                  name="postalCode"
@@ -157,6 +170,7 @@
         </div>
       </div>
     </div>
+
 
     <div class="grid mb-6 md:grid-cols-1 p-4 mx-32">
       <button type="submit" class="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500">Register</button>

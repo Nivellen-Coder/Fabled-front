@@ -4,22 +4,24 @@ import {UserService} from "../../services/user/user.service";
 import {ToastrService} from "ngx-toastr";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-profile-edit',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './profile-edit.component.html',
   styleUrl: './profile-edit.component.scss'
 })
 export class ProfileEditComponent implements OnInit {
   profileForm: FormGroup;
-  private userId: string|null = "";
-  protected username: string|null = "";
+  private userId: string | null = null;
+  protected username: string | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -70,6 +72,11 @@ export class ProfileEditComponent implements OnInit {
     if (this.profileForm.invalid) {
       this.toastr.error('Please fill the form correctly');
       return;
+    }
+
+    const formData = { ...this.profileForm.value };
+    if (!formData.password) {
+      delete formData.password;
     }
 
     this.userService.updateProfile(this.userId, this.profileForm.value).subscribe({

@@ -38,7 +38,7 @@
           <li><strong>House Number:</strong> {{ userAddress.houseNumber }}</li>
           <li><strong>City:</strong> {{ userAddress.city }}</li>
           <li><strong>Region:</strong> {{ userAddress.region }}</li>
-          <li><strong>Post Code:</strong> {{ userAddress.postalCode }}</li>
+          <li><strong>Zip Code:</strong> {{ userAddress.postalCode }}</li>
           <li><strong>Country:</strong> {{ userAddress.country }}</li>
         </ul>
       </div>
@@ -60,7 +60,32 @@
 
     </div>
 
-    <!-- User Offers -->
+  <div *ngIf="orders.length > 0" class="space-y-6">
+    <h2 class="text-2xl font-bold mb-4 text-center">Purchase History</h2>
+    <div *ngFor="let order of orders" class="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow">
+      <h3 class="font-semibold text-lg text-gray-800 dark:text-white">
+        Order #{{ order.id }} - {{ order.createdAt }}
+      </h3>
+      <ul class="mt-2 space-y-2">
+        <li *ngFor="let item of order.items" class="flex items-center justify-between text-sm">
+          <div class="flex items-center gap-2">
+            <span class="text-gray-700 dark:text-gray-200">{{ item.cardName }} x{{ item.quantity }}</span>
+          </div>
+          <span class="text-gray-900 dark:text-white font-medium">
+            {{ (item.price * item.quantity) / 100 | currency:'EUR' }}
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="orders.length === 0" class="text-center">
+    <h2 class="text-2xl font-bold mb-4 text-center">Purchase History</h2>
+    <span class="mx-auto text-gray-500 dark:text-gray-400">No purchase history yet.</span>
+  </div>
+
+
+  <!-- User Offers -->
     <div class="mt-10">
       <h2 class="text-2xl font-bold mb-4 text-center">Your Offers</h2>
 

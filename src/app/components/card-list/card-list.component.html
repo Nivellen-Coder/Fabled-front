@@ -37,7 +37,7 @@
               <div class="grid grid-cols-1 xl:grid-cols-3 md:grid-cols-1 border-gray-500 dark:border-white border-1 rounded border-solid">
                 <div class="mt-4 w-[300px] mx-auto">
                   <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">Colors</h3>
-                  <hr class="w-full">
+                  <hr class="w-full dark:border-gray-50 border-black">
                   <ul class="w-full text-sm mt-3 font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                     <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                       <div class="flex items-center ps-3">
@@ -80,8 +80,8 @@
 
                 <!-- Champs pour la recherche en fonction des caractéristiques de la carte -->
                 <div class="mt-4 w-[300px] mx-auto">
-                  <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">Gradation</h3>
-                  <hr class="w-full">
+                  <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">Grading</h3>
+                  <hr class="w-full dark:border-gray-50 border-black">
                   <!-- Liste déroulante permettant de trouver une carte selon son niveau de rareté -->
                   <div class="mt-4">
                     <label for="rarity" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Rarity</label>
@@ -94,13 +94,30 @@
                       <option value="mythic">Mythic</option>
                       <option value="bonus">Bonus</option>
                     </select>
+
+                    <!-- Checkbox pour afficher uniquement les cartes en stock -->
+                    <div class="mt-4 w-[300px] mx-auto">
+                      <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">Availability</h3>
+                      <hr class="w-full dark:border-gray-50 border-black">
+                      <div class="flex items-center mt-4">
+                        <input
+                          id="in-stock-only"
+                          type="checkbox"
+                          formControlName="inStockOnly"
+                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                        />
+                        <label for="in-stock-only" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                          Show only cards in stock
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
 
                 </div>
                 <div class="mt-4 mx-auto w-[300px]">
                   <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">Stats</h3>
-                  <hr class="w-full">
+                  <hr class="w-full dark:border-gray-50 border-black">
                   <div class="mt-4">
                     <label for="power" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Power</label>
                     <select formControlName="power" id="power" class="block w-full p-2 dark:text-white-200 border-white-100 rounded-lg bg-gray-100 dark:bg-gray-800 focus:ring-blue-500 focus:border-white-100">

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth/auth.service";
-import {NavigationEnd, Router, RouterLink} from "@angular/router";
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import {NgClass, NgFor, NgIf, NgOptimizedImage} from "@angular/common";
 import {LucideAngularModule} from "lucide-angular";
@@ -16,7 +16,8 @@ import {LucideAngularModule} from "lucide-angular";
     NgOptimizedImage,
     LucideAngularModule,
     RouterLink,
-    NgClass
+    NgClass,
+    RouterLinkActive
   ]
 })
 export class NavbarComponent implements OnInit{

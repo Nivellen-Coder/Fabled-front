@@ -8,6 +8,7 @@ export interface UserInfosModel {
 }
 
 export interface Address {
+  id: string;
   street: string,
   streetSecond: string,
   houseNumber: string,

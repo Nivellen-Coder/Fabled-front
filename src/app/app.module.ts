@@ -42,10 +42,11 @@ import {
 import { LucideAngularModule } from "lucide-angular";
 import { SellerGuideComponent } from './components/seller-guide/seller-guide.component';
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
-import { AutoFocus } from './directives/auto-focus.directive';
 import { HomeComponent } from './components/home/home.component';
 import {NavbarComponent} from "./components/navbar/navbar.component";
 import {FooterComponent} from "./components/footer/footer.component";
+import {NgxStripeModule} from "ngx-stripe";
+import { environment } from "../environments/environment.development";
 
 
 @NgModule({ declarations: [
@@ -55,7 +56,6 @@ import {FooterComponent} from "./components/footer/footer.component";
         UserProfileComponent,
         CardOfferFormComponent,
         SellerGuideComponent,
-        AutoFocus,
         HomeComponent,
     ],
     bootstrap: [AppComponent], imports: [
@@ -66,6 +66,7 @@ import {FooterComponent} from "./components/footer/footer.component";
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    NgxStripeModule.forRoot(environment.STRIPE_PK_TEST),
     LucideAngularModule.pick({
       File,
       Home,
@@ -98,6 +99,7 @@ import {FooterComponent} from "./components/footer/footer.component";
     }),
     NavbarComponent,
     FooterComponent,
+
   ], providers: [
         {
             provide: HTTP_INTERCEPTORS,
