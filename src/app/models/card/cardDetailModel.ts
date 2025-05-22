@@ -42,6 +42,8 @@ export interface CardDetailModel {
   cmc: number;
   type_line: string;
   oracle_text: string;
+  power: string;
+  toughness: string;
   colors: string[];
   color_identity: string[];
   produced_mana: string[];

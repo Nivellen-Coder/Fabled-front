@@ -26,8 +26,8 @@ export class AdminOfferService {
       );
   }
 
-  updateOffer(id: number, offer: AdminOfferListModel): Observable<AdminOfferListModel> {
-    return this.httpClient.put<AdminOfferListModel>(`${this.apiURL}/offer/${id}/update`, offer)
+  reactivateOffer(id: number): Observable<any> {
+    return this.httpClient.get<void>(`${this.apiURL}/offer/${id}/reactivate`)
       .pipe(
         catchError(this.handleError)
       );

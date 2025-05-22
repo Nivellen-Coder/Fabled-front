@@ -17,22 +17,22 @@
     <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">{{ stats.totalOffers }}</div>
   </div>
 
-<!--  &lt;!&ndash; Sales &ndash;&gt;-->
-<!--  <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-5 flex flex-col gap-4">-->
-<!--    <div class="flex items-center space-x-3">-->
-<!--      <lucide-icon name="shopping-bag" class="text-green-500 w-6 h-6"></lucide-icon>-->
-<!--      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sales Made</span>-->
-<!--    </div>-->
-<!--    <div class="text-3xl font-bold text-green-600 dark:text-green-400">{{ stats.sales }}</div>-->
-<!--  </div>-->
+  <!-- Sales -->
+  <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-5 flex flex-col gap-4">
+    <div class="flex items-center space-x-3">
+      <lucide-icon name="shopping-bag" class="text-green-500 w-6 h-6"></lucide-icon>
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sales Made</span>
+    </div>
+    <div class="text-3xl font-bold text-green-600 dark:text-green-400">{{ stats.sales }}</div>
+  </div>
 
-<!--  &lt;!&ndash; Revenue &ndash;&gt;-->
-<!--  <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-5 flex flex-col gap-4">-->
-<!--    <div class="flex items-center space-x-3">-->
-<!--      <lucide-icon name="dollar-sign" class="text-rose-500 w-6 h-6"></lucide-icon>-->
-<!--      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Revenue</span>-->
-<!--    </div>-->
-<!--    <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">{{ stats.revenue | currency:'EUR' }}</div>-->
-<!--  </div>-->
+  <!-- Revenue -->
+  <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-5 flex flex-col gap-4">
+    <div class="flex items-center space-x-3">
+      <lucide-icon name="dollar-sign" class="text-rose-500 w-6 h-6"></lucide-icon>
+      <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Revenue</span>
+    </div>
+    <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">{{ stats.revenue | currency:'EUR' }}</div>
+  </div>
 </div>
 

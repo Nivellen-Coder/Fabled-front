@@ -113,19 +113,25 @@ export class OffersComponent implements OnInit {
   }
 
   toggleOfferStatus(offer: AdminOfferListModel) {
-    const updated = { ...offer, isActive: !offer.isActive };
-    this.offerService.updateOffer(updated.id, updated).subscribe(() => {
-      this.loadOffers();
-    });
+    this.offerService.reactivateOffer(offer.id).subscribe(({
+      next: () => {
+        this.toastr.success("Offer reactivated successfully");
+        this.loadOffers();
+      },
+        error: (err) => {
+        this.toastr.error(err.error.message || 'Failed to reactivate user');
+        console.error("Delete Error:", err);
+      }
+    }))
   }
 
-  updateOffer() {
-    if (this.selectedOffer) {
-      this.offerService.updateOffer(this.selectedOffer.id, this.selectedOffer).subscribe(() => {
-        this.loadOffers();
-        this.selectedOffer = null;
-        this.filterOffers(); // au cas où il y a un filtre actif
-      });
-    }
-  }
+  // updateOffer() {
+  //   if (this.selectedOffer) {
+  //     this.offerService.updateOffer(this.selectedOffer.id, this.selectedOffer).subscribe(() => {
+  //       this.loadOffers();
+  //       this.selectedOffer = null;
+  //       this.filterOffers(); // au cas où il y a un filtre actif
+  //     });
+  //   }
+  // }
 }

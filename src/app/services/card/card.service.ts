@@ -48,10 +48,10 @@ export class CardService {
 
     if (trimmedName) queryParts.push(trimmedName);
     if (filters.color) queryParts.push(filters.color);
-    if (filters.mana) queryParts.push(filters.mana);
-    if (filters.rarity) queryParts.push(filters.rarity);
-    if (filters.power) queryParts.push(filters.power);
-    if (filters.toughness) queryParts.push(filters.toughness);
+    if (filters.mana) queryParts.push("mv=" + filters.mana);
+    if (filters.rarity) queryParts.push("r:" + filters.rarity);
+    if (filters.power) queryParts.push("pow" + filters.power);
+    if (filters.toughness) queryParts.push("tou" + filters.toughness);
 
     // Si l'utilisateur veut uniquement les cartes en stock
     if (inStock) {
@@ -64,6 +64,8 @@ export class CardService {
       const fullQuery = queryParts.join(" ");
       params = params.set('q', fullQuery);
     }
+
+    console.log(queryParts);
 
     return this.httpClient.get<CardListModel>(
       `${environment.API_BASE_URL}/cards/search`,

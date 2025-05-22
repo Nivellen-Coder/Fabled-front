@@ -132,7 +132,7 @@
             </td>
             <td class="px-6 py-4 text-right font-semibold">{{ o.quantity }}</td>
             <td class="px-6 py-4">{{ o.description }}</td>
-            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center">
+            <td *ngIf="o.quantity > 0 && userId != o.userId" class="px-6 py-4 flex items-center">
               <input type="number" min="1" value="1" [max]="o.quantity" [(ngModel)]="o.quantityToAdd" class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
               <button (click)="addToCart(o)" class="px-2">
                 <lucide-icon name="shopping-cart"></lucide-icon>
@@ -157,7 +157,7 @@
             </td>
             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700">Quantity: {{ o.quantity }}</td>
             <td class="px-6 py-4">Description: {{ o.description }}</td>
-            <td *ngIf="o.quantity > 0" class="px-6 py-4 flex items-center bg-gray-50 dark:bg-gray-700">
+            <td *ngIf="o.quantity > 0 && userId != o.userId" class="px-6 py-4 flex items-center bg-gray-50 dark:bg-gray-700">
               <input type="number" min="1" value="1" [max]="o.quantity" [(ngModel)]="o.quantityToAdd" class="w-16 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white" />
               <button (click)="addToCart(o)" class="px-2">
                 <lucide-icon name="shopping-cart"></lucide-icon>

@@ -6,6 +6,7 @@ import { UsersComponent } from "./users/users.component";
 import { OffersComponent } from "./offers/offers.component";
 import {AdminStatsComponent} from "./admin-stats/admin-stats.component";
 import {ContactsComponent} from "./contacts/contacts.component";
+import {OrdersComponent} from "./orders/orders.component";
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard],
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },  // Liste des utilisateurs
       { path: 'offers', component: OffersComponent },
       { path: 'contacts', component: ContactsComponent },
+      { path: 'orders', component: OrdersComponent },
     ]
   },
 ];
