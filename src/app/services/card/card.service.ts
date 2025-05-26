@@ -65,8 +65,6 @@ export class CardService {
       params = params.set('q', fullQuery);
     }
 
-    console.log(queryParts);
-
     return this.httpClient.get<CardListModel>(
       `${environment.API_BASE_URL}/cards/search`,
       {params}

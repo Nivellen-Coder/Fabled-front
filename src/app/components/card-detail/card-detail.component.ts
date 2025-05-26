@@ -56,7 +56,6 @@ export class CardDetailComponent implements OnInit {
     });
     this.userId = this.authService.loggedInUserId;
     this.loadOffers();
-    console.log(this.offers);
   }
 
   navigateToOfferForm() {
@@ -113,7 +112,7 @@ export class CardDetailComponent implements OnInit {
         name: this.card.name,
         price: offer.price,
         quantity: quantity,
-      }, maxStock, quantity);
+      }, maxStock, quantity, offer.userId);
       this.toastr.success("Added to cart successfully.");
     } else {
       this.toastr.error("Something went wrong.");

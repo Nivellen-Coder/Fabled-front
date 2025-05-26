@@ -19,8 +19,6 @@ export class LoginComponent {
     this.authService.login(this.username, this.password)
       .subscribe({
         next: (response) => {
-          console.log("Réponse de l'API :", response); // DEBUG : Vérifier si le token est reçu
-
           if (response?.token) {
             localStorage.setItem('jwt', response.token); // Stocke le token
             this.toastr.success('Authentication completed successfully', 'Success');

@@ -60,110 +60,231 @@
 
     </div>
 
-  <div *ngIf="orders.length > 0" class="space-y-6">
-    <h2 class="text-2xl font-bold mb-4 text-center">Purchase History</h2>
-    <div *ngFor="let order of orders" class="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow">
-      <h3 class="font-semibold text-lg text-gray-800 dark:text-white">
-        Order #{{ order.id }} - {{ order.createdAt }}
-      </h3>
-      <ul class="mt-2 space-y-2">
-        <li *ngFor="let item of order.items" class="flex items-center justify-between text-sm">
-          <div class="flex items-center gap-2">
-            <span class="text-gray-700 dark:text-gray-200">{{ item.cardName }} x{{ item.quantity }}</span>
-          </div>
-          <span class="text-gray-900 dark:text-white font-medium">
-            {{ (item.price * item.quantity) / 100 | currency:'EUR' }}
+  <div class="border rounded-lg overflow-hidden mb-6">
+    <button
+      (click)="purchaseHistoryOpen = !purchaseHistoryOpen"
+      class="w-full flex justify-between items-center px-6 py-4 bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-white font-semibold text-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+    >
+      <span>Purchase History</span>
+      <lucide-icon [name]="purchaseHistoryOpen ? 'chevron-up' : 'chevron-down'" class="h-5 w-5"></lucide-icon>
+    </button>
+
+    <div *ngIf="purchaseHistoryOpen" class="p-4 bg-white dark:bg-gray-800">
+      <div *ngIf="orders.length > 0" class="space-y-6">
+        <div *ngFor="let order of orders" class="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow">
+          <h3 class="font-semibold text-lg text-gray-800 dark:text-white">
+            Order #{{ order.id }} - {{ order.createdAt | date: 'dd/MM/yyyy h:mm a' }}
+          </h3>
+
+          <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            Total:
+            <span class="font-medium text-gray-900 dark:text-white">
+            {{ order.total / 100 | currency:'EUR' }}
           </span>
-        </li>
-      </ul>
+          </p>
+
+          <ul class="mt-2 space-y-2">
+            <li *ngFor="let item of order.items" class="flex items-center justify-between text-sm">
+              <div class="flex items-center gap-2">
+                <span class="text-gray-700 dark:text-gray-200">{{ item.cardName }} x{{ item.quantity }}</span>
+              </div>
+              <span class="text-gray-900 dark:text-white font-medium">
+              {{ (item.price * item.quantity) / 100 | currency:'EUR' }}
+            </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div *ngIf="orders.length === 0" class="text-center py-4">
+        <span class="text-gray-500 dark:text-gray-400">No purchase history yet.</span>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="orders.length === 0" class="text-center">
-    <h2 class="text-2xl font-bold mb-4 text-center">Purchase History</h2>
-    <span class="mx-auto text-gray-500 dark:text-gray-400">No purchase history yet.</span>
-  </div>
+  <div class="border rounded-lg overflow-hidden">
+    <button
+      (click)="offersOpen = !offersOpen"
+      class="w-full flex justify-between items-center px-6 py-4 bg-green-100 dark:bg-green-900 text-green-900 dark:text-white font-semibold text-lg hover:bg-green-200 dark:hover:bg-green-800 transition"
+    >
+      <span>Your Offers</span>
+      <lucide-icon [name]="offersOpen ? 'chevron-up' : 'chevron-down'" class="h-5 w-5"></lucide-icon>
+    </button>
 
-
-  <!-- User Offers -->
-    <div class="mt-10">
-      <h2 class="text-2xl font-bold mb-4 text-center">Your Offers</h2>
-
+    <div *ngIf="offersOpen" class="p-4 bg-white dark:bg-gray-800">
       <div *ngIf="userOffers.offers" class="overflow-x-auto sm:rounded-lg">
-        <table class="min-w-[80%] text-sm text-left text-gray-500 dark:text-gray-400 mx-auto">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-6 py-3">Card Name</th>
-            <th scope="col" class="px-10 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
-            <th scope="col" class="px-4 py-3">Edition Language</th>
-            <th scope="col" class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
-            <th scope="col" class="px-4 py-3">Foil?</th>
-            <th scope="col" class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
-            <th scope="col" class="px-6 py-3">Card Description</th>
-            <th scope="col" class="px-8 py-3 bg-gray-200 dark:bg-gray-600">Created at</th>
-            <th scope="col" class="px-3 py-3 text-center">Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-            class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200"
+        <!-- Mode carte sur mobile -->
+        <div class="md:hidden space-y-4">
+          <div
             *ngFor="let u of userOffers.offers"
+            class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700"
           >
-            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
-              <a
-                (click)="cardDetail(u.cardId)"
-                class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200"
-              >
-                {{ u.cardName }}
-              </a>
-            </td>
-            <td class="px-8 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              {{ u.price }} €
-            </td>
-            <td class="px-4 py-4 text-gray-900 dark:text-white">
-              {{ u.language }}
-            </td>
-            <td class="px-4 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
-              {{ u.cardCondition }}
-            </td>
-            <td class="px-4 py-4 text-gray-900 dark:text-white">
-            <span
-              class="px-2 py-1 rounded-lg font-semibold"
-              [ngClass]="{'bg-green-500 text-white': u.foil, 'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil}"
-            >
-              {{ u.foil ? 'Yes' : 'No' }}
-            </span>
-            </td>
-            <td class="px-4 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
-              {{ u.quantity }}
-            </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white">
-              {{ u.description }}
-            </td>
-            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
-              {{ u.created_at }}
-            </td>
-            <td class="px-6 py-4 text-gray-900 dark:text-white flex items-center justify-center">
-              <a (click)="navigateToOfferForm(u.id)" class="cursor-pointer mx-2">
+            <div class="flex justify-between items-center">
+              <h3 class="font-semibold text-gray-900 dark:text-white">
+                <a (click)="cardDetail(u.cardId)"
+                   class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200">
+                  {{ u.cardName }}
+                </a>
+              </h3>
+              <span class="text-sm text-gray-500">{{ u.created_at }}</span>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 mt-2 text-sm">{{ u.description }}</p>
+
+            <div class="mt-3 text-sm text-gray-900 dark:text-gray-200 space-y-1">
+              <p><strong>Price:</strong> {{ u.price }} €</p>
+              <p><strong>Edition Language:</strong> {{ u.language }}</p>
+              <p><strong>Card Condition:</strong> {{ u.cardCondition }}</p>
+              <p>
+                <strong>Foil:</strong>
+                <span
+                  class="px-2 py-1 rounded-lg font-semibold mx-2"
+                  [ngClass]="{
+            'bg-green-500 text-white': u.foil,
+            'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil
+          }"
+                >
+          {{ u.foil ? 'Yes' : 'No' }}
+        </span>
+              </p>
+              <p><strong>Quantity:</strong> {{ u.quantity }}</p>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-4">
+              <a (click)="navigateToOfferForm(u.id)" class="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline">
                 <lucide-icon name="pencil"></lucide-icon>
               </a>
-              <a (click)="deleteUserOffer(u.id)" class="cursor-pointer mx-2">
-                <lucide-icon name="trash-2" class="text-red-500"></lucide-icon>
+              <a (click)="deleteUserOffer(u.id)" class="cursor-pointer text-red-600 hover:underline">
+                <lucide-icon name="trash-2"></lucide-icon>
               </a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+            </div>
+          </div>
+        </div>
       </div>
+        <!-- Mode tableau à partir de medium (md) -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th class="px-4 py-3">Card Name</th>
+              <th class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Price</th>
+              <th class="px-4 py-3">Edition Language</th>
+              <th class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Card Condition</th>
+              <th class="px-4 py-3">Foil?</th>
+              <th class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Quantity</th>
+              <th class="px-4 py-3">Card Description</th>
+              <th class="px-4 py-3 bg-gray-200 dark:bg-gray-600">Created at</th>
+              <th class="px-4 py-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200"
+              *ngFor="let u of userOffers.offers"
+            >
+              <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap bg-white dark:text-white dark:bg-gray-800">
+                <a
+                  (click)="cardDetail(u.cardId)"
+                  class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200"
+                >
+                  {{ u.cardName }}
+                </a>
+              </td>
+              <td class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+                {{ u.price }} €
+              </td>
+              <td class="px-4 py-3 text-gray-900 dark:text-white">
+                {{ u.language }}
+              </td>
+              <td class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
+                {{ u.cardCondition }}
+              </td>
+              <td class="px-4 py-3 text-gray-900 dark:text-white">
+                <span
+                  class="px-2 py-1 rounded-lg font-semibold"
+                  [ngClass]="{
+                    'bg-green-500 text-white': u.foil,
+                    'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil
+                  }"
+                >
+                  {{ u.foil ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <td class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+                {{ u.quantity }}
+              </td>
+              <td class="px-4 py-3 text-gray-900 dark:text-white">
+                {{ u.description }}
+              </td>
+              <td class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
+                {{ u.created_at }}
+              </td>
+              <td class="px-4 py-3 text-gray-900 dark:text-white flex items-center justify-center gap-2">
+                <a (click)="navigateToOfferForm(u.id)" class="cursor-pointer">
+                  <lucide-icon name="pencil"></lucide-icon>
+                </a>
+                <a (click)="deleteUserOffer(u.id)" class="cursor-pointer">
+                  <lucide-icon name="trash-2" class="text-red-500"></lucide-icon>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div *ngIf="!userOffers.offers" class="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md mt-6">
+
+        <div *ngIf="!userOffers.offers" class="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md mt-6">
         <a routerLink="/card-list">
-          <svg class="w-12 h-12 text-gray-500 dark:text-gray-400 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg class="w-12 h-12 text-gray-500 dark:text-gray-400 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3 3V9m0 12a9 9 0 110-18 9 9 0 010 18z"></path>
           </svg>
         </a>
         <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">No offers found.</p>
         <p class="text-gray-600 dark:text-gray-400 text-sm">You haven't listed any offers yet. Start adding your offers now!</p>
       </div>
+    </div>
   </div>
+
+  <div class="border rounded-lg overflow-hidden mt-6">
+    <button
+      (click)="salesOpen = !salesOpen"
+      class="w-full flex justify-between items-center px-6 py-4 bg-yellow-100 dark:bg-yellow-900 text-yellow-900 dark:text-white font-semibold text-lg hover:bg-yellow-200 dark:hover:bg-yellow-800 transition"
+    >
+      <span>Your Sales</span>
+      <lucide-icon [name]="salesOpen ? 'chevron-up' : 'chevron-down'" class="h-5 w-5"></lucide-icon>
+    </button>
+
+    <div *ngIf="salesOpen" class="p-4 bg-white dark:bg-gray-800 space-y-6">
+      <div *ngIf="userSales && userSales.length > 0">
+        <div *ngFor="let sale of userSales" class="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow mb-3">
+          <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
+            Card:
+            <a
+              (click)="cardDetail(sale.cardIdentifier)"
+              class="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold transition duration-200"
+            >
+              {{ sale.cardName }}
+            </a>
+            - Qty: {{ sale.quantity }}
+          </h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Price: {{ sale.price }} €</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Buyer's email: {{ sale.buyer.email }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Order #{{ sale.order.id }} - {{ sale.order.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+
+          <div class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+            <h4 class="font-semibold">Shipping Address</h4>
+            <ul class="pl-4 list-disc">
+              <li>{{ sale.order.address.street }} {{ sale.order.address.houseNumber }}</li>
+              <li>{{ sale.order.address.zip }} {{ sale.order.address.city }}</li>
+              <li>{{ sale.order.address.region }}, {{ sale.order.address.country }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userSales.length === 0" class="text-center text-gray-500 dark:text-gray-400">
+        No sales recorded yet.
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -196,9 +196,9 @@
       <app-pagination [currentPage]="currentPage" [limit]=pageSize [total]=total [pagesCount]=nbPage (changePage)="changePage($event)"></app-pagination>
     </div>
 
-    <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8" *ngIf="isLoading">
+    <div class="grid lg:grid-cols-4 gap-x-6 sm:grid-cols-2 grid-cols-1" *ngIf="isLoading">
       <div *ngFor="let i of divList; let index = index">
-        <div role="status" class="flex items-center justify-center object-center bg-white-300 rounded-lg animate-pulse my-4" *ngIf="isLoading">
+        <div role="status" class="flex items-center justify-center h-96 w-72 bg-white-300 rounded-lg animate-pulse my-4" *ngIf="isLoading">
           <svg class="w-36 h-24 text-white-200 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 20">
             <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
             <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM9 13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2Zm4 .382a1 1 0 0 1-1.447.894L10 13v-2l1.553-1.276a1 1 0 0 1 1.447.894v2.764Z"/>
@@ -247,9 +247,6 @@
 
     <div *ngIf="!isLoading && cards.length === 0" class="flex justify-center">
       <div class="max-w-md w-full text-center p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md">
-        <!--        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">-->
-        <!--          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l-2-2m0 0l-2-2m2 2l2-2m7 6V7a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2zm1 4h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2m0 0H7m6 0v6"></path>-->
-        <!--        </svg>-->
         <lucide-icon name="search-x" class="mx-auto h-12 w-12 text-gray-400 dark:text-white"></lucide-icon>
         <h2 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">No cards found</h2>
         <p class="mt-1 text-sm text-gray-500 dark:text-white">We couldn't find any cards matching your search.</p>

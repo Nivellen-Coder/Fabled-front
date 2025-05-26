@@ -9,7 +9,6 @@ export class CartService {
 
   constructor() {
     const savedCart = localStorage.getItem('cart');
-    console.log('savedCart', savedCart);
     if (savedCart) {
       this.cartItems = JSON.parse(savedCart);
       this.cart.next(this.cartItems);
@@ -21,7 +20,7 @@ export class CartService {
 
   cart$ = this.cart.asObservable();
 
-  addToCart(product: any, maxStock: number, quantity: number = 1): boolean {
+  addToCart(product: any, maxStock: number, quantity: number = 1, userId: string): boolean {
     const existing = this.cartItems.find(item => item.id === product.id);
 
     if (existing) {
@@ -34,7 +33,7 @@ export class CartService {
       }
     } else {
       if (quantity <= maxStock) {
-        this.cartItems.push({ ...product, quantity });
+        this.cartItems.push({ ...product, quantity, userId: userId });
         this.updateCart();
         return true;
       } else {

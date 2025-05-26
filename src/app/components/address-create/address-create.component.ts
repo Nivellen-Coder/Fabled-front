@@ -70,9 +70,6 @@ export class AddressCreateComponent implements OnInit {
       return;
     }
 
-    console.log('User ID:', this.userId);  // Vérifie si l’ID utilisateur est bien défini
-    console.log('Payload:', this.addressForm.value); // Vérifie le JSON envoyé
-
     this.addressService.createAddress(this.userId, this.addressForm.value).subscribe({
       next: (res) => {
         this.router.navigate(['/user-profile'])

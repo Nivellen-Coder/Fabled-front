@@ -47,7 +47,7 @@ export class CardOfferFormComponent implements OnInit {
           ]
         ],
         price: [
-          0.50,
+          0.01,
           [
             Validators.required,
             Validators.min(0.50)
@@ -74,9 +74,6 @@ export class CardOfferFormComponent implements OnInit {
       let formData: offerCreateModel;
 
       formData = <offerCreateModel>this.offerForm.value;
-
-
-      console.log('Data to be sent:', formData);
 
       this.offerService.offerCreate(formData, this.cardId, this.userId).pipe(
         finalize(() => {

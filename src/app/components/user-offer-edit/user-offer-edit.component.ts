@@ -23,7 +23,6 @@ export class UserOfferEditComponent implements OnInit {
 
   ngOnInit() {
     this.offerId = this.actRoute.snapshot.params['id'];
-    console.log("Offer ID:", this.offerId);
 
     if (this.authService.loggedInUsername) {
       this.username = this.authService.loggedInUsername;
@@ -34,7 +33,6 @@ export class UserOfferEditComponent implements OnInit {
       return;
     } else {
       this.userId = this.authService.loggedInUserId;
-      console.log("User ID:", this.userId);
       this.loadOffer();
     }
   }
@@ -61,19 +59,10 @@ export class UserOfferEditComponent implements OnInit {
   public loadOffer(): void {
     this.userService.userOfferById(this.userId, this.offerId).subscribe({
         next: (data) => {
-          console.log("Offer Data:", data);
           if (!data) {
             this.toastr.error("Offer not found or access denied");
             return;
           }
-          console.log("Patching form with:", {
-            quantity: data.quantity,
-            price: data.price,
-            editionLang: data.editionLang,
-            cardCondition: data.cardCondition,
-            isFoil: data.isFoil,
-            description: data.description,
-          });
 
           this.offerEditForm.patchValue({
             quantity: data.quantity,
@@ -83,7 +72,6 @@ export class UserOfferEditComponent implements OnInit {
             isFoil: data.isFoil,
             description: data.description,
           });
-          console.log("Form Value after patchValue:", this.offerEditForm.value);
         },
         error: (err) => {
           this.toastr.error("Failed to load offer");

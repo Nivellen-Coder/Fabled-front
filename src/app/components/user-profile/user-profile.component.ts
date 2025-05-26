@@ -9,6 +9,7 @@ import {Router, RouterLink} from "@angular/router";
 import {OfferService} from "../../services/offer/offer.service";
 import {ToastrService} from "ngx-toastr";
 import {OrderService} from "../../services/order/order.service";
+import {UserSalesModel} from "../../models/user/userSalesModel";
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +21,12 @@ export class UserProfileComponent implements OnInit {
   userId: string = '';
   userData : UserInfosModel = {} as UserInfosModel ;
   userOffers: offerListByUserIdModel = {} as offerListByUserIdModel;
+  userSales: UserSalesModel[] = [];
   userAddress : Address = {} as Address;
   orders: any[] = [];
+  purchaseHistoryOpen = false;
+  offersOpen = false;
+  salesOpen: boolean = false;
 
   constructor(private orderService: OrderService, private authService: AuthService, private offerService: OfferService,private userService: UserService, private cardService: CardService, private router: Router,  private toastr: ToastrService) {
 
@@ -42,14 +47,24 @@ export class UserProfileComponent implements OnInit {
 
     this.orderService.getOrdersByCurrentUser().subscribe({
       next: (orders) => {
-        this.orders = orders
-        console.log(orders);
-        for (let order of orders) {
-          order.items.forEach(item => {
+        // On enrichit les commandes avec le total (en centimes)
+        this.orders = orders.map(order => {
+          // Calcul du total
+          const total = order.items.reduce((acc: number, item: any) => {
+            return acc + item.price * item.quantity;
+          }, 0);
+
+          // Retourne l'objet enrichi
+          return { ...order, total };
+        });
+
+        // On enrichit chaque item avec le nom de la carte (asynchrone)
+        for (let order of this.orders) {
+          for (let item of order.items) {
             this.cardService.getCardById(item.cardName).subscribe((data: CardDetailModel) => {
               item.cardName = data.name;
             });
-          })
+          }
         }
       },
       error: (err) => console.error('Erreur de récupération des commandes', err)
@@ -65,9 +80,19 @@ export class UserProfileComponent implements OnInit {
           });
         }
       }
-      console.log(data.offers);
+    });
+
+    this.orderService.getSalesByCurrentUser().subscribe((sales) => {
+      this.userSales = sales.filter((sale) => sale.order.status === 'paid').sort((a, b) => new Date(b.order.createdAt).getTime() - new Date(a.order.createdAt).getTime());
+
+      for (let sale of this.userSales) {
+        this.cardService.getCardById(sale.cardIdentifier).subscribe((data: CardDetailModel) => {
+          sale.cardName = data.name;
+        });
+      }
     });
   }
+
 
   deleteUserOffer(offerId: number) {
     this.offerService.deleteUserOffer(offerId, this.userId).subscribe(({

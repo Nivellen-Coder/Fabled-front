@@ -54,7 +54,6 @@ export class PaginationComponent implements OnInit {
 
   getPagesCount() {
     this.pagesCount = Math.ceil(this.total / this.limit);
-    console.log(this.pagesCount);
     this.pages = this.range(1, this.pagesCount);
   }
 }

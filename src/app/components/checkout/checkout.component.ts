@@ -43,7 +43,7 @@ export class CheckoutComponent implements OnInit {
     });
     this.userId = this.authService.loggedInUserId;
     this.userService.userProfile(this.userId).subscribe( async (user) => {
-      this.addressId = user.address.id;
+      this.addressId = user.address?.id;
       this.userFirstName = user.firstName;
       this.userLastName = user.lastName;
       this.address = user.address;

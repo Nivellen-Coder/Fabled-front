@@ -75,7 +75,8 @@ export class CardListComponent implements OnInit {
     this.cardService.getAllCards(this.currentPage, this.pageSize).subscribe((cards: CardListModel) => {
       this.isLoading = true;
       this.cards = cards.data;
-      console.log(this.cards);
+      let index = this.cards.findIndex(element => element.id === "a505ba37-b131-48d2-a2d7-a340763343f8");
+      this.cards.splice(index, 1);
       this.total = cards.total_cards;
       this.nbPage = Math.ceil(this.total / this.pageSize);
       this.pageSize = 175;
@@ -166,8 +167,6 @@ export class CardListComponent implements OnInit {
       case 'green': this.color = 'c:"{G}"'; break;
       case 'colorless': this.color = 'c:colorless'; break;
     }
-
-    console.log("Criterias: ", criterias);
 
     // Construction des filtres
     const filters: any = {};
