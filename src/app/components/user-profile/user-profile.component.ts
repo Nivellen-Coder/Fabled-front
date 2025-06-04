@@ -47,14 +47,10 @@ export class UserProfileComponent implements OnInit {
 
     this.orderService.getOrdersByCurrentUser().subscribe({
       next: (orders) => {
-        // On enrichit les commandes avec le total (en centimes)
         this.orders = orders.map(order => {
-          // Calcul du total
           const total = order.items.reduce((acc: number, item: any) => {
             return acc + item.price * item.quantity;
           }, 0);
-
-          // Retourne l'objet enrichi
           return { ...order, total };
         });
 

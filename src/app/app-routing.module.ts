@@ -21,6 +21,8 @@ import {ContactComponent} from "./components/contact/contact.component";
 import {TermsOfUseComponent} from "./components/terms-of-use/terms-of-use.component";
 import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy.component";
 import {AboutUsComponent} from "./components/about-us/about-us.component";
+import {ForgotPasswordComponent} from "./components/forgot-password/forgot-password.component";
+import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,7 +30,7 @@ const routes: Routes = [
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'card-list', component: CardListComponent },
   { path: 'card-detail/:id', component: CardDetailComponent, pathMatch: 'full'},
-  { path: 'user-login', component: LoginComponent},
+  { path: 'user-login', component: LoginComponent },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'card-offer-form/:id', component: CardOfferFormComponent, canActivate: [AuthGuard] },
   { path: 'seller-guide', component: SellerGuideComponent },
@@ -41,6 +43,8 @@ const routes: Routes = [
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard, cartItemsGuard] },
   { path: '**', redirectTo: 'home' },
 ];

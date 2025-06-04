@@ -1,11 +1,11 @@
 <app-navbar></app-navbar>
 <div class="flex items-center justify-center md:justify-end xl:justify-end lg:justify-end bg-gray-200 dark:bg-gray-700 p-3 justify-content-center">
-  <button id="theme-toggle" type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800" (click)="toggleDarkMode()">
+  <button id="theme-toggle" aria-label="dark mode toggle button" type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800" (click)="toggleDarkMode()">
     <lucide-icon name="sun" *ngIf="theme == 'light'"></lucide-icon>
     <lucide-icon name="moon" *ngIf="theme == 'dark'"></lucide-icon>
   </button>
-  <button type="button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
-    <a routerLink="/cart">
+  <button type="button" aria-label="shopping cart button" class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mx-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+    <a routerLink="/cart" aria-label="Navigate to the items placed in your shopping cart">
       <lucide-icon name="shopping-cart"></lucide-icon>
     </a>
   </button>
