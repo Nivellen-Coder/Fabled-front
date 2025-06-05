@@ -36,7 +36,17 @@ export class UserService {
   }
 
   updateUser(user: UserListModel, id: number|undefined): Observable<UserListModel> {
-    return this.httpClient.put<UserListModel>(`${this.apiURL}/user/${id}/update`, user);
+    return this.httpClient.put<UserListModel>(`${this.apiURL}/user/${id}/update`, user)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  anonymizeMyAccount(id: number): Observable<HttpErrorResponse> {
+    return this.httpClient.get<HttpErrorResponse>(`${this.apiURL}/user/${id}/anonymize`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

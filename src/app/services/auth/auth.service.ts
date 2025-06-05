@@ -52,6 +52,10 @@ export class AuthService {
     return localStorage.getItem('jwt') != null;
   }
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('jwt');
+  }
+
   get loggedInUsername(): string|null {
     return localStorage.getItem('loggedInUsername');
   }

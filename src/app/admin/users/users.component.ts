@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserListModel} from "../../models/user/userListModel";
 import {UserService} from "../../services/admin-user/user.service";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {LucideAngularModule} from "lucide-angular";
 import {FormsModule} from "@angular/forms";
@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private userService: UserService, private toastr: ToastrService) {
+  constructor(private userService: UserService, private toastr: ToastrService, private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -125,6 +125,19 @@ export class UsersComponent implements OnInit {
       },
       error: err => {
         console.error('Error while reactivating User', err);
+      }
+    });
+  }
+
+  anonymizeUser(userId: number) {
+    this.userService.anonymizeMyAccount(userId).subscribe({
+      next: () => {
+        this.toastr.success('User anonymized successfully');
+        this.loadUsers(); // recharge les données
+      },
+      error: err => {
+        console.error('Error while anonymizing this User', err);
+        this.toastr.error(err.error.message || 'Failed to anonymize user');
       }
     });
   }

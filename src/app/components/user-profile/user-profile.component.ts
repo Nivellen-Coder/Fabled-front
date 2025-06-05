@@ -111,4 +111,104 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['user-offer-edit/', offerId]);
   }
 
+  exportUserData(): void {
+    const userData = {
+      username: this.userData.username,
+      email: this.userData.email,
+      firstName: this.userData.firstName,
+      lastName: this.userData.lastName,
+    };
+
+    const jsonStr = JSON.stringify(userData, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fabled-user-data.json';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  exportUserAddressData(): void {
+    const userAddress = {
+      street: this.userAddress.street,
+      streetSecond: this.userAddress.streetSecond,
+      houseNumber: this.userAddress.houseNumber,
+      city: this.userAddress.city,
+      region: this.userAddress.region,
+      zipcode: this.userAddress.postalCode,
+      country: this.userAddress.country,
+    };
+
+    const jsonStr = JSON.stringify(userAddress, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fabled-user-address-data.json';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  exportUserPurchaseData(): void {
+    const userOrders = {
+      orders: this.orders,
+    };
+
+    const jsonStr = JSON.stringify(userOrders, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fabled-user-orders-data.json';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  exportUserOffersData(): void {
+    const userOffers = {
+      offers: this.userOffers,
+    };
+
+    const jsonStr = JSON.stringify(userOffers, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fabled-user-offers-data.json';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+  exportUserSalesData(): void {
+    const userSales = {
+      sales: this.userSales,
+    };
+
+    const jsonStr = JSON.stringify(userSales, null, 2);
+
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fabled-user-sales-data.json';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+
+
 }

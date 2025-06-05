@@ -23,14 +23,15 @@ import {PrivacyPolicyComponent} from "./components/privacy-policy/privacy-policy
 import {AboutUsComponent} from "./components/about-us/about-us.component";
 import {ForgotPasswordComponent} from "./components/forgot-password/forgot-password.component";
 import {ResetPasswordComponent} from "./components/reset-password/reset-password.component";
+import {LoggedOutGuard} from "./guards/logged-out.guard";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
-  { path: 'user-register', component: UserRegisterComponent },
+  { path: 'user-register', component: UserRegisterComponent, canActivate: [LoggedOutGuard] },
   { path: 'card-list', component: CardListComponent },
   { path: 'card-detail/:id', component: CardDetailComponent, pathMatch: 'full'},
-  { path: 'user-login', component: LoginComponent },
+  { path: 'user-login', component: LoginComponent, canActivate: [LoggedOutGuard] },
   { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'card-offer-form/:id', component: CardOfferFormComponent, canActivate: [AuthGuard] },
   { path: 'seller-guide', component: SellerGuideComponent },

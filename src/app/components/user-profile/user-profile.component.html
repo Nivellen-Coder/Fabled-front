@@ -13,6 +13,9 @@
           <a [routerLink]="'/user-profile-edit'" class="mx-2 p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
             <lucide-icon name="pen-line" class="flex flex-wrap mx-1"></lucide-icon>
           </a>
+          <button (click)="exportUserData()" class="mx-1 p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+            <lucide-icon name="folder-down" class="flex flex-wrap mx-1"></lucide-icon>
+          </button>
         </div>
 
         <ul class="space-y-2 text-gray-700 dark:text-gray-300">
@@ -32,6 +35,9 @@
           <a [routerLink]="'/user-address-edit'" class="mx-2 p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
             <lucide-icon name="pen-line" class="flex flex-wrap mx-1"></lucide-icon>
           </a>
+          <button (click)="exportUserAddressData()" *ngIf="userAddress" class="mx-1 p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+            <lucide-icon name="folder-down" class="flex flex-wrap mx-1"></lucide-icon>
+          </button>
         </div>
         <ul class="space-y-2 text-gray-700 dark:text-gray-300">
           <li><strong>Street:</strong> {{ userAddress.street }}</li>
@@ -94,6 +100,10 @@
             </li>
           </ul>
         </div>
+        <button (click)="exportUserPurchaseData()" class="flex flex-wrap mx-1 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+          <span class="mx-1">Export to Json</span>
+          <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
+        </button>
       </div>
 
       <div *ngIf="orders.length === 0" class="text-center py-4">
@@ -158,6 +168,10 @@
               </a>
             </div>
           </div>
+          <button (click)="exportUserOffersData()" class="flex flex-wrap mx-1 my-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+            <span class="mx-1">Export to Json</span>
+            <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
+          </button>
         </div>
       </div>
         <!-- Mode tableau à partir de medium (md) -->
@@ -229,6 +243,10 @@
             </tr>
             </tbody>
           </table>
+          <button (click)="exportUserOffersData()" class="flex flex-wrap mx-1 my-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+            <span class="mx-1">Export to Json</span>
+            <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
+          </button>
         </div>
 
 
@@ -279,6 +297,10 @@
             </ul>
           </div>
         </div>
+        <button (click)="exportUserSalesData()" class="flex flex-wrap mx-1 my-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+          <span class="mx-1">Export to Json</span>
+          <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
+        </button>
       </div>
 
       <div *ngIf="userSales.length === 0" class="text-center text-gray-500 dark:text-gray-400">

@@ -36,7 +36,7 @@ import {
   PenLine,
   Pencil,
   Trash2,
-  ShoppingCart, X, Check, Users, Layers, ShoppingBag, DollarSign, ChevronUp, ChevronDown,
+  ShoppingCart, X, Check, Users, Layers, ShoppingBag, DollarSign, ChevronUp, ChevronDown, FolderDown
 } from "lucide-angular";
 
 import { LucideAngularModule } from "lucide-angular";
@@ -98,6 +98,7 @@ import { environment } from "../environments/environment.development";
       DollarSign,
       ChevronUp,
       ChevronDown,
+      FolderDown,
     }),
     NavbarComponent,
     FooterComponent,
