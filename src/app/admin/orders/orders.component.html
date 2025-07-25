@@ -53,7 +53,7 @@
             {{ order.status | titlecase }}
           </span>
       </td>
-      <td class="px-4 py-3">{{ order.createdAt | date: 'short' }}</td>
+      <td class="px-4 py-3">{{ order.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
       <td class="px-4 py-3">
         <button
           class="text-sm text-blue-600 dark:text-blue-400 hover:underline"

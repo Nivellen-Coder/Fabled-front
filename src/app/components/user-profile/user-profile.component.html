@@ -79,7 +79,7 @@
       <div *ngIf="orders.length > 0" class="space-y-6">
         <div *ngFor="let order of orders" class="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow">
           <h3 class="font-semibold text-lg text-gray-800 dark:text-white">
-            Order #{{ order.id }} - {{ order.createdAt | date: 'dd/MM/yyyy h:mm a' }}
+            Order #{{ order.id }} - {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
           </h3>
 
           <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -136,7 +136,7 @@
                   {{ u.cardName }}
                 </a>
               </h3>
-              <span class="text-sm text-gray-500">{{ u.created_at }}</span>
+              <span class="text-sm text-gray-500">{{ u.created_at | date:'dd/MM/yyyy HH:mm'}}</span>
             </div>
             <p class="text-gray-700 dark:text-gray-300 mt-2 text-sm">{{ u.description }}</p>
 
@@ -147,14 +147,14 @@
               <p>
                 <strong>Foil:</strong>
                 <span
-                  class="px-2 py-1 rounded-lg font-semibold mx-2"
-                  [ngClass]="{
-            'bg-green-500 text-white': u.foil,
-            'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil
-          }"
-                >
-          {{ u.foil ? 'Yes' : 'No' }}
-        </span>
+                          class="px-2 py-1 rounded-lg font-semibold mx-2"
+                          [ngClass]="{
+                    'bg-green-500 text-white': u.foil,
+                    'bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-gray-300': !u.foil
+                  }"
+                        >
+                  {{ u.foil ? 'Yes' : 'No' }}
+                </span>
               </p>
               <p><strong>Quantity:</strong> {{ u.quantity }}</p>
             </div>
@@ -168,12 +168,11 @@
               </a>
             </div>
           </div>
-          <button (click)="exportUserOffersData()" class="flex flex-wrap mx-1 my-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
+          <button *ngIf="userOffers" (click)="exportUserOffersData()" class="flex flex-wrap mx-1 my-2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
             <span class="mx-1">Export to Json</span>
             <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
           </button>
         </div>
-      </div>
         <!-- Mode tableau à partir de medium (md) -->
         <div class="hidden md:block overflow-x-auto">
           <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -230,7 +229,7 @@
                 {{ u.description }}
               </td>
               <td class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-right">
-                {{ u.created_at }}
+                {{ u.created_at | date:'dd/MM/yyyy HH:mm' }}
               </td>
               <td class="px-4 py-3 text-gray-900 dark:text-white flex items-center justify-center gap-2">
                 <a (click)="navigateToOfferForm(u.id)" class="cursor-pointer">
@@ -248,9 +247,9 @@
             <lucide-icon name="folder-down" class="mx-1"></lucide-icon>
           </button>
         </div>
+      </div>
 
-
-        <div *ngIf="!userOffers.offers" class="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md mt-6">
+      <div *ngIf="!userOffers.offers" class="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md mt-6">
         <a routerLink="/card-list">
           <svg class="w-12 h-12 text-gray-500 dark:text-gray-400 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-3 3V9m0 12a9 9 0 110-18 9 9 0 010 18z"></path>

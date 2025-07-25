@@ -43,10 +43,10 @@
           </ng-container>
         </td>
         <td class="px-6 py-4">
-          {{ user.creation | date:'medium' }}
+          {{ user.creation | date:'dd/MM/yyyy HH:mm:ss' }}
         </td>
         <td class="px-6 py-4">
-          {{ user.lastLogin | date:'medium' }}
+          {{ user.lastLogin | date:'dd/MM/yyyy HH:mm:ss' }}
         </td>
         <td class="px-6 py-4">
             <span
@@ -61,14 +61,14 @@
         </td>
         <td class="px-6 py-4 flex gap-2 items-center">
           <!-- Modifier -->
-          <button
-            class="p-2 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-400"
-            (click)="openEditModal(user)"
-            *ngIf="!user.roles.includes('ROLE_ADMIN') && user.isActive"
-            title="Edit"
-          >
-            <lucide-icon name="pen-line"></lucide-icon>
-          </button>
+<!--          <button-->
+<!--            class="p-2 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-400"-->
+<!--            (click)="openEditModal(user)"-->
+<!--            *ngIf="!user.roles.includes('ROLE_ADMIN') && user.isActive"-->
+<!--            title="Edit"-->
+<!--          >-->
+<!--            <lucide-icon name="pen-line"></lucide-icon>-->
+<!--          </button>-->
 
           <!-- Supprimer -->
           <button

@@ -9,6 +9,7 @@ import { LucideAngularModule } from "lucide-angular";
 import { PaginationComponent } from "../pagination/pagination.component";
 import { ToastrService } from "ngx-toastr";
 import {OfferService} from "../../services/offer/offer.service";
+import {ScrollToTopComponent} from "../scroll-to-top/scroll-to-top.component";
 
 @Component({
   selector: 'app-card-list',
@@ -21,6 +22,7 @@ import {OfferService} from "../../services/offer/offer.service";
     FormsModule,
     ReactiveFormsModule,
     PaginationComponent,
+    ScrollToTopComponent,
   ],
   standalone: true
 })

@@ -1,4 +1,6 @@
 import { Component, NgModule, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
+import {AuthService} from "./services/auth/auth.service";
+import {Router} from "@angular/router";
 
 
 // @ts-ignore
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
     return this.isDarkMode;
   }
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor(rendererFactory: RendererFactory2, private authService: AuthService, private router: Router) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.loadTheme();
   }
@@ -59,5 +61,10 @@ export class AppComponent implements OnInit {
       this.isDarkMode = false;
       this.toggleDarkMode();
     }
+  }
+
+  isAdmin(): boolean {
+    let user = this.authService.getCurrentUser();
+    return !!(user && user.roles.includes('ROLE_ADMIN'));
   }
 }
