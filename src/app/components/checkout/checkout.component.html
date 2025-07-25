@@ -1,54 +1,54 @@
-<div class="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 shadow-lg rounded-2xl space-y-6 my-8">
-  <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Complete Your Order</h2>
+<!--<div class="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 shadow-lg rounded-2xl space-y-6 my-8">-->
+<!--  <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Complete Your Order</h2>-->
 
-  <!-- Shipping Address -->
-  <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-md">
-    <h3 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Shipping Address</h3>
-    <div class="text-sm text-gray-700 dark:text-gray-300 space-y-1" *ngIf="address">
-      <p>{{ userFirstName }} {{ userLastName }}</p>
-      <p>{{ address.street }} {{ address.houseNumber }}</p>
-      <p>{{ address.postalCode }} {{ address.city }}</p>
-      <p>{{ address.country }}</p>
-    </div>
-    <div class="text-sm text-red-600 dark:text-red-400" *ngIf="!address">
-      <p>No shipping address found.</p>
-      <a [routerLink]="['/user-address-create']"
-         class="inline-block mt-2 text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
-        Add an address now
-      </a>
-    </div>
-  </div>
+<!--  &lt;!&ndash; Shipping Address &ndash;&gt;-->
+<!--  <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-md">-->
+<!--    <h3 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Shipping Address</h3>-->
+<!--    <div class="text-sm text-gray-700 dark:text-gray-300 space-y-1" *ngIf="address">-->
+<!--      <p>{{ userFirstName }} {{ userLastName }}</p>-->
+<!--      <p>{{ address.street }} {{ address.houseNumber }}</p>-->
+<!--      <p>{{ address.postalCode }} {{ address.city }}</p>-->
+<!--      <p>{{ address.country }}</p>-->
+<!--    </div>-->
+<!--    <div class="text-sm text-red-600 dark:text-red-400" *ngIf="!address">-->
+<!--      <p>No shipping address found.</p>-->
+<!--      <a [routerLink]="['/user-address-create']"-->
+<!--         class="inline-block mt-2 text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">-->
+<!--        Add an address now-->
+<!--      </a>-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <!-- Cart Summary -->
-  <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-md">
-    <h3 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Shopping Cart</h3>
-    <ul class="space-y-2">
-      <li *ngFor="let item of cartItems" class="flex justify-between text-sm text-gray-700 dark:text-gray-300">
-        <span>{{ item.name }} x{{ item.quantity }}</span>
-        <span>{{ item.price * item.quantity | currency:'EUR' }}</span>
-      </li>
-    </ul>
-    <div class="mt-4 flex justify-between font-semibold text-gray-800 dark:text-white">
-      <span>Total:</span>
-      <span>{{ totalAmountCents / 100 | currency:'EUR' }}</span>
-    </div>
-  </div>
+<!--  &lt;!&ndash; Cart Summary &ndash;&gt;-->
+<!--  <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-md">-->
+<!--    <h3 class="text-lg font-medium mb-2 text-gray-800 dark:text-white">Shopping Cart</h3>-->
+<!--    <ul class="space-y-2">-->
+<!--      <li *ngFor="let item of cartItems" class="flex justify-between text-sm text-gray-700 dark:text-gray-300">-->
+<!--        <span>{{ item.name }} x{{ item.quantity }}</span>-->
+<!--        <span>{{ item.price * item.quantity | currency:'EUR' }}</span>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--    <div class="mt-4 flex justify-between font-semibold text-gray-800 dark:text-white">-->
+<!--      <span>Total:</span>-->
+<!--      <span>{{ totalAmountCents / 100 | currency:'EUR' }}</span>-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <!-- Payment Section -->
-  <form (submit)="pay($event)" class="space-y-4">
-    <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Credit Card</label>
-    <div class="p-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">
-      <ngx-stripe-card
-        [options]="cardOptions"
-        [elementsOptions]="elementsOptions"
-        class="block w-full text-black dark:text-white">
-      </ngx-stripe-card>
-    </div>
+<!--  &lt;!&ndash; Payment Section &ndash;&gt;-->
+<!--  <form (submit)="pay($event)" class="space-y-4">-->
+<!--    <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Credit Card</label>-->
+<!--    <div class="p-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800 text-black dark:text-white">-->
+<!--      <ngx-stripe-card-->
+<!--        [options]="cardOptions"-->
+<!--        [elementsOptions]="elementsOptions"-->
+<!--        class="block w-full text-black dark:text-white">-->
+<!--      </ngx-stripe-card>-->
+<!--    </div>-->
 
-    <button type="submit"
-            [disabled]="!address"
-            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition">
-      Pay {{ totalAmountCents / 100 | currency:'EUR' }}
-    </button>
-  </form>
-</div>
+<!--    <button type="submit"-->
+<!--            [disabled]="!address"-->
+<!--            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition">-->
+<!--      Pay {{ totalAmountCents / 100 | currency:'EUR' }}-->
+<!--    </button>-->
+<!--  </form>-->
+<!--</div>-->

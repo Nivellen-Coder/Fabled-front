@@ -1,5 +1,4 @@
 export const environment = {
   API_BASE_URL: 'https://api.scryfall.com',
-  // API_HASH: '6d8fb7ea36918252534e36701103789aa6ceb383113f0a7c37f99521ddf9b3705d4f31cac12fa3d6a70e8fe2c22025aca979b5807a494d373a4335bf0a385ac0',
-  // BEARER_TOKEN: '3eb1577914f0b687e4106403f10ceb9e96d3ad840601573b5418ccf0c2918e6e'
+  STRIPE_PK_TEST: ''
 };
