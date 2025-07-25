@@ -8,7 +8,7 @@ import { Address } from "../../models/user/userInfosModel";
 })
 export class AddressService {
 
-  private apiURL = 'http://localhost:8000/api/address';
+  private apiURL = 'https://fabled-project.onrender.com/api/address';
 
   constructor(private httpClient: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Country } from "../../models/user/userCreateModel";
 })
 export class CountryService {
 
-  private apiURL = 'http://127.0.0.1:8000/api/country';
+  private apiURL = 'https://fabled-project.onrender.com/api/country';
   constructor(private httpClient: HttpClient) { }
 
   httpOptions = {

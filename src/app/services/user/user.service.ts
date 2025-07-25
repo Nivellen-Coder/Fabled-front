@@ -12,7 +12,7 @@ import { offerCreateModel } from "../../models/offer/offerCreateModel";
 })
 export class UserService {
 
-  private apiURL = 'http://localhost:8000/api/user';
+  private apiURL = 'https://fabled-project.onrender.com/api/user';
 
   constructor(private httpClient: HttpClient) {
   }

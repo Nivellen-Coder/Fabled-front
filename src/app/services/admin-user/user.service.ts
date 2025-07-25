@@ -8,7 +8,7 @@ import {UserListModel} from "../../models/user/userListModel";
 })
 export class UserService {
 
-  private apiURL = 'http://localhost:8000/api/admin';
+  private apiURL = 'https://fabled-project.onrender.com/api/admin';
 
   constructor(private httpClient: HttpClient) {
 

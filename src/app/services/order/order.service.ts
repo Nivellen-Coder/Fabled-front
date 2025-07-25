@@ -9,7 +9,7 @@ import {UserSalesModel} from "../../models/user/userSalesModel";
 })
 
 export class OrderService {
-  private apiURL = 'http://localhost:8000/api/orders';
+  private apiURL = 'https://fabled-project.onrender.com/api/orders';
 
   constructor(private http: HttpClient) { }
 

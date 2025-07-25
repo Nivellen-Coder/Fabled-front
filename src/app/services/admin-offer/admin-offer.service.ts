@@ -8,7 +8,7 @@ import {AdminOfferListModel} from "../../models/offer/adminOfferListModel";
 })
 export class AdminOfferService {
 
-  private apiURL = 'http://localhost:8000/api/admin';
+  private apiURL = 'https://fabled-project.onrender.com/api/admin';
 
   constructor(private httpClient: HttpClient) { }
 

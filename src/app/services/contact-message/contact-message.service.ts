@@ -14,7 +14,7 @@ export interface ContactMessage {
   providedIn: 'root',
 })
 export class ContactMessageService {
-  private apiUrl = 'http://localhost:8000/api/admin'; // L'URL de ton API Symfony
+  private apiUrl = 'https://fabled-project.onrender.com/api/admin'; // L'URL de ton API Symfony
 
   constructor(private http: HttpClient) {}
 

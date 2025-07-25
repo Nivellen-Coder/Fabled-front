@@ -7,7 +7,7 @@ import {Order} from "../../models/order/admin-orders";
   providedIn: 'root'
 })
 export class AdminOrdersService {
-  private apiURL = 'http://127.0.0.1:8000/api/admin';
+  private apiURL = 'https://fabled-project.onrender.com/api/admin';
 
   constructor(private http: HttpClient) { }
 

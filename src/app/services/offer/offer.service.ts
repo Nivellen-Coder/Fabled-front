@@ -10,7 +10,7 @@ import {offerListInStock} from "../../models/offer/offerListInStock";
 })
 export class OfferService {
   bearerToken = localStorage.getItem('jwt');
-  private apiURL = 'http://127.0.0.1:8000/api/offer';
+  private apiURL = 'https://fabled-project.onrender.com/api/offer';
   private httpOptions: any;
   constructor(private httpClient: HttpClient) {
     this.updateHttpOptions();

@@ -15,7 +15,7 @@ interface UserPayload {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiURL = 'http://localhost:8000/api/login_check';
+  private apiURL = 'https://fabled-project.onrender.com/api/login_check';
   constructor(private http: HttpClient) {
   }
 
