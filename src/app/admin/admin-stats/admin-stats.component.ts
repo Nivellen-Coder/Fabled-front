@@ -24,7 +24,7 @@ export class AdminStatsComponent implements OnInit {
   constructor(private httpClient: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    this.httpClient.get<any>('http://localhost:8000/api/admin/stats').subscribe({
+    this.httpClient.get<any>('https://fabled-project.onrender.com/api/admin/stats').subscribe({
       next: (data) => {
         this.stats = data;
       },
