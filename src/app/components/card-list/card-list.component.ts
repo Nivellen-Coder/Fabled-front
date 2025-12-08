@@ -79,6 +79,7 @@ export class CardListComponent implements OnInit {
       this.cards = cards.data;
       let index = this.cards.findIndex(element => element.id === "a505ba37-b131-48d2-a2d7-a340763343f8");
       this.cards.splice(index, 1);
+      this.cards = cards.data.filter(cards => cards.image_uris && cards.id !== '');
       this.total = cards.total_cards;
       this.nbPage = Math.ceil(this.total / this.pageSize);
       this.pageSize = 175;
@@ -430,7 +431,7 @@ export class CardListComponent implements OnInit {
 
     this.cardService.getCardsByCriterias(searchValue, page, filters, false).subscribe({
       next: (result) => {
-        this.cards = result.data;
+        this.cards = result.data.filter(cards => cards.image_uris && cards.id !== '');
         this.total = result.total_cards;
         this.nbPage = Math.ceil(this.total / this.pageSize);
         this.isLoading = false;
